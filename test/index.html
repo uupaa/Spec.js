@@ -5,9 +5,10 @@
 onmessage = function(event) {
     var baseDir = event.data.baseDir;
 
+    importScripts(baseDir + "../node_modules/uupaa.mappedarray.js/lib/MappedArray.js");
     importScripts(baseDir + "../node_modules/uupaa.help.js/lib/Help.js");
-    importScripts(baseDir + "../node_modules/uupaa.test.js/lib/Test.js");
     importScripts(baseDir + "../node_modules/uupaa.task.js/lib/Task.js");
+    importScripts(baseDir + "../node_modules/uupaa.test.js/lib/Test.js");
     importScripts(baseDir + "../lib/Spec.js");
     importScripts(baseDir + "../lib/Spec.min.js");
     importScripts(baseDir + "./test.js");
@@ -16,9 +17,10 @@ onmessage = function(event) {
 };
 </script>
 
+<script src="../node_modules/uupaa.mappedarray.js/lib/MappedArray.js"></script>
 <script src="../node_modules/uupaa.help.js/lib/Help.js"></script>
-<script src="../node_modules/uupaa.test.js/lib/Test.js"></script>
 <script src="../node_modules/uupaa.task.js/lib/Task.js"></script>
+<script src="../node_modules/uupaa.test.js/lib/Test.js"></script>
 <script src="../lib/Spec.js"></script>
 <script src="../lib/Spec.min.js"></script>
 <script src="./test.js"></script>

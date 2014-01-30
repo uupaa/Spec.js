@@ -1,6 +1,6 @@
 {
   "name":           "uupaa.spec.js",
-  "version":        "0.8.1",
+  "version":        "0.8.2",
   "description":    "Spec detection frame work.",
   "url":            "https://github.com/uupaa/Spec.js",
   "keywords":       ["spec", "util", "uupaa"],
@@ -12,10 +12,13 @@
     "start":        "node node_modules/uupaa.minify.js --keep --output ./lib/Spec.min.js ./lib/Spec.js",
     "test":         "NODE_ENV=production NODE_PATH=lib node --harmony test/index.node.js; open test/index.html"
   },
+  "dependencies": {
+  },
   "devDependencies": {
+    "uupaa.mappedarray.js": "",
     "uupaa.help.js":    "",
-    "uupaa.test.js":    "",
     "uupaa.task.js":    "",
+    "uupaa.test.js":    "",
     "uupaa.minify.js":  ""
   },
   "lib":            "./lib/",
