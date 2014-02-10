@@ -2,9 +2,12 @@ new Test().add([
         testSpec,
         testSpecWithUserAgent,
     ]).run().worker(function(err, test) {
-        if (!err && typeof Spec_ !== "undefined") {
-            Spec = Spec_;
-            new Test(test).run().worker();
+        if (!err) {
+            var undo = Test.swap(Spec, Spec_);
+
+            new Test(test).run(function(err, test) {
+                undo = Test.undo(undo);
+            });
         }
     });
 
