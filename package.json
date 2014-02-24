@@ -1,6 +1,6 @@
 {
   "name":           "uupaa.spec.js",
-  "version":        "0.8.3",
+  "version":        "0.8.4",
   "description":    "Spec detection frame work.",
   "url":            "https://github.com/uupaa/Spec.js",
   "keywords":       ["spec", "util", "uupaa"],
@@ -9,8 +9,10 @@
     "url":          "https://github.com/uupaa/Spec.js.git"
   },
   "scripts": {
-    "start":        "node node_modules/uupaa.minify.js --keep --output ./lib/Spec.min.js ./lib/Spec.js",
-    "test":         "NODE_ENV=production NODE_PATH=lib node --harmony test/index.node.js; open test/index.html"
+    "watch":        "node node_modules/uupaa.watch.js --verbose --action build ./lib/Spec.js",
+    "build":        "node node_modules/uupaa.minify.js --keep --output ./lib/Spec.min.js ./lib/Spec.js",
+    "test":         "NODE_ENV=production NODE_PATH=lib node --harmony test/index.node.js; open test/index.html",
+    "lint":         "plato --title Spec.js --jshint .jshintrc -d lint/plato lib/Spec.js; open lint/plato/index.html"
   },
   "dependencies": {
   },

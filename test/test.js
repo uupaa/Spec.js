@@ -20,7 +20,7 @@ function testSpec(next) {
 
 function testSpecWithUserAgent(next) {
     var ua = "Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A403 Safari/8536.25";
-    var spec = Spec(ua);
+    var spec = Spec({ ua: ua });
 
     if (spec.BROWSER.USER_AGENT === ua) {
         console.log("testSpecWithUserAgent ok.");
