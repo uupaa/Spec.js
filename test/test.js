@@ -1,7 +1,7 @@
 new Test().add([
         testSpec,
-        testSpecWithUserAgent,
-        testSpecWithEmulateDeviceInfo,
+        testSpecOverrideUserAgent,
+        testSpecOverrideDeviceInfo,
     ]).run().worker(function(err, test) {
         if (!err) {
             var undo = Test.swap(Spec, Spec_);
@@ -19,29 +19,29 @@ function testSpec(next) {
     next && next.pass();
 }
 
-function testSpecWithUserAgent(next) {
+function testSpecOverrideUserAgent(next) {
     var ua = "Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A403 Safari/8536.25";
-    var spec = Spec({ ua: ua });
+    var spec = Spec({ USER_AGENT: ua });
 
     if (spec.BROWSER.USER_AGENT === ua) {
-        console.log("testSpecWithUserAgent ok.");
+        console.log("testSpecOverrideUserAgent ok.");
         next && next.pass();
     } else {
-        console.log("testSpecWithUserAgent ng.");
+        console.log("testSpecOverrideUserAgent ng.");
         next && next.miss();
     }
 }
 
-function testSpecWithEmulateDeviceInfo(next) {
+function testSpecOverrideDeviceInfo(next) {
     var ua = "Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A403 Safari/8536.25";
-    var emu = { devicePixelRatio: 2 };
-    var spec = Spec({ ua: ua, emu: emu });
+    var info = { devicePixelRatio: 2 };
+    var spec = Spec({ USER_AGENT: ua, DEVICE_INFO: info });
 
-    if (spec.DEVICE.EMULATE.devicePixelRatio === emu.devicePixelRatio) {
-        console.log("testSpecWithEmulateDeviceInfo ok.");
+    if (spec.DEVICE.INFO.devicePixelRatio === info.devicePixelRatio) {
+        console.log("testSpecOverrideDeviceInfo ok.");
         next && next.pass();
     } else {
-        console.log("testSpecWithEmulateDeviceInfo ng.");
+        console.log("testSpecOverrideDeviceInfo ng.");
         next && next.miss();
     }
 }
