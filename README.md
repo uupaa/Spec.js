@@ -5,7 +5,11 @@ Spec.js is Spec detection frame work.
 
 # Document
 
-https://github.com/uupaa/Spec.js/wiki/Spec
+- https://github.com/uupaa/Spec.js/wiki/Spec
+- https://github.com/uupaa/UserAgent.js/wiki/UserAgent
+- https://github.com/uupaa/Device.js/wiki/Device
+- https://github.com/uupaa/OS.js/wiki/OS
+- https://github.com/uupaa/Browser.js/wiki/Browser
 
 # How to use
 
