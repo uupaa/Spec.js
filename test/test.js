@@ -3,11 +3,11 @@ new Test().add([
         testSpecOverrideUserAgent,
         testSpecOverrideDeviceInfo,
     ]).run().worker(function(err, test) {
-        if (!err) {
+        if (!err && typeof Spec_ !== "undefined") {
             var undo = Test.swap(Spec, Spec_);
 
             new Test(test).run(function(err, test) {
-                undo = Test.undo(undo);
+                Test.undo(undo);
             });
         }
     });
