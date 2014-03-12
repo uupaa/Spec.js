@@ -1,7 +1,7 @@
 Spec.js
 =========
 
-Spec.js is Spec detection frame work.
+Spec detection framework.
 
 # Document
 

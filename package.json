@@ -1,6 +1,6 @@
 {
   "name":           "uupaa.spec.js",
-  "version":        "0.8.9",
+  "version":        "0.8.10",
   "description":    "Spec detection frame work.",
   "url":            "https://github.com/uupaa/Spec.js",
   "keywords":       ["spec", "util", "uupaa"],
@@ -24,6 +24,7 @@
   "dependencies": {
   },
   "devDependencies": {
+    "uupaa.valid.js":   "",
     "uupaa.help.js":    "",
     "uupaa.task.js":    "",
     "uupaa.test.js":    "",
