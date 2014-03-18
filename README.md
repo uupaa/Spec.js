@@ -1,7 +1,7 @@
 Spec.js
 =========
 
-Spec detection framework.
+Spec detection.
 
 # Document
 

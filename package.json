@@ -1,7 +1,7 @@
 {
   "name":           "uupaa.spec.js",
-  "version":        "0.8.11",
-  "description":    "Spec detection frame work.",
+  "version":        "0.8.12",
+  "description":    "Spec detection.",
   "url":            "https://github.com/uupaa/Spec.js",
   "keywords":       ["spec", "util", "uupaa"],
   "repository": {
@@ -9,17 +9,16 @@
     "url":          "https://github.com/uupaa/Spec.js.git"
   },
   "scripts": {
-    "watch":        "node node_modules/uupaa.watch.js --verbose --action build ./lib/Spec.js",
-    "build":        "node node_modules/uupaa.minify.js --keep --option 'formatting pretty_print' --output ./lib/Spec.min.js ./lib/Spec.js",
-    "build-release":"node node_modules/uupaa.minify.js --module all --output ./lib/Spec.min.js",
+    "watch":        "node node_modules/uupaa.watch.js --verbose --action build",
+    "build":        "node node_modules/uupaa.minify.js --verbose --strict --keep --pretty",
+    "build-simple": "node node_modules/uupaa.minify.js --verbose --strict --keep --pretty --nowrap --simple",
+    "build-release":"node node_modules/uupaa.minify.js --verbose --strict --module",
     "test":         "NODE_ENV=production NODE_PATH=lib node --harmony test/index.node.js; open test/index.html",
-    "lint":         "plato --title Spec.js --jshint .jshintrc -d lint/plato lib/Spec.js; open lint/plato/index.html"
+    "lint":         "node node_modules/uupaa.plato.js; open lint/plato/index.html"
   },
-  "build": {
-    "all": { "lib/Spec.js": "" },
-    "node": { },
-    "worker": { },
-    "browser": { }
+  "x-build": {
+    "inputs":       ["lib/Spec.js"],
+    "output":       "lib/Spec.min.js"
   },
   "dependencies": {
   },
@@ -28,6 +27,8 @@
     "uupaa.help.js":    "",
     "uupaa.task.js":    "",
     "uupaa.test.js":    "",
+    "uupaa.watch.js":   "",
+    "uupaa.plato.js":   "",
     "uupaa.minify.js":  ""
   },
   "lib":            "./lib/",

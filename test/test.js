@@ -2,12 +2,16 @@ new Test().add([
         testSpec,
         testSpecOverrideUserAgent,
         testSpecOverrideDeviceInfo,
-    ]).run().worker(function(err, test) {
-        if (!err && typeof Spec_ !== "undefined") {
-            var name = Test.swap(Spec, Spec_);
+    ]).run(function(err, test) {
+        if (1) {
+            err || test.worker(function(err, test) {
+                if (!err && typeof Spec_ !== "undefined") {
+                    var name = Test.swap(Spec, Spec_);
 
-            new Test(test).run(function(err, test) {
-                Test.undo(name);
+                    new Test(test).run(function(err, test) {
+                        Test.undo(name);
+                    });
+                }
             });
         }
     });
