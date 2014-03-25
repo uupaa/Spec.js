@@ -1,9 +1,9 @@
 {
   "name":           "uupaa.spec.js",
-  "version":        "0.8.12",
+  "version":        "0.8.13",
   "description":    "Spec detection.",
   "url":            "https://github.com/uupaa/Spec.js",
-  "keywords":       ["spec", "util", "uupaa"],
+  "keywords":       ["spec", "util", "uupaa", "WebModule"],
   "repository": {
     "type":         "git",
     "url":          "https://github.com/uupaa/Spec.js.git"
