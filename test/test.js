@@ -2,6 +2,7 @@ new Test().add([
         testSpec,
         testSpecOverrideUserAgent,
         testSpecOverrideDeviceInfo,
+        testSpec_normalizeVersionString,
     ]).run(function(err, test) {
         if (1) {
             err || test.worker(function(err, test) {
@@ -31,7 +32,7 @@ function testSpecOverrideUserAgent(next) {
         console.log("testSpecOverrideUserAgent ok.");
         next && next.pass();
     } else {
-        console.log("testSpecOverrideUserAgent ng.");
+        console.error("testSpecOverrideUserAgent ng.");
         next && next.miss();
     }
 }
@@ -45,8 +46,36 @@ function testSpecOverrideDeviceInfo(next) {
         console.log("testSpecOverrideDeviceInfo ok.");
         next && next.pass();
     } else {
-        console.log("testSpecOverrideDeviceInfo ng.");
+        console.error("testSpecOverrideDeviceInfo ng.");
         next && next.miss();
     }
 }
 
+function testSpec_normalizeVersionString(next) {
+    var result = [
+            "0.0.0",    Spec.normalizeVersionString("0.0.0"),
+            "1.2.3",    Spec.normalizeVersionString("1.2.3"),
+            "10.11.12", Spec.normalizeVersionString("10.11.12"),
+            "10.11.12", Spec.normalizeVersionString("10.11.12a"),
+            "0.0.0",    Spec.normalizeVersionString("0"),
+            "0.1.0",    Spec.normalizeVersionString("0.1"),
+            "0.0.1",    Spec.normalizeVersionString("0.0.1"),
+        ];
+
+    var ok = true;
+
+    for (var i = 0, iz = result.length; i < iz; i += 2) {
+        if ( result[i] !== result[i + 1] ) {
+            ok = false;
+            break;
+        }
+    }
+
+    if (ok) {
+        console.log("testSpec_normalizeVersionString ok.");
+        next && next.pass();
+    } else {
+        console.error("testSpec_normalizeVersionString ng.");
+        next && next.miss();
+    }
+}
