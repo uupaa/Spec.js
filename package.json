@@ -1,6 +1,6 @@
 {
   "name":           "uupaa.spec.js",
-  "version":        "0.9.2",
+  "version":        "0.9.3",
   "description":    "Spec detection.",
   "url":            "https://github.com/uupaa/Spec.js",
   "keywords":       ["spec", "util", "uupaa", "WebModule"],
@@ -18,7 +18,7 @@
   },
   "x-build": {
     "inputs":       ["lib/Spec.js"],
-    "output":       "lib/Spec.min.js"
+    "output":       "release/Spec.min.js"
   },
   "dependencies": {
   },
