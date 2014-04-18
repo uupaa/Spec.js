@@ -1,0 +1,11 @@
+language: node_js
+node_js:
+    - "0.10"
+before_script:
+    - "npm install -g plato"
+    - "npm install"
+    - "npm install uupaa.compile.js"
+    - "npm run build"
+script:
+    - "npm run test-node"
+
