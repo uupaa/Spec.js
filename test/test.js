@@ -1,21 +1,20 @@
-new Test().add([
+var ModuleTest = (function(global) {
+
+return new Test({
+        disable:    false,
+        node:       true,
+        browser:    true,
+        worker:     true,
+        button:     true,
+        both:       true,
+        primary:    global["Spec"],
+        secondary:  global["Spec_"],
+    }).add([
         testSpec,
         testSpecOverrideUserAgent,
         testSpecOverrideDeviceInfo,
         testSpec_normalizeVersionString,
-    ]).run(function(err, test) {
-        if (1) {
-            err || test.worker(function(err, test) {
-                if (!err && typeof Spec_ !== "undefined") {
-                    var name = Test.swap(Spec, Spec_);
-
-                    new Test(test).run(function(err, test) {
-                        Test.undo(name);
-                    });
-                }
-            });
-        }
-    });
+    ]).run().clone();
 
 function testSpec(next) {
     var spec = Spec();
@@ -79,3 +78,6 @@ function testSpec_normalizeVersionString(next) {
         next && next.miss();
     }
 }
+
+})((this || 0).self || global);
+
