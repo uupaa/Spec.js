@@ -1,14 +1,16 @@
-var ModuleTest = (function(global) {
+var ModuleTestSpec = (function(global) {
 
-return new Test({
+var _inNode    = "process"        in global;
+var _inWorker  = "WorkerLocation" in global;
+var _inBrowser = "document"       in global;
+
+return new Test("Spec", {
         disable:    false,
-        node:       true,
         browser:    true,
         worker:     true,
+        node:       true,
         button:     true,
         both:       true,
-        primary:    global["Spec"],
-        secondary:  global["Spec_"],
     }).add([
         testSpec,
         testSpecOverrideUserAgent,
@@ -19,7 +21,6 @@ return new Test({
 function testSpec(next) {
     var spec = Spec();
 
-    console.log("testSpec ok.");
     next && next.pass();
 }
 
@@ -28,10 +29,8 @@ function testSpecOverrideUserAgent(next) {
     var spec = Spec({ USER_AGENT: ua });
 
     if (spec.BROWSER.USER_AGENT === ua) {
-        console.log("testSpecOverrideUserAgent ok.");
         next && next.pass();
     } else {
-        console.error("testSpecOverrideUserAgent ng.");
         next && next.miss();
     }
 }
@@ -42,10 +41,8 @@ function testSpecOverrideDeviceInfo(next) {
     var spec = Spec({ USER_AGENT: ua, DEVICE_INFO: info });
 
     if (spec.DEVICE.INFO.devicePixelRatio === info.devicePixelRatio) {
-        console.log("testSpecOverrideDeviceInfo ok.");
         next && next.pass();
     } else {
-        console.error("testSpecOverrideDeviceInfo ng.");
         next && next.miss();
     }
 }
@@ -71,10 +68,8 @@ function testSpec_normalizeVersionString(next) {
     }
 
     if (ok) {
-        console.log("testSpec_normalizeVersionString ok.");
         next && next.pass();
     } else {
-        console.error("testSpec_normalizeVersionString ng.");
         next && next.miss();
     }
 }

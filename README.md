@@ -8,9 +8,9 @@ Spec detection.
 
 # Document
 
-- [WebModule](https://github.com/uupaa/WebModule) ([Slide](http://uupaa.github.io/Slide/slide/WebModule/index.html))
-- [Development](https://github.com/uupaa/WebModule/wiki/Development)
 - [Spec.js wiki](https://github.com/uupaa/Spec.js/wiki/Spec)
+- [Development](https://github.com/uupaa/WebModule/wiki/Development)
+- [WebModule](https://github.com/uupaa/WebModule) ([Slide](http://uupaa.github.io/Slide/slide/WebModule/index.html))
 
 
 # How to use
