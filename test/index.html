@@ -14,7 +14,7 @@ onmessage = function(event) {
     importScripts(MESSAGE.BASE_DIR + "../node_modules/uupaa.test.js/lib/Test.js");
     importScripts(MESSAGE.BASE_DIR + "../lib/Spec.js");
     importScripts(MESSAGE.BASE_DIR + "../release/Spec.min.js");
-    importScripts(MESSAGE.BASE_DIR + "./test.js");
+    importScripts(MESSAGE.BASE_DIR + "./test.js?_=1402850645265");
 
     self.postMessage({ error: self.errorMessage || "" });
 };
@@ -28,6 +28,6 @@ onmessage = function(event) {
 <script src="../node_modules/uupaa.test.js/lib/Test.js"></script>
 <script src="../lib/Spec.js"></script>
 <script src="../release/Spec.min.js"></script>
-<script src="./test.js"></script>
+<script src="./test.js?=_1402850645265"></script>
 
 </body></html>

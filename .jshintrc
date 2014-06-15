@@ -13,6 +13,8 @@
     "maxerr":   10000,
     "proto":    true,
     "sub":      true,
+    "newcap":   false, // Require capitalization of all constructor functions e.g. `new F()`
+    "validthis":true,  // avoid 'bind(this) -> Possible strict violation.'
 
     // --- Environments ---
     "browser":  true,
