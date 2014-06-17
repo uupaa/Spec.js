@@ -1,6 +1,6 @@
 {
   "name":           "uupaa.spec.js",
-  "version":        "0.10.5",
+  "version":        "0.11.0",
   "description":    "Spec detection.",
   "url":            "https://github.com/uupaa/Spec.js",
   "keywords":       ["spec", "util", "uupaa", "WebModule", "Stable"],
@@ -18,6 +18,10 @@
     "test-debug":   "NODE_ENV=production NODE_PATH=lib node --debug-brk --harmony test/index.node.js",
     "test-node":    "NODE_ENV=production NODE_PATH=lib node --harmony test/index.node.js",
     "test-browser": "open test/index.html",
+    "test-sim":     "node node_modules/uupaa.iphonesimulator.js --run --port 8585 --xcache --open test/index.html",
+    "server":       "http-server -c-1 -p 8585 &",
+    "server-stop":  "",
+    "server-kill":  "killall -- node /usr/local/bin/http-server -p 8585 ; exit 0",
     "lint":         "node node_modules/uupaa.plato.js; open lint/plato/index.html"
   },
   "x-build": {
@@ -35,6 +39,7 @@
   "devDependencies": {
     "uupaa.nodemodule.js": "",
     "uupaa.reflection.js": "",
+    "uupaa.iphonesimulator.js": "",
     "uupaa.console.js": "",
     "uupaa.valid.js":   "",
     "uupaa.help.js":    "",

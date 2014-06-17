@@ -4,6 +4,289 @@ var _inNode    = "process"        in global;
 var _inWorker  = "WorkerLocation" in global;
 var _inBrowser = "document"       in global;
 
+
+var userAgents = {
+    IE11Preview: {
+        ua: "Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko",
+        os: "Windows",
+        osVer: 6.1,
+        browserVer: 11.0,
+        engine: "Trident",
+        browser: "IE",
+    },
+    IE10: {
+        ua: "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; Trident/6.0)",
+        os: "Windows",
+        osVer: 6.1,
+        browserVer: 10.0,
+        engine: "Trident",
+        browser: "IE",
+    },
+    IE9: {
+        ua: "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)",
+        os: "Windows",
+        osVer: 6.1,
+        browserVer: 9.0,
+        engine: "Trident",
+        browser: "IE",
+    },
+    IE8: {
+        ua: "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0)",
+        os: "Windows",
+        osVer: 6.1,
+        browserVer: 8.0,
+        engine: "Trident",
+        browser: "IE",
+    },
+    "WP7.5": {
+        ua: "Mozilla/5.0 (compatible; MSIE 9.0; Windows Phone OS 7.5; Trident/5.0; IEMobile/9.0)",
+        os: "Windows Phone",
+        osVer: 7.5,
+        browserVer: 9.0,
+        engine: "Trident",
+        browser: "IE",
+    },
+    WP7: {
+        ua: "Mozilla/4.0 (compatible; MSIE 7.0; Windows Phone OS 7.0; Trident/3.1; IEMobile/7.0)",
+        os: "Windows Phone",
+        osVer: 7.0,
+        browserVer: 7.0,
+        engine: "Trident",
+        browser: "IE",
+    },
+    OPNext: {
+        ua: "Mozilla/5.0 (Linux; Android 4.0.4; L-01D Build/IMM76D) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.123 Mobile Safari/537.22 OPR/14.0.1025.53005",
+        os: "Android",
+        osVer: 4.0,
+        browserVer: 25.0,
+        engine: "Blink",
+        browser: "Chrome",
+    },
+    Firefox16: {
+        ua: "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:16.0) Gecko/20100101 Firefox/16.0",
+        os: "Windows",
+        osVer: 6.1,
+        browserVer: 16.0,
+        engine: "Gecko",
+        browser: "Firefox",
+    },
+    FirefoxMobile: {
+        ua: "Mozilla/5.0 (Android; Mobile; rv:13.0) Gecko/13.0 Firefox/13.0",
+        os: "Android",
+        osVer: 0.0,
+        browserVer: 13.0,
+        engine: "Gecko",
+        browser: "Firefox",
+    },
+    FirefoxTablet: {
+        ua: "Mozilla/5.0 (Android; Tablet; rv:13.0) Gecko/13.0 Firefox/13.0",
+        os: "Android",
+        osVer: 0.0,
+        browserVer: 13.0,
+        engine: "Gecko",
+        browser: "Firefox",
+    },
+    Safari6: {
+        ua: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) AppleWebKit/536.30.1 (KHTML, like Gecko) Version/6.0.5 Safari/536.30.1",
+        os: "Mac OS X",
+        osVer: 10.8,
+        browserVer: 6.0,
+        engine: "WebKit",
+        browser: "Safari",
+    },
+    "Android Browser": {
+        ua: "Mozilla/5.0 (Linux; U; Android 4.2.2; ja-jp; SonySOL23 Build/14.1.C.0.467) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30",
+        //                          ~~~~~~~~~~~~~  ~~~~~  ~~~~~~~~~ ~~~~~                                                                  ~~~~~~ 
+        os: "Android",
+        osVer: 4.2,
+        webView: false,
+        browserVer: 4.0,
+        engine: "WebKit",
+        browser: "AndroidBrowser",
+    },
+    "Android Browser WebView": {
+        ua: "Mozilla/5.0 (Linux; U; Android 4.1.1; en-gb; Build/KLP) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Safari/534.30",
+        //                          ~~~~~~~~~~~~~  ~~~~~  ~~~~~                                                        |(not Mobile)
+        os: "Android",
+        osVer: 4.1,
+        webView: true,
+        browserVer: 4.0,
+        engine: "WebKit",
+        browser: "AndroidBrowser",
+    },
+    "S Browser": {
+        ua: "Mozilla/5.0 (Linux; Android 4.2.2; ja-jp; SC-04E Build/JDQ39) AppleWebKit/535.19 (KHTML, like Gecko) Version/1.0 Chrome/18.0.1025.308 Mobile Safari/535.19",
+        //                       ~~~~~~~~~~~~~  ~~~~~  ~~~~~~ ~~~~~                                                           ~~~~~~~~~~~          ~~~~~~
+        os: "Android",
+        osVer: 4.2,
+        webView: false,
+        browserVer: 18.0,
+        engine: "Blink",
+      //browser: "ChromiumBased",
+        browser: "Chrome",
+    },
+    "Android KitKat Chrome WebView": {
+        ua: "Mozilla/5.0 (Linux; Android 4.4; Nexus 5 Build/BuildID) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/30.0.0.0 Mobile Safari/537.36",
+        //                       ~~~~~~~~~~~  ~~~~~~~ ~~~~~                                                             ~~~~~~~~~~~     ~~~~~~
+        os: "Android",
+        osVer: 4.4,
+        webView: true,
+        browserVer: 30.0,
+        engine: "Blink",
+        browser: "Chrome",
+    },
+    "Kindle": {
+        ua: "Mozilla/5.0 (Linux; Android 4.0.3; en-us; KFTT    Build/IML74K)  AppleWebKit/535.19 (KHTML, like Gecko) Silk/3.4 Mobile Safari/535.19 Silk-Accelerated=true",
+        //                       ~~~~~~~~~~~~~         ~~~~~~~ ~~~~~                                                 ~~~~~~~~
+        os: "Android",
+        osVer: 4.0,
+        webView: false,
+        browserVer: 3.4,
+        engine: "WebKit",
+        browser: "AndroidBrowser",
+    },
+    "Nexus7 Android 4.2 Chrome 18": {
+        ua: "Mozilla/5.0 (Linux; Android 4.2; Nexus 7 Build/JOP40C) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Safari/535.19",
+        //                       ~~~~~~~~~~~  ~~~~~~  ~~~~~                                                ~~~~~~~~~~~         |(not Mobile)
+        os: "Android",
+        osVer: 4.2,
+        webView: false,
+        browserVer: 18.0,
+        engine: "Blink",
+        browser: "Chrome",
+    },
+    "Xperia X10": {
+        ua: "Mozilla/5.0 (Linux; U; Android 1.6; en-gb; SonyEricssonX10i Build/R1AA040) AppleWebKit/528.5+ (KHTML, like Gecko) Version/3.1.2 Mobile Safari/525.20.1",
+        os: "Android",
+        osVer: 1.6,
+        browserVer: 3.1,
+        engine: "WebKit",
+        browser: "AndroidBrowser",
+    },
+    "iPhone 5 iOS 7 beta 6": {
+        ua: "Mozilla/5.0 (iPhone; CPU iPhone OS 7_0 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/6.0 Mobile/11A4449d Safari/9537.53.25",
+        os: "iOS",
+        osVer: 7.0,
+        browserVer: 6.0,
+        engine: "WebKit",
+        browser: "Safari",
+    },
+    "iPhone 4s iOS 7.0.3": {
+        ua: "Mozilla/5.0 (iPhone; CPU iPhone OS 7_0_3 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11B511 Safari/9537.53",
+        os: "iOS",
+        osVer: 7.0,
+        browserVer: 7.0,
+        engine: "WebKit",
+        browser: "Safari",
+    },
+    "iPad 2 iOS 6 beta": {
+        ua: "Mozilla/5.0 (iPad; CPU OS 5_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9B176 Safari/7534.48.3",
+        os: "iOS",
+        osVer: 5.1,
+        browserVer: 5.1,
+        engine: "WebKit",
+        browser: "Safari",
+    },
+    "Xbox One": {
+        ua: "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0; Xbox; Xbox One)",
+        //                                               ~~~~~~ don't look
+        os: "Game",
+        osVer: 0.0,
+        browserVer: 10.0,
+        engine: "Trident",
+        browser: "IE",
+    },
+    "Xbox 360": { // IEMobile Based Browser.
+        ua: "Mozilla/5.0 (compatible; MSIE 9.0; Windows Phone OS 7.5; Trident/5.0; IEMobile/9.0; Xbox)",
+        //                                                    ~~~~~~ don't look
+        os: "Game",
+        osVer: 0.0,
+        browserVer: 9.0,
+        engine: "Trident",
+        browser: "IE",
+    },
+    "PS 4": { // WebKit Based Browser.
+        ua: "Mozilla/5.0 (PlayStation 4 1.52) AppleWebKit/536.26 (KHTML, like Gecko)",
+        //                            ~~~~~~ don't look
+        os: "Game",
+        osVer: 0.0,
+        browserVer: 0.0,
+        engine: "WebKit",
+        browser: "WebKit",
+    },
+    "PS 3(WebKit)": { // WebKit Based Browser.
+        ua: "Mozilla/5.0 (PLAYSTATION 3 4.10) AppleWebKit/531.22.8 (KHTML, like Gecko)",
+        //                            ~~~~~~ don't look
+        os: "Game",
+        osVer: 0.0,
+        browserVer: 0.0,
+        engine: "WebKit",
+        browser: "WebKit",
+    },
+    "PS 3": { // Sony Original Browser.
+        ua: "Mozilla/5.0 (PLAYSTATION 3; 2.50) + Flash 9",
+        //                            ~~~~~~~ don't look
+        os: "Game",
+        osVer: 0.0,
+        browserVer: 0.0,
+        engine: "",
+        browser: "",
+    },
+    "PS 2": { // NetFront Based Browser.
+        ua: "Mozilla/4.0 (PS2; PlayStation BB Navigator 1.0) NetFront/3.0",
+        os: "Game",
+        osVer: 0.0,
+        browserVer: 0.0,
+        engine: "",
+        browser: "",
+    },
+    "PSP": { // NetFront Based Browser.
+        ua: "Mozilla/4.0 (PSP PlayStation Portable); 2.00)",
+        os: "Game",
+        osVer: 0.0,
+        browserVer: 0.0,
+        engine: "",
+        browser: "",
+    },
+    "PS Vita": { // WebKit Based Browser.
+        ua: "Mozilla/5.0 (PlayStation Vita 1.50) AppleWebKit/531.22.8 (KHTML, like Gecko) Silk/3.2",
+        os: "Game",
+        osVer: 0.0,
+        browserVer: 0.0,
+        engine: "WebKit",
+        browser: "WebKit",
+    },
+    "Wii": { // Opera Browser.
+        ua: "Opera/9.30 (Nintendo Wii; U; ; 3642; ja) with Flash Lite 3.1",
+        //                                  ~~~~~ don't look
+        os: "Game",
+        osVer: 0.0,
+        browserVer: 0.0,
+        engine: "",
+        browser: "",
+    },
+    "Wii U": { // NetFrontNX Browser.
+        ua: "Mozilla/5.0 (Nintendo WiiU) AppleWebKit/536.28 (KHTML, like Gecko) NX/*** NintendoBrowser/***.JP",
+        os: "Game",
+        osVer: 0.0,
+        browserVer: 0.0,
+        engine: "WebKit",
+        browser: "WebKit",
+    },
+    "3DS": { // NetFront Based Browser.
+        ua: "Mozilla/5.0 (Nintendo 3DS; U; ; ja) Version/1.7412.JP",
+        //                                               ~~~~~~~~~ don't look
+        os: "Game",
+        osVer: 0.0,
+        browserVer: 0.0,
+        engine: "",
+        browser: "",
+    }
+};
+
+
+
+
 return new Test("Spec", {
         disable:    false,
         browser:    true,
@@ -12,12 +295,13 @@ return new Test("Spec", {
         button:     true,
         both:       true,
     }).add([
-        testSpec,
-        testSpecOverrideUserAgent,
-        testSpecOverrideDeviceInfo,
-        testSpec_normalizeVersionString,
+        testBrowser,
         // ---
-        testUserAgent,
+        testSpec,
+        testSpecParamUserAgent,
+        testSpecParamDeviceInfo,
+        //testSpec_normalizeVersionString,
+        // ---
         testDeviceiPhone5,
         testDeviceNexus5,
         testDeviceRevision_Nexus7_2013,
@@ -37,34 +321,89 @@ return new Test("Spec", {
         testFirefox11,
     ]).run().clone();
 
+
+
+function testBrowser(test, pass, miss) {
+
+    var result = true;
+
+    for (var id in userAgents) {
+        var data = userAgents[id];
+        var spec = null;
+        var overwrite = { userAgent: data.ua };
+
+        try {
+            console.log(data.ua);
+            spec = Spec(overwrite);
+        } catch (err) {
+            console.log( "ERROR: " + data.ua);
+            result = false;
+            break;
+        }
+        var ok = true;
+
+        if (data.os !== spec.OS_TYPE) {
+            console.log( "OS_TYPE        : " + data.os,         " -> " + spec.OS_TYPE );
+            ok = false;
+        }
+        if (data.osVer != parseFloat(spec.OS_VERSION)) {
+            console.log( "OS_VERSION     : " + data.osVer,      " -> " + spec.OS_VERSION );
+            ok = false;
+        }
+        if (data.browserVer != parseFloat(spec.BROWSER_VERSION)) {
+            console.log( "BROWSER_VERSION: " + data.browserVer, " -> " + spec.BROWSER_VERSION );
+            ok = false;
+        }
+        if (data.engine != spec.BROWSER_ENGINE) {
+            console.log( "BROWSER_ENGINE : " + data.engine,     " -> " + spec.BROWSER_ENGINE );
+            ok = false;
+        }
+        if (data.browser != spec.BROWSER_NAME) {
+            console.log( "BROWSER_NAME   : " + data.browser,    " -> " + spec.BROWSER_NAME );
+            ok = false;
+        }
+        if (!ok) {
+            debugger;
+            result = false;
+            break;
+        }
+    }
+    if (result) {
+        test.done(pass());
+    } else {
+        test.done(miss());
+    }
+}
+
 function testSpec(test, pass, miss) {
     var spec = Spec();
 
     test.done(pass());
 }
 
-function testSpecOverrideUserAgent(test, pass, miss) {
+function testSpecParamUserAgent(test, pass, miss) {
     var ua = "Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A403 Safari/8536.25";
-    var spec = Spec({ USER_AGENT: ua });
+    var spec = Spec({ userAgent: ua });
 
-    if (spec.BROWSER.USER_AGENT === ua) {
+    if (spec.USER_AGENT === ua) {
         test.done(pass());
     } else {
         test.done(miss());
     }
 }
 
-function testSpecOverrideDeviceInfo(test, pass, miss) {
+function testSpecParamDeviceInfo(test, pass, miss) {
     var ua = "Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A403 Safari/8536.25";
-    var spec = Spec({ USER_AGENT: ua, DEVICE_PIXEL_RATIO: 2 });
+    var spec = Spec({ userAgent: ua, dpr: 2 });
 
-    if (spec.DEVICE.INFO.DEVICE_PIXEL_RATIO === 2) {
+    if (spec.DISPLAY_DPR === 2) {
         test.done(pass());
     } else {
         test.done(miss());
     }
 }
 
+/*
 function testSpec_normalizeVersionString(test, pass, miss) {
     var result = [
             "0.0.0",    Spec.normalizeVersionString("0.0.0"),
@@ -91,27 +430,21 @@ function testSpec_normalizeVersionString(test, pass, miss) {
         test.done(miss());
     }
 }
+ */
 
 // ------------------------------------------
-function testUserAgent(test, pass, miss) {
-
-    var spec = Spec();
-
-    test.done(pass());
-}
-
 function testDeviceiPhone5(test, pass, miss) {
-    var override = {
-            USER_AGENT: "Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A403 Safari/8536.25",
-            SCREEN_WIDTH: 320,
-            SCREEN_HEIGHT: 568,
-            DEVICE_PIXEL_RATIO: 2
+    var param = {
+            dpr: 2,
+            width: 320,
+            height: 568,
+            userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A403 Safari/8536.25"
         };
 
-    var spec = Spec(override);
+    var spec = Spec(param);
 
-    if (spec.DEVICE.ID === "iPhone 5" &&
-        spec.OS.TYPE   === "iOS") {
+    if (spec.ID === "iPhone 5" &&
+        spec.OS_TYPE === "iOS") {
         test.done(pass());
     } else {
         test.done(miss());
@@ -120,10 +453,10 @@ function testDeviceiPhone5(test, pass, miss) {
 
 function testDeviceNexus5(test, pass, miss) {
     var userAgent = "Mozilla/5.0 (Linux; Android 4.4; Nexus 5 Build/BuildID) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/30.0.0.0 Mobile Safari/537.36";
-    var spec = Spec({ USER_AGENT: userAgent });
+    var spec = Spec({ userAgent: userAgent });
 
-    if (spec.DEVICE.ID === "Nexus 5" &&
-        spec.OS.TYPE   === "Android") {
+    if (spec.ID === "Nexus 5" &&
+        spec.OS_TYPE === "Android") {
         test.done(pass());
     } else {
         test.done(miss());
@@ -131,15 +464,15 @@ function testDeviceNexus5(test, pass, miss) {
 }
 
 function testDeviceRevision_Nexus7_2013(test, pass, miss) {
-    var override = {
-            USER_AGENT: "Mozilla/5.0 (Linux; Android 4.3; Nexus 7 Build/JWR66N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.111 Safari/537.36",
-            DEVICE_PIXEL_RATIO: 2
+    var param = {
+            userAgent: "Mozilla/5.0 (Linux; Android 4.3; Nexus 7 Build/JWR66N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.111 Safari/537.36",
+            dpr: 2
         };
 
-    var spec = Spec(override);
+    var spec = Spec(param);
 
-    if (spec.DEVICE.ID === "Nexus 7 (2013)" &&
-        spec.OS.TYPE   === "Android") {
+    if (spec.ID === "Nexus 7 (2013)" &&
+        spec.OS_TYPE === "Android") {
         test.done(pass());
     } else {
         test.done(miss());
@@ -147,14 +480,14 @@ function testDeviceRevision_Nexus7_2013(test, pass, miss) {
 }
 
 function testFirefoxMobileForAndroid(test, pass, miss) {
-    var override = {
-            USER_AGENT: "Mozilla/5.0 (Android; Mobile; rv:13.0) Gecko/13.0 Firefox/13.0"
+    var param = {
+            userAgent: "Mozilla/5.0 (Android; Mobile; rv:13.0) Gecko/13.0 Firefox/13.0"
         };
 
-    var spec = Spec(override);
+    var spec = Spec(param);
 
-    if (spec.DEVICE.ID === "" &&
-        spec.OS.TYPE   === "Android") {
+    if (spec.ID === "" &&
+        spec.OS_TYPE === "Android") {
         test.done(pass());
     } else {
         test.done(miss());
@@ -162,14 +495,14 @@ function testFirefoxMobileForAndroid(test, pass, miss) {
 }
 
 function testDeviceFirefoxOS(test, pass, miss) {
-    var override = {
-            USER_AGENT: "Mozilla/5.0 (Mobile; rv:18.0) Gecko/18.0 Firefox/18.0"
+    var param = {
+            userAgent: "Mozilla/5.0 (Mobile; rv:18.0) Gecko/18.0 Firefox/18.0"
         };
 
-    var spec = Spec(override);
+    var spec = Spec(param);
 
-    if (spec.DEVICE.ID === "" &&
-        spec.OS.TYPE   === "Firefox OS") {
+    if (spec.ID === "" &&
+        spec.OS_TYPE === "Firefox OS") {
         test.done(pass());
     } else {
         test.done(miss());
@@ -178,14 +511,14 @@ function testDeviceFirefoxOS(test, pass, miss) {
 
 
 function testDevice_INFOBAR_A01(test, pass, miss) {
-    var override = {
-            USER_AGENT: "Mozilla/5.0 (Linux; U; Android 2.3.3; ja-jp; INFOBAR A01 Build/S6160) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1"
+    var param = {
+            userAgent: "Mozilla/5.0 (Linux; U; Android 2.3.3; ja-jp; INFOBAR A01 Build/S6160) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1"
         };
 
-    var spec = Spec(override);
+    var spec = Spec(param);
 
-    if (spec.DEVICE.ID === "INFOBAR A01" &&
-        spec.OS.TYPE   === "Android") {
+    if (spec.ID === "INFOBAR A01" &&
+        spec.OS_TYPE === "Android") {
         test.done(pass());
     } else {
         test.done(miss());
@@ -193,14 +526,14 @@ function testDevice_INFOBAR_A01(test, pass, miss) {
 }
 
 function testDeviceWindowsPhone8S(test, pass, miss) {
-    var override = {
-            USER_AGENT: "Mozilla/5.0 (compatible; MSIE 10.0; Windows Phone 8.0; Trident/6.0; IEMobile/10.0; ARM; Touch; HTC; Windows Phone 8S by HTC)"
+    var param = {
+            userAgent: "Mozilla/5.0 (compatible; MSIE 10.0; Windows Phone 8.0; Trident/6.0; IEMobile/10.0; ARM; Touch; HTC; Windows Phone 8S by HTC)"
         };
 
-    var spec = Spec(override);
+    var spec = Spec(param);
 
-    if (spec.DEVICE.ID === "8S" &&
-        spec.OS.TYPE   === "Windows Phone") {
+    if (spec.ID === "8S" &&
+        spec.OS_TYPE === "Windows Phone") {
         test.done(pass());
     } else {
         test.done(miss());
@@ -208,14 +541,14 @@ function testDeviceWindowsPhone8S(test, pass, miss) {
 }
 
 function testDeviceWindowsPhoneLumia920(test, pass, miss) {
-    var override = {
-            USER_AGENT: "Mozilla/5.0 (compatible; MSIE 10.0; Windows Phone 8.0; Trident/6.0; IEMobile/10.0; ARM; Touch; NOKIA; Lumia 920)"
+    var param = {
+            userAgent: "Mozilla/5.0 (compatible; MSIE 10.0; Windows Phone 8.0; Trident/6.0; IEMobile/10.0; ARM; Touch; NOKIA; Lumia 920)"
         };
 
-    var spec = Spec(override);
+    var spec = Spec(param);
 
-    if (spec.DEVICE.ID === "Lumia 920" &&
-        spec.OS.TYPE   === "Windows Phone") {
+    if (spec.ID === "Lumia 920" &&
+        spec.OS_TYPE === "Windows Phone") {
         test.done(pass());
     } else {
         test.done(miss());
@@ -223,14 +556,14 @@ function testDeviceWindowsPhoneLumia920(test, pass, miss) {
 }
 
 function testDeviceKindle(test, pass, miss) {
-    var override = {
-            USER_AGENT: "Mozilla/5.0 (Linux; U; Android 4.0.3; en-us; KFTT Build/IML74K) AppleWebKit/535.19 (KHTML, like Gecko) Silk/3.4 Mobile Safari/535.19 Silk-Accelerated=true"
+    var param = {
+            userAgent: "Mozilla/5.0 (Linux; U; Android 4.0.3; en-us; KFTT Build/IML74K) AppleWebKit/535.19 (KHTML, like Gecko) Silk/3.4 Mobile Safari/535.19 Silk-Accelerated=true"
         };
 
-    var spec = Spec(override);
+    var spec = Spec(param);
 
-    if (spec.DEVICE.ID === "KFTT" &&
-        spec.OS.TYPE   === "Android") {
+    if (spec.ID === "KFTT" &&
+        spec.OS_TYPE === "Android") {
         test.done(pass());
     } else {
         test.done(miss());
@@ -238,14 +571,14 @@ function testDeviceKindle(test, pass, miss) {
 }
 
 function testDeviceGooglePlayEdition(test, pass, miss) {
-    var override = {
-            USER_AGENT: "Mozilla/5.0 (Linux; U; Android 4.2.2; en-us; HTC6500LVW 4G Build/JDQ39) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
+    var param = {
+            userAgent: "Mozilla/5.0 (Linux; U; Android 4.2.2; en-us; HTC6500LVW 4G Build/JDQ39) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
         };
 
-    var spec = Spec(override);
+    var spec = Spec(param);
 
-    if (spec.DEVICE.ID === "HTC6500LVW" &&
-        spec.OS.TYPE   === "Android") {
+    if (spec.ID === "HTC6500LVW" &&
+        spec.OS_TYPE === "Android") {
         test.done(pass());
     } else {
         test.done(miss());
@@ -259,14 +592,14 @@ function testOS(test, pass, miss) {
 }
 
 function testMacPro(test, pass, miss) {
-    var override = {
-            USER_AGENT: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36"
+    var param = {
+            userAgent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36"
         };
-    var spec = Spec(override);
+    var spec = Spec(param);
 
-    if (spec.OS.TYPE === "Mac OS X" &&
-        parseFloat(spec.OS.VERSION) === 10.8 &&
-        spec.OS.VERSION === "10.8.5") {
+    if (spec.OS_TYPE === "Mac OS X" &&
+        parseFloat(spec.OS_VERSION) === 10.8 &&
+        spec.OS_VERSION === "10.8.5") {
 
         test.done(pass());
     } else {
@@ -275,14 +608,14 @@ function testMacPro(test, pass, miss) {
 }
 
 function testIE11Preview(test, pass, miss) {
-    var override = {
-            USER_AGENT: "Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko"
+    var param = {
+            userAgent: "Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko"
         };
-    var spec = Spec(override);
+    var spec = Spec(param);
 
-    if (spec.OS.TYPE === "Windows" &&
-        parseFloat(spec.OS.VERSION) === 6.1 &&
-        spec.OS.VERSION === "6.1.0") {
+    if (spec.OS_TYPE === "Windows" &&
+        parseFloat(spec.OS_VERSION) === 6.1 &&
+        spec.OS_VERSION === "6.1.0") {
 
         test.done(pass());
     } else {
@@ -291,14 +624,14 @@ function testIE11Preview(test, pass, miss) {
 }
 
 function testIE10(test, pass, miss) {
-    var override = {
-            USER_AGENT: "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; Trident/6.0)"
+    var param = {
+            userAgent: "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; Trident/6.0)"
         };
-    var spec = Spec(override);
+    var spec = Spec(param);
 
-    if (spec.OS.TYPE === "Windows" &&
-        parseFloat(spec.OS.VERSION) === 6.1 &&
-        spec.OS.VERSION === "6.1.0") {
+    if (spec.OS_TYPE === "Windows" &&
+        parseFloat(spec.OS_VERSION) === 6.1 &&
+        spec.OS_VERSION === "6.1.0") {
 
         test.done(pass());
     } else {
@@ -307,14 +640,14 @@ function testIE10(test, pass, miss) {
 }
 
 function testWindowsPhone75(test, pass, miss) {
-    var override = {
-            USER_AGENT: "Mozilla/5.0 (compatible; MSIE 9.0; Windows Phone OS 7.5; Trident/5.0; IEMobile/9.0)"
+    var param = {
+            userAgent: "Mozilla/5.0 (compatible; MSIE 9.0; Windows Phone OS 7.5; Trident/5.0; IEMobile/9.0)"
         };
-    var spec = Spec(override);
+    var spec = Spec(param);
 
-    if (spec.OS.TYPE === "Windows Phone" &&
-        parseFloat(spec.OS.VERSION) === 7.5 &&
-        spec.OS.VERSION === "7.5.0") {
+    if (spec.OS_TYPE === "Windows Phone" &&
+        parseFloat(spec.OS_VERSION) === 7.5 &&
+        spec.OS_VERSION === "7.5.0") {
 
         test.done(pass());
     } else {
@@ -323,14 +656,14 @@ function testWindowsPhone75(test, pass, miss) {
 }
 
 function testFirefox11(test, pass, miss) {
-    var override = {
-            USER_AGENT: "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:11.0) Gecko/20100101 Firefox/11.0"
+    var param = {
+            userAgent: "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:11.0) Gecko/20100101 Firefox/11.0"
         };
-    var spec = Spec(override);
+    var spec = Spec(param);
 
-    if (spec.OS.TYPE == "Windows" &&
-        parseFloat(spec.OS.VERSION) === 6.1 &&
-        spec.OS.VERSION === "6.1.0") {
+    if (spec.OS_TYPE == "Windows" &&
+        parseFloat(spec.OS_VERSION) === 6.1 &&
+        spec.OS_VERSION === "6.1.0") {
 
         test.done(pass());
     } else {
