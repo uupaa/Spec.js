@@ -1,6 +1,6 @@
 {
   "name":           "uupaa.spec.js",
-  "version":        "0.11.11",
+  "version":        "0.11.12",
   "description":    "Spec detection.",
   "url":            "https://github.com/uupaa/Spec.js",
   "keywords":       ["spec", "util", "uupaa", "WebModule", "Stable"],
@@ -28,7 +28,7 @@
     "source":       ["lib/Spec.js"],
     "output":       "release/Spec.min.js",
     "target":       ["all"],
-    "labels":       ["@dev", "@windowsphone"],
+    "labels":       ["@dev"],
     "module": {
       "develop":    ["uupaa.valid.js"],
       "release":    []
