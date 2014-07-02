@@ -195,7 +195,8 @@ function testDeviceWindowsPhone8S(test, pass, miss) {
 
     var spec = Spec(param);
 
-    if (spec.ID === "8S" &&
+    if (spec.ID === "Lumia 520" &&
+//      spec.ID === "8S" &&
         spec.OS_TYPE === "Windows Phone") {
         test.done(pass());
     } else {
