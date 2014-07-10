@@ -37,6 +37,7 @@ var test = new Test("Spec", {
         testFirefox11,
         // ---
         testBrowser,
+        testUnknownDevice,
     ]);
 
 var userAgents = {
@@ -122,7 +123,7 @@ var userAgents = {
     },
     Safari6: {
         ua: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) AppleWebKit/536.30.1 (KHTML, like Gecko) Version/6.0.5 Safari/536.30.1",
-        os: "Mac OS X",
+        os: "Mac",
         osVer: 10.8,
         browserVer: 6.0,
         engine: "WebKit",
@@ -388,7 +389,7 @@ function testDeviceiPhone5(test, pass, miss) {
     var spec = Spec(param);
 
     if (spec.ID === "iPhone 5" &&
-        spec.OS_TYPE === "iOS") {
+        spec.OS === "iOS") {
         test.done(pass());
     } else {
         test.done(miss());
@@ -400,7 +401,7 @@ function testDeviceNexus5(test, pass, miss) {
     var spec = Spec({ userAgent: userAgent });
 
     if (spec.ID === "Nexus 5" &&
-        spec.OS_TYPE === "Android") {
+        spec.OS === "Android") {
         test.done(pass());
     } else {
         test.done(miss());
@@ -416,7 +417,7 @@ function testDeviceRevision_Nexus7_2013(test, pass, miss) {
     var spec = Spec(param);
 
     if (spec.ID === "Nexus 7 (2013)" &&
-        spec.OS_TYPE === "Android") {
+        spec.OS === "Android") {
         test.done(pass());
     } else {
         test.done(miss());
@@ -430,8 +431,8 @@ function testFirefoxMobileForAndroid(test, pass, miss) {
 
     var spec = Spec(param);
 
-    if (spec.ID === "" &&
-        spec.OS_TYPE === "Android") {
+    if (//spec.ID === "" &&
+        spec.OS === "Android") {
         test.done(pass());
     } else {
         test.done(miss());
@@ -446,7 +447,7 @@ function testDeviceFirefoxOS(test, pass, miss) {
     var spec = Spec(param);
 
     if (spec.ID === "" &&
-        spec.OS_TYPE === "Firefox OS") {
+        spec.OS === "Firefox OS") {
         test.done(pass());
     } else {
         test.done(miss());
@@ -462,7 +463,7 @@ function testDevice_INFOBAR_A01(test, pass, miss) {
     var spec = Spec(param);
 
     if (spec.ID === "INFOBAR A01" &&
-        spec.OS_TYPE === "Android") {
+        spec.OS === "Android") {
         test.done(pass());
     } else {
         test.done(miss());
@@ -478,7 +479,7 @@ function testDeviceWindowsPhone8S(test, pass, miss) {
 
     if (spec.ID === "Lumia 520" &&
 //      spec.ID === "8S" &&
-        spec.OS_TYPE === "Windows Phone") {
+        spec.OS === "Windows Phone") {
         test.done(pass());
     } else {
         test.done(miss());
@@ -493,7 +494,7 @@ function testDeviceWindowsPhoneLumia920(test, pass, miss) {
     var spec = Spec(param);
 
     if (spec.ID === "Lumia 920" &&
-        spec.OS_TYPE === "Windows Phone") {
+        spec.OS === "Windows Phone") {
         test.done(pass());
     } else {
         test.done(miss());
@@ -508,7 +509,7 @@ function testDeviceKindle(test, pass, miss) {
     var spec = Spec(param);
 
     if (spec.ID === "KFTT" &&
-        spec.OS_TYPE === "Android") {
+        spec.OS === "Android") {
         test.done(pass());
     } else {
         test.done(miss());
@@ -523,7 +524,7 @@ function testDeviceGooglePlayEdition(test, pass, miss) {
     var spec = Spec(param);
 
     if (spec.ID === "HTC6500LVW" &&
-        spec.OS_TYPE === "Android") {
+        spec.OS === "Android") {
         test.done(pass());
     } else {
         test.done(miss());
@@ -542,7 +543,7 @@ function testMacPro(test, pass, miss) {
         };
     var spec = Spec(param);
 
-    if (spec.OS_TYPE === "Mac OS X" &&
+    if (spec.OS === "Mac" &&
         parseFloat(spec.OS_VERSION) === 10.8 &&
         spec.OS_VERSION === "10.8.5") {
 
@@ -558,7 +559,7 @@ function testIE11Preview(test, pass, miss) {
         };
     var spec = Spec(param);
 
-    if (spec.OS_TYPE === "Windows" &&
+    if (spec.OS === "Windows" &&
         parseFloat(spec.OS_VERSION) === 6.1 &&
         spec.OS_VERSION === "6.1.0") {
 
@@ -574,7 +575,7 @@ function testIE10(test, pass, miss) {
         };
     var spec = Spec(param);
 
-    if (spec.OS_TYPE === "Windows" &&
+    if (spec.OS === "Windows" &&
         parseFloat(spec.OS_VERSION) === 6.1 &&
         spec.OS_VERSION === "6.1.0") {
 
@@ -590,7 +591,7 @@ function testWindowsPhone75(test, pass, miss) {
         };
     var spec = Spec(param);
 
-    if (spec.OS_TYPE === "Windows Phone" &&
+    if (spec.OS === "Windows Phone" &&
         parseFloat(spec.OS_VERSION) === 7.5 &&
         spec.OS_VERSION === "7.5.0") {
 
@@ -606,7 +607,7 @@ function testFirefox11(test, pass, miss) {
         };
     var spec = Spec(param);
 
-    if (spec.OS_TYPE == "Windows" &&
+    if (spec.OS == "Windows" &&
         parseFloat(spec.OS_VERSION) === 6.1 &&
         spec.OS_VERSION === "6.1.0") {
 
@@ -635,8 +636,8 @@ function testBrowser(test, pass, miss) {
         }
         var ok = true;
 
-        if (data.os !== spec.OS_TYPE) {
-            console.log( "OS_TYPE        : " + data.os,         " -> " + spec.OS_TYPE );
+        if (data.os !== spec.OS) {
+            console.log( "OS             : " + data.os,         " -> " + spec.OS );
             ok = false;
         }
         if (data.osVer != parseFloat(spec.OS_VERSION)) {
@@ -662,6 +663,23 @@ function testBrowser(test, pass, miss) {
         }
     }
     if (result) {
+        test.done(pass());
+    } else {
+        test.done(miss());
+    }
+}
+
+function testUnknownDevice(test, pass, miss) {
+    var override = {
+            userAgent: "Mozilla/5.0 (Linux; Android 6.0.5; en-us; Nexus Ace Build/JOP40D) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19"
+        };
+
+    var spec = Spec(override);
+
+    if ( spec.DETECTED === false &&
+         spec.ID_CANDIDATE[0] === "Nexus Ace" &&
+         spec.OS_VERSION === "6.0.5") {
+
         test.done(pass());
     } else {
         test.done(miss());
