@@ -382,14 +382,14 @@ function testSpec_normalizeVersionString(test, pass, miss) {
 
 // ------------------------------------------
 function testDeviceiPhone5(test, pass, miss) {
-    var param = {
+    var env = {
             dpr: 2,
             width: 320,
             height: 568,
             userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A403 Safari/8536.25"
         };
 
-    var spec = new Spec(param);
+    var spec = new Spec(env);
 
     if (spec.ID === "iPhone 5" &&
         spec.OS === "iOS") {
@@ -412,12 +412,12 @@ function testDeviceNexus5(test, pass, miss) {
 }
 
 function testDeviceRevision_Nexus7_2013(test, pass, miss) {
-    var param = {
+    var env = {
             userAgent: "Mozilla/5.0 (Linux; Android 4.3; Nexus 7 Build/JWR66N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.111 Safari/537.36",
             dpr: 2
         };
 
-    var spec = new Spec(param);
+    var spec = new Spec(env);
 
     if (spec.ID === "Nexus 7 (2013)" &&
         spec.OS === "Android") {
@@ -428,11 +428,11 @@ function testDeviceRevision_Nexus7_2013(test, pass, miss) {
 }
 
 function testFirefoxMobileForAndroid(test, pass, miss) {
-    var param = {
+    var env = {
             userAgent: "Mozilla/5.0 (Android; Mobile; rv:13.0) Gecko/13.0 Firefox/13.0"
         };
 
-    var spec = new Spec(param);
+    var spec = new Spec(env);
 
     if (//spec.ID === "" &&
         spec.OS === "Android") {
@@ -443,11 +443,11 @@ function testFirefoxMobileForAndroid(test, pass, miss) {
 }
 
 function testDeviceFirefoxOS(test, pass, miss) {
-    var param = {
+    var env = {
             userAgent: "Mozilla/5.0 (Mobile; rv:18.0) Gecko/18.0 Firefox/18.0"
         };
 
-    var spec = new Spec(param);
+    var spec = new Spec(env);
 
     if (spec.ID === "" &&
         spec.OS === "Firefox OS") {
@@ -459,11 +459,11 @@ function testDeviceFirefoxOS(test, pass, miss) {
 
 
 function testDevice_INFOBAR_A01(test, pass, miss) {
-    var param = {
+    var env = {
             userAgent: "Mozilla/5.0 (Linux; U; Android 2.3.3; ja-jp; INFOBAR A01 Build/S6160) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1"
         };
 
-    var spec = new Spec(param);
+    var spec = new Spec(env);
 
     if (spec.ID === "INFOBAR A01" &&
         spec.OS === "Android") {
@@ -474,11 +474,11 @@ function testDevice_INFOBAR_A01(test, pass, miss) {
 }
 
 function testDeviceWindowsPhone8S(test, pass, miss) {
-    var param = {
+    var env = {
             userAgent: "Mozilla/5.0 (compatible; MSIE 10.0; Windows Phone 8.0; Trident/6.0; IEMobile/10.0; ARM; Touch; HTC; Windows Phone 8S by HTC)"
         };
 
-    var spec = new Spec(param);
+    var spec = new Spec(env);
 
     if (spec.ID === "Lumia 520" &&
 //      spec.ID === "8S" &&
@@ -490,11 +490,11 @@ function testDeviceWindowsPhone8S(test, pass, miss) {
 }
 
 function testDeviceWindowsPhoneLumia920(test, pass, miss) {
-    var param = {
+    var env = {
             userAgent: "Mozilla/5.0 (compatible; MSIE 10.0; Windows Phone 8.0; Trident/6.0; IEMobile/10.0; ARM; Touch; NOKIA; Lumia 920)"
         };
 
-    var spec = new Spec(param);
+    var spec = new Spec(env);
 
     if (spec.ID === "Lumia 920" &&
         spec.OS === "Windows Phone") {
@@ -505,11 +505,11 @@ function testDeviceWindowsPhoneLumia920(test, pass, miss) {
 }
 
 function testDeviceKindle(test, pass, miss) {
-    var param = {
+    var env = {
             userAgent: "Mozilla/5.0 (Linux; U; Android 4.0.3; en-us; KFTT Build/IML74K) AppleWebKit/535.19 (KHTML, like Gecko) Silk/3.4 Mobile Safari/535.19 Silk-Accelerated=true"
         };
 
-    var spec = new Spec(param);
+    var spec = new Spec(env);
 
     if (spec.ID === "KFTT" &&
         spec.OS === "Android") {
@@ -520,11 +520,11 @@ function testDeviceKindle(test, pass, miss) {
 }
 
 function testDeviceGooglePlayEdition(test, pass, miss) {
-    var param = {
+    var env = {
             userAgent: "Mozilla/5.0 (Linux; U; Android 4.2.2; en-us; HTC6500LVW 4G Build/JDQ39) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
         };
 
-    var spec = new Spec(param);
+    var spec = new Spec(env);
 
     if (spec.ID === "HTC6500LVW" &&
         spec.OS === "Android") {
@@ -541,10 +541,10 @@ function testOS(test, pass, miss) {
 }
 
 function testMacPro(test, pass, miss) {
-    var param = {
+    var env = {
             userAgent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36"
         };
-    var spec = new Spec(param);
+    var spec = new Spec(env);
 
     if (spec.OS === "Mac" &&
         parseFloat(spec.OS_VERSION) === 10.8 &&
@@ -557,10 +557,10 @@ function testMacPro(test, pass, miss) {
 }
 
 function testIE11Preview(test, pass, miss) {
-    var param = {
+    var env = {
             userAgent: "Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko"
         };
-    var spec = new Spec(param);
+    var spec = new Spec(env);
 
     if (spec.OS === "Windows" &&
         parseFloat(spec.OS_VERSION) === 6.1 &&
@@ -573,10 +573,10 @@ function testIE11Preview(test, pass, miss) {
 }
 
 function testIE10(test, pass, miss) {
-    var param = {
+    var env = {
             userAgent: "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; Trident/6.0)"
         };
-    var spec = new Spec(param);
+    var spec = new Spec(env);
 
     if (spec.OS === "Windows" &&
         parseFloat(spec.OS_VERSION) === 6.1 &&
@@ -589,10 +589,10 @@ function testIE10(test, pass, miss) {
 }
 
 function testWindowsPhone75(test, pass, miss) {
-    var param = {
+    var env = {
             userAgent: "Mozilla/5.0 (compatible; MSIE 9.0; Windows Phone OS 7.5; Trident/5.0; IEMobile/9.0)"
         };
-    var spec = new Spec(param);
+    var spec = new Spec(env);
 
     if (spec.OS === "Windows Phone" &&
         parseFloat(spec.OS_VERSION) === 7.5 &&
@@ -605,10 +605,10 @@ function testWindowsPhone75(test, pass, miss) {
 }
 
 function testFirefox11(test, pass, miss) {
-    var param = {
+    var env = {
             userAgent: "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:11.0) Gecko/20100101 Firefox/11.0"
         };
-    var spec = new Spec(param);
+    var spec = new Spec(env);
 
     if (spec.OS == "Windows" &&
         parseFloat(spec.OS_VERSION) === 6.1 &&
@@ -627,11 +627,11 @@ function testBrowser(test, pass, miss) {
     for (var id in userAgents) {
         var data = userAgents[id];
         var spec = null;
-        var param = { userAgent: data.ua };
+        var env = { userAgent: data.ua };
 
         try {
             console.log(data.ua);
-            spec = new Spec(param);
+            spec = new Spec(env);
         } catch (err) {
             console.log( "ERROR: " + data.ua);
             result = false;
@@ -708,22 +708,21 @@ function testUnknownDevice(test, pass, miss) {
 }
 
 function testCan(test, pass, miss) {
-    var param = {
+    var env = {
             userAgent: "Mozilla/5.0 (Linux; Android 4.3; Nexus 7 Build/JWR66N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.111 Safari/537.36",
             dpr: 2
         };
 
-    var spec = new Spec(param);
+    var spec = new Spec(env);
 
-    if (spec.ID === "Nexus 7 (2013)" &&
-        spec.OS === "Android") {
-
-        if (  spec.can("NFC") ) {
-            test.done(pass());
-            return;
-        }
+    if ( spec.can("NFC") &&
+         spec.can("3G")  &&
+         spec.can("LTE") &&
+         spec.can("NFC") ) {
+        test.done(pass());
+    } else {
+        test.done(miss());
     }
-    test.done(miss());
 }
 
 })((this || 0).self || global);
