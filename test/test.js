@@ -78,7 +78,7 @@ var userAgents = {
     },
     "WP7.5": {
         ua: "Mozilla/5.0 (compatible; MSIE 9.0; Windows Phone OS 7.5; Trident/5.0; IEMobile/9.0)",
-        os: "Windows Phone",
+        os: "WPhone",
         osVer: 7.5,
         browserVer: 9.0,
         engine: "Trident",
@@ -86,7 +86,7 @@ var userAgents = {
     },
     WP7: {
         ua: "Mozilla/4.0 (compatible; MSIE 7.0; Windows Phone OS 7.0; Trident/3.1; IEMobile/7.0)",
-        os: "Windows Phone",
+        os: "WPhone",
         osVer: 7.0,
         browserVer: 7.0,
         engine: "Trident",
@@ -391,7 +391,7 @@ function testDeviceiPhone5(test, pass, miss) {
 
     var spec = new Spec(env);
 
-    if (spec.ID === "iPhone 5" &&
+    if (spec.DEVICE_ID === "iPhone 5" &&
         spec.OS === "iOS") {
         test.done(pass());
     } else {
@@ -403,7 +403,7 @@ function testDeviceNexus5(test, pass, miss) {
     var userAgent = "Mozilla/5.0 (Linux; Android 4.4; Nexus 5 Build/BuildID) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/30.0.0.0 Mobile Safari/537.36";
     var spec = new Spec({ userAgent: userAgent });
 
-    if (spec.ID === "Nexus 5" &&
+    if (spec.DEVICE_ID === "Nexus 5" &&
         spec.OS === "Android") {
         test.done(pass());
     } else {
@@ -419,7 +419,7 @@ function testDeviceRevision_Nexus7_2013(test, pass, miss) {
 
     var spec = new Spec(env);
 
-    if (spec.ID === "Nexus 7 (2013)" &&
+    if (spec.DEVICE_ID === "Nexus 7 (2013)" &&
         spec.OS === "Android") {
         test.done(pass());
     } else {
@@ -449,8 +449,8 @@ function testDeviceFirefoxOS(test, pass, miss) {
 
     var spec = new Spec(env);
 
-    if (spec.ID === "" &&
-        spec.OS === "Firefox OS") {
+    if (spec.DEVICE_ID === "" &&
+        spec.OS === "Firefox") {
         test.done(pass());
     } else {
         test.done(miss());
@@ -465,7 +465,7 @@ function testDevice_INFOBAR_A01(test, pass, miss) {
 
     var spec = new Spec(env);
 
-    if (spec.ID === "INFOBAR A01" &&
+    if (spec.DEVICE_ID === "INFOBAR A01" &&
         spec.OS === "Android") {
         test.done(pass());
     } else {
@@ -480,9 +480,9 @@ function testDeviceWindowsPhone8S(test, pass, miss) {
 
     var spec = new Spec(env);
 
-    if (spec.ID === "Lumia 520" &&
-//      spec.ID === "8S" &&
-        spec.OS === "Windows Phone") {
+    if (spec.DEVICE_ID === "Lumia 520" &&
+//      spec.DEVICE_ID === "8S" &&
+        spec.OS === "WPhone") {
         test.done(pass());
     } else {
         test.done(miss());
@@ -496,8 +496,8 @@ function testDeviceWindowsPhoneLumia920(test, pass, miss) {
 
     var spec = new Spec(env);
 
-    if (spec.ID === "Lumia 920" &&
-        spec.OS === "Windows Phone") {
+    if (spec.DEVICE_ID === "Lumia 920" &&
+        spec.OS === "WPhone") {
         test.done(pass());
     } else {
         test.done(miss());
@@ -511,7 +511,7 @@ function testDeviceKindle(test, pass, miss) {
 
     var spec = new Spec(env);
 
-    if (spec.ID === "KFTT" &&
+    if (spec.DEVICE_ID === "KFTT" &&
         spec.OS === "Android") {
         test.done(pass());
     } else {
@@ -526,7 +526,7 @@ function testDeviceGooglePlayEdition(test, pass, miss) {
 
     var spec = new Spec(env);
 
-    if (spec.ID === "HTC6500LVW" &&
+    if (spec.DEVICE_ID === "HTC6500LVW" &&
         spec.OS === "Android") {
         test.done(pass());
     } else {
@@ -594,7 +594,7 @@ function testWindowsPhone75(test, pass, miss) {
         };
     var spec = new Spec(env);
 
-    if (spec.OS === "Windows Phone" &&
+    if (spec.OS === "WPhone" &&
         parseFloat(spec.OS_VERSION) === 7.5 &&
         spec.OS_VERSION === "7.5.0") {
 
@@ -681,7 +681,7 @@ function testAlternateDevice(test, pass, miss) {
     var spec = new Spec(override);
 
     if ( spec.DETECTED === false &&
-         spec.ID_CANDIDATE[0] === "Nexus Ace" &&
+         spec.CANDIDATE[0] === "Nexus Ace" &&
          spec.OS_VERSION === "6.0.5") {
 
         test.done(pass());
@@ -698,7 +698,7 @@ function testUnknownDevice(test, pass, miss) {
     var spec = new Spec(override);
 
     if ( spec.DETECTED === false &&
-         spec.ID_CANDIDATE.length === 0 &&
+         spec.CANDIDATE.length === 0 &&
          spec.OS_VERSION === "6.0.5") {
 
         test.done(pass());
