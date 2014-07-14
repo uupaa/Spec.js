@@ -19,18 +19,18 @@ Spec detection.
 <script src="lib/Spec.js">
 <script>
 // for Browser
-console.log( JSON.stringify( new Spec().copy(), null, 2 ) );
+console.log( JSON.stringify( new Spec().dump(), null, 2 ) );
 </script>
 ```
 
 ```js
 // for WebWorkers
 importScripts("lib/Spec.js");
-console.log( JSON.stringify( new Spec().copy(), null, 2 ) );
+console.log( JSON.stringify( new Spec().dump(), null, 2 ) );
 ```
 
 ```js
 // for Node.js
 var Spec = require("lib/Spec.js");
-console.log( JSON.stringify( new Spec().copy(), null, 2 ) );
+console.log( JSON.stringify( new Spec().dump(), null, 2 ) );
 ```
