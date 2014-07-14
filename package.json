@@ -1,6 +1,6 @@
 {
   "name":           "uupaa.spec.js",
-  "version":        "0.14.5",
+  "version":        "0.14.6",
   "description":    "Spec detection.",
   "url":            "https://github.com/uupaa/Spec.js",
   "keywords":       ["spec", "util", "uupaa", "WebModule", "Unstable"],
