@@ -45,6 +45,8 @@ var test = new Test("Spec", {
         testPrefix,
         // --- Media.js ---
         testMediaSpec,
+        // --- Storage.js ---
+        testStorage,
     ]);
 
 if (_runOnBrowser) {
@@ -859,16 +861,47 @@ function testMediaSpec(test, pass, miss) {
         console.log("Wav: " + spec.canMedia("wav"));
         console.log("WebM:" + spec.canMedia("webm"));
 
-        console.log("testMediaSpec ok");
         test.done(pass());
     } else {
         console.log("Media disabled");
 
         if (_runOnNode || _runOnWorker) {
-            console.log("testMediaSpec ok");
             test.done(pass());
         } else {
-            console.log("testMediaSpec ng");
+            test.done(miss());
+        }
+    }
+}
+
+// --- Storage.js ---
+function testStorage(test, pass, miss) {
+    var spec = new Spec();
+    var webStorage = spec.isWebStorage();
+    var webSQL     = spec.isWebSQL();
+    var indexedDB  = spec.isIndexedDB();
+    var appCache   = spec.isApplicationCache();
+    var quota      = spec.isQuota();
+
+
+    if ( webStorage ||
+         webSQL     ||
+         indexedDB  ||
+         appCache   ||
+         quota ) {
+
+        console.log("WebStorage: " + webStorage);
+        console.log("WebSQL    : " + webSQL);
+        console.log("IndexedDB : " + indexedDB);
+        console.log("AppCache  : " + appCache);
+        console.log("Quota     : " + quota);
+
+        test.done(pass());
+    } else {
+        console.log("Storage disabled");
+
+        if (_runOnNode) {
+            test.done(pass());
+        } else {
             test.done(miss());
         }
     }

@@ -1,6 +1,6 @@
 {
   "name":           "uupaa.spec.js",
-  "version":        "0.15.0",
+  "version":        "0.15.1",
   "description":    "Spec detection.",
   "url":            "https://github.com/uupaa/Spec.js",
   "keywords":       ["spec", "util", "uupaa", "WebModule", "Unstable"],
@@ -26,7 +26,7 @@
     "lint":         "node node_modules/uupaa.plato.js; open lint/plato/index.html"
   },
   "x-build": {
-    "source":       ["lib/Spec.js", "lib/Browser.js", "lib/Media.js"],
+    "source":       ["lib/Spec.js", "lib/Browser.js", "lib/Media.js", "lib/Storage.js"],
     "output":       "release/Spec.min.js",
     "target":       ["all"],
     "label":        ["@dev"],
