@@ -6,5 +6,7 @@ require("../node_modules/uupaa.valid.js/lib/Valid.js");
 require("../node_modules/uupaa.task.js/lib/Task.js");
 require("../node_modules/uupaa.test.js/lib/Test.js");
 require("../lib/Spec.js");
+require("../lib/Browser.js");
+require("../lib/Media.js");
 require("../release/Spec.min.js");
 require("./test.js");

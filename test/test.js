@@ -1,8 +1,8 @@
 var ModuleTestSpec = (function(global) {
 
-var _inNode    = "process"        in global;
-var _inWorker  = "WorkerLocation" in global;
-var _inBrowser = "document"       in global;
+var _runOnNode = "process" in global;
+var _runOnWorker = "WorkerLocation" in global;
+var _runOnBrowser = "document" in global;
 
 var test = new Test("Spec", {
         disable:    false,
@@ -40,8 +40,22 @@ var test = new Test("Spec", {
         testAlternateDevice,
         testUnknownDevice,
         // ---
-        testCan,
+        testCanDeviceFeature,
+        // ---
+        testPrefix,
+        // --- Media.js ---
+        testMediaSpec,
     ]);
+
+if (_runOnBrowser) {
+    test.add([
+        test_isGoodByeAndroidBrowser,
+        test_getHardwareConcurrency,
+        test_getMaxConnections,
+        test_getConnectionsPerHost,
+        test_isMobileDevice,
+    ]);
+}
 
 var userAgents = {
     IE11Preview: {
@@ -707,7 +721,7 @@ function testUnknownDevice(test, pass, miss) {
     }
 }
 
-function testCan(test, pass, miss) {
+function testCanDeviceFeature(test, pass, miss) {
     var env = {
             USER_AGENT: "Mozilla/5.0 (Linux; Android 4.3; Nexus 7 Build/JWR66N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.111 Safari/537.36",
             DISPLAY_DPR: 2
@@ -715,13 +729,148 @@ function testCan(test, pass, miss) {
 
     var spec = new Spec(env);
 
-    if ( spec.can("NFC") &&
-         spec.can("3G")  &&
-         spec.can("LTE") &&
-         spec.can("NFC") ) {
+    if ( spec.canDeviceFeature("NFC") &&
+         spec.canDeviceFeature("3G")  &&
+         spec.canDeviceFeature("LTE") &&
+         spec.canDeviceFeature("NFC") ) {
         test.done(pass());
     } else {
         test.done(miss());
+    }
+}
+
+
+function test_isGoodByeAndroidBrowser(test, pass, miss) {
+
+    var Chrom18             = "Mozilla/5.0 (Linux; Android 4.2;          Nexus 7   Build/JOP40C)       AppleWebKit/535.19 (KHTML, like Gecko)             Chrome/18.0.1025.166        Safari/535.19";
+    var SBrowser            = "Mozilla/5.0 (Linux; Android 4.2.2; ja-jp; SC-04E    Build/JDQ39)        AppleWebKit/535.19 (KHTML, like Gecko) Version/1.0 Chrome/18.0.1025.308 Mobile Safari/535.19";
+    var Browser422          = "Mozilla/5.0 (Linux; Android 4.2.2; ja-jp; SonySOL23 Build/14.1.C.0.467) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0                      Mobile Safari/534.30";
+    var Browser411WebView   = "Mozilla/5.0 (Linux; Android 4.1.1; en-gb;           Build/KLP)          AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0                             Safari/534.30";
+    var KitKatChromeWebView = "Mozilla/5.0 (Linux; Android 4.4;          Nexus 5   Build/BuildID)      AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/30.0.0.0      Mobile Safari/537.36";
+
+    var result = {
+            0: new Spec({ USER_AGENT: Chrom18 }).isGoodByeAndroidBrowser() === false,
+            1: new Spec({ USER_AGENT: SBrowser }).isGoodByeAndroidBrowser() === true,
+            2: new Spec({ USER_AGENT: Browser422 }).isGoodByeAndroidBrowser() === true,
+            3: new Spec({ USER_AGENT: Browser411WebView }).isGoodByeAndroidBrowser() === true,
+            4: new Spec({ USER_AGENT: KitKatChromeWebView }).isGoodByeAndroidBrowser() === false,
+        };
+
+    var ok = true;
+
+    for (var id in result) {
+        ok = result[id];
+        if (!ok) {
+            break;
+        }
+    }
+    if (ok) {
+        test.done(pass());
+    } else {
+        test.done(miss());
+    }
+}
+
+function test_getHardwareConcurrency(test, pass, miss) {
+    var env = {
+            USER_AGENT: "Mozilla/5.0 (Linux; Android 4.4; Nexus 5 Build/BuildID) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/30.0.0.0 Mobile Safari/537.36"
+        };
+    var result = new Spec(env).getHardwareConcurrency();
+
+    if (result > 0) {
+        test.done(pass());
+    } else {
+        test.done(miss());
+    }
+}
+
+function test_getMaxConnections(test, pass, miss) {
+    var env = {
+            USER_AGENT: "Mozilla/5.0 (Linux; Android 4.4; Nexus 5 Build/BuildID) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/30.0.0.0 Mobile Safari/537.36"
+        };
+    var result = new Spec(env).getMaxConnections();
+
+    if (result > 0) {
+        test.done(pass());
+    } else {
+        test.done(miss());
+    }
+}
+
+function test_getConnectionsPerHost(test, pass, miss) {
+    var env = {
+            USER_AGENT: "Mozilla/5.0 (Linux; Android 4.4; Nexus 5 Build/BuildID) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/30.0.0.0 Mobile Safari/537.36"
+        };
+    var result = new Spec(env).getConnectionsPerHost();
+
+    if (result > 0) {
+        test.done(pass());
+    } else {
+        test.done(miss());
+    }
+}
+
+function test_isMobileDevice(test, pass, miss) {
+    var env = {
+            USER_AGENT: "Mozilla/5.0 (Linux; Android 4.4; Nexus 5 Build/BuildID) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/30.0.0.0 Mobile Safari/537.36"
+        };
+    var result = new Spec(env).isMobileDevice();
+
+    if (result) {
+        test.done(pass());
+    } else {
+        test.done(miss());
+    }
+}
+
+function testPrefix(test, pass, miss) {
+    var env = {
+            USER_AGENT: "Mozilla/5.0 (Linux; Android 4.4; Nexus 5 Build/BuildID) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/30.0.0.0 Mobile Safari/537.36"
+        };
+    var parentObject = {
+            "webkitAudioContext": function() {
+            }
+        };
+
+    var result = new Spec(env).prefix(parentObject, "AudioContext");
+
+    if (result) {
+        test.done(pass());
+    } else {
+        test.done(miss());
+    }
+}
+
+// --- Media.js ---
+function testMediaSpec(test, pass, miss) {
+
+    var spec = new Spec();
+    var audioReady = spec.canMedia("AUDIO");
+    var videoReady = spec.canMedia("video");
+    var webAudioReady = spec.canMedia("webaudio");
+
+    if ( audioReady ||
+         videoReady ||
+         webAudioReady ) {
+
+        console.log("MP3: " + spec.canMedia("mp3"));
+        console.log("MP4: " + spec.canMedia("MP4"));
+        console.log("Ogg: " + spec.canMedia("ogg"));
+        console.log("Wav: " + spec.canMedia("wav"));
+        console.log("WebM:" + spec.canMedia("webm"));
+
+        console.log("testMediaSpec ok");
+        test.done(pass());
+    } else {
+        console.log("Media disabled");
+
+        if (_runOnNode || _runOnWorker) {
+            console.log("testMediaSpec ok");
+            test.done(pass());
+        } else {
+            console.log("testMediaSpec ng");
+            test.done(miss());
+        }
     }
 }
 
