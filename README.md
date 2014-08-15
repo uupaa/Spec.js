@@ -1,8 +1,6 @@
-=========
-Spec.js
-=========
+# Spec.js [![Build Status](https://travis-ci.org/uupaa/Spec.js.png)](http://travis-ci.org/uupaa/Spec.js)
 
-![](https://travis-ci.org/uupaa/Spec.js.png)
+[![npm](https://nodei.co/npm/uupaa.spec.js.png?downloads=true&stars=true)](https://nodei.co/npm/uupaa.spec.js/)
 
 Spec detection.
 
@@ -10,7 +8,9 @@ Spec detection.
 
 - [Spec.js wiki](https://github.com/uupaa/Spec.js/wiki/Spec)
 - [Development](https://github.com/uupaa/WebModule/wiki/Development)
-- [WebModule](https://github.com/uupaa/WebModule) ([Slide](http://uupaa.github.io/Slide/slide/WebModule/index.html))
+- [WebModule](https://github.com/uupaa/WebModule)
+    - [Slide](http://uupaa.github.io/Slide/slide/WebModule/index.html)
+    - [Development](https://github.com/uupaa/WebModule/wiki/Development)
 
 
 # How to use
