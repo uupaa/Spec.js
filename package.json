@@ -1,6 +1,6 @@
 {
   "name":           "uupaa.spec.js",
-  "version":        "0.16.0",
+  "version":        "0.16.1",
   "description":    "Spec detection.",
   "url":            "https://github.com/uupaa/Spec.js",
   "keywords":       ["spec", "util", "uupaa", "WebModule", "Unstable"],
@@ -30,7 +30,7 @@
     "source":       ["lib/Spec.js", "lib/Browser.js", "lib/Media.js", "lib/Storage.js"],
     "output":       "release/Spec.min.js",
     "target":       ["all"],
-    "label":        ["@dev"],
+    "label":        ["@dev", "@spec_media", "@spec_browser", "@spec_storage"],
     "module": {
       "develop":    ["uupaa.valid.js"],
       "release":    []

@@ -14,6 +14,7 @@ var test = new Test("Spec", {
     }).add([
         // ---
         testSpec,
+        testSpecDump,
         testSpecParamUserAgent,
         testSpecParamDeviceInfo,
         //testSpec_normalizeVersionString,
@@ -346,6 +347,19 @@ function testSpec(test, pass, miss) {
     var spec = new Spec();
 
     test.done(pass());
+}
+function testSpecDump(test, pass, miss) {
+    var ua = "Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A403 Safari/8536.25";
+    var spec = new Spec({ USER_AGENT: ua });
+    var dump = spec.dump();
+
+    if (dump["OS"] === "iOS" &&
+        dump["OS_VERSION"] === "6.0.0" &&
+        dump["BROWSER_VERSION"] === "6.0.0") {
+        test.done(pass());
+    } else {
+        test.done(miss());
+    }
 }
 
 function testSpecParamUserAgent(test, pass, miss) {
