@@ -16,7 +16,7 @@ Spec detection.
 # How to use
 
 ```js
-<script src="lib/Spec.js">
+<script src="lib/Spec.js"></script>
 <script>
 // for Browser
 console.log( JSON.stringify( new Spec().dump(), null, 2 ) );
