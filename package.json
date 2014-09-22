@@ -21,8 +21,7 @@
     "test-browser": "open test/index.html",
     "test-sim":     "node node_modules/uupaa.iphonesimulator.js --run --port 8585 --xcache --open test/index.html",
     "server":       "http-server -c-1 -p 8585 &",
-    "server-stop":  "",
-    "server-kill":  "killall -- node /usr/local/bin/http-server -p 8585 ; exit 0",
+    "stop":         "killall -- node /usr/local/bin/http-server -p 8585 ; exit 0",
     "hint":         "jshint lib/*.js",
     "lint":         "node node_modules/uupaa.plato.js; open lint/plato/index.html"
   },
