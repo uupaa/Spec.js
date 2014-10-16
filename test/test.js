@@ -19,6 +19,8 @@ var test = new Test("Spec", {
         testSpecParamDeviceInfo,
         //testSpec_normalizeVersionString,
         // ---
+        testDeviceiPhone6Plus,
+        testDeviceiPhone6,
         testDeviceiPhone5,
         testDeviceNexus5,
         testDeviceRevision_Nexus7_2013,
@@ -414,6 +416,40 @@ function testSpec_normalizeVersionString(test, pass, miss) {
  */
 
 // ------------------------------------------
+function testDeviceiPhone6Plus(test, pass, miss) {
+    var env = {
+            DISPLAY_DPR: 3,
+            DISPLAY_LONG: 736,
+            DISPLAY_SHORT: 414,
+            USER_AGENT: "Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A403 Safari/8536.25"
+        };
+
+    var spec = new Spec(env);
+
+    if (spec.getDeviceID() === "iPhone 6 Plus" &&
+        spec.isOS("iOS")) {
+        test.done(pass());
+    } else {
+        test.done(miss());
+    }
+}
+function testDeviceiPhone6(test, pass, miss) {
+    var env = {
+            DISPLAY_DPR: 2,
+            DISPLAY_LONG: 667,
+            DISPLAY_SHORT: 375,
+            USER_AGENT: "Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A403 Safari/8536.25"
+        };
+
+    var spec = new Spec(env);
+
+    if (spec.getDeviceID() === "iPhone 6" &&
+        spec.isOS("iOS")) {
+        test.done(pass());
+    } else {
+        test.done(miss());
+    }
+}
 function testDeviceiPhone5(test, pass, miss) {
     var env = {
             DISPLAY_DPR: 2,
