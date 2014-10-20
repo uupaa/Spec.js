@@ -973,20 +973,19 @@ function testStorage(test, pass, miss) {
     var webSQL     = spec.isWebSQL();
     var indexedDB  = spec.isIndexedDB();
     var appCache   = spec.isApplicationCache();
-    var quota      = spec.isQuota();
-
+    var diskQuota  = spec.isDiskQuota();
 
     if ( webStorage ||
          webSQL     ||
          indexedDB  ||
          appCache   ||
-         quota ) {
+         diskQuota ) {
 
         console.log("WebStorage: " + webStorage);
         console.log("WebSQL    : " + webSQL);
         console.log("IndexedDB : " + indexedDB);
         console.log("AppCache  : " + appCache);
-        console.log("Quota     : " + quota);
+        console.log("DiskQuota : " + diskQuota);
 
         test.done(pass());
     } else {
