@@ -4,36 +4,42 @@
 
 <script id="worker" type="javascript/worker">
 onmessage = function(event) {
+
+    if (!self.console) {
+        self.console = function() {};
+        self.console.log = function() {};
+        self.console.warn = function() {};
+        self.console.error = function() {};
+    }
+
     self.MESSAGE = event.data;
 
-    importScripts(MESSAGE.BASE_DIR + "../node_modules/uupaa.reflection.js/lib/Reflection.js");
-    importScripts(MESSAGE.BASE_DIR + "../node_modules/uupaa.console.js/lib/Console.js");
-    importScripts(MESSAGE.BASE_DIR + "../node_modules/uupaa.help.js/lib/Help.js");
-    importScripts(MESSAGE.BASE_DIR + "../node_modules/uupaa.valid.js/lib/Valid.js");
-    importScripts(MESSAGE.BASE_DIR + "../node_modules/uupaa.task.js/lib/Task.js");
-    importScripts(MESSAGE.BASE_DIR + "../node_modules/uupaa.test.js/lib/Test.js");
+    importScripts(MESSAGE.BASE_DIR + "../../WebModule/lib/Console.js");
+    importScripts(MESSAGE.BASE_DIR + "../../WebModule/lib/Help.js");
+    importScripts(MESSAGE.BASE_DIR + "../../WebModule/lib/Valid.js");
+    importScripts(MESSAGE.BASE_DIR + "../../WebModule/lib/TestTask.js");
+    importScripts(MESSAGE.BASE_DIR + "../../WebModule/lib/Test.js");
     importScripts(MESSAGE.BASE_DIR + "../lib/Spec.js");
     importScripts(MESSAGE.BASE_DIR + "../lib/Browser.js");
     importScripts(MESSAGE.BASE_DIR + "../lib/Media.js");
     importScripts(MESSAGE.BASE_DIR + "../lib/Storage.js");
     importScripts(MESSAGE.BASE_DIR + "../release/Spec.min.js");
-    importScripts(MESSAGE.BASE_DIR + "./test.js?_=1415053533396");
+    importScripts(MESSAGE.BASE_DIR + "./testcase.js");
 
     self.postMessage({ error: self.errorMessage || "" });
 };
 </script>
 
-<script src="../node_modules/uupaa.reflection.js/lib/Reflection.js"></script>
-<script src="../node_modules/uupaa.console.js/lib/Console.js"></script>
-<script src="../node_modules/uupaa.help.js/lib/Help.js"></script>
-<script src="../node_modules/uupaa.valid.js/lib/Valid.js"></script>
-<script src="../node_modules/uupaa.task.js/lib/Task.js"></script>
-<script src="../node_modules/uupaa.test.js/lib/Test.js"></script>
+<script src="../../WebModule/lib/Console.js"></script>
+<script src="../../WebModule/lib/Help.js"></script>
+<script src="../../WebModule/lib/Valid.js"></script>
+<script src="../../WebModule/lib/TestTask.js"></script>
+<script src="../../WebModule/lib/Test.js"></script>
 <script src="../lib/Spec.js"></script>
 <script src="../lib/Browser.js"></script>
 <script src="../lib/Media.js"></script>
 <script src="../lib/Storage.js"></script>
 <script src="../release/Spec.min.js"></script>
-<script src="./test.js?=_1415053533396"></script>
+<script src="./testcase.js"></script>
 
 </body></html>
