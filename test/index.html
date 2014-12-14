@@ -14,10 +14,11 @@ onmessage = function(event) {
 
     self.MESSAGE = event.data;
 
+    importScripts(MESSAGE.BASE_DIR + "../../WebModule/lib/Reflection.js");
     importScripts(MESSAGE.BASE_DIR + "../../WebModule/lib/Console.js");
-    importScripts(MESSAGE.BASE_DIR + "../../WebModule/lib/Help.js");
     importScripts(MESSAGE.BASE_DIR + "../../WebModule/lib/Valid.js");
-    importScripts(MESSAGE.BASE_DIR + "../../WebModule/lib/TestTask.js");
+    importScripts(MESSAGE.BASE_DIR + "../../WebModule/lib/Help.js");
+    importScripts(MESSAGE.BASE_DIR + "../../WebModule/lib/Task.js");
     importScripts(MESSAGE.BASE_DIR + "../../WebModule/lib/Test.js");
     importScripts(MESSAGE.BASE_DIR + "../lib/Spec.js");
     importScripts(MESSAGE.BASE_DIR + "../lib/Browser.js");
@@ -30,10 +31,11 @@ onmessage = function(event) {
 };
 </script>
 
+<script src="../../WebModule/lib/Reflection.js"></script>
 <script src="../../WebModule/lib/Console.js"></script>
-<script src="../../WebModule/lib/Help.js"></script>
 <script src="../../WebModule/lib/Valid.js"></script>
-<script src="../../WebModule/lib/TestTask.js"></script>
+<script src="../../WebModule/lib/Help.js"></script>
+<script src="../../WebModule/lib/Task.js"></script>
 <script src="../../WebModule/lib/Test.js"></script>
 <script src="../lib/Spec.js"></script>
 <script src="../lib/Browser.js"></script>

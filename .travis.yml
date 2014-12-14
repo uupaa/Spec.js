@@ -2,11 +2,13 @@ language: node_js
 node_js:
     - "0.10"
 before_script:
-    - "npm install -g plato"
-    - "npm install -g http-server"
+    - "pwd"
+    - "cd .."
+    - "git clone https://github.com/uupaa/WebModule.git"
+    - "cd -"
     - "npm install"
-    - "npm install uupaa.compile.js"
-    - "npm run build"
+    - "npm install uupaa.closurecompiler.js"
+    - "node node_modules/uupaa.closurecompiler.js --package"
 script:
-    - "npm run test-node"
+    - "npm run node"
 
