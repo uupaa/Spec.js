@@ -41,6 +41,7 @@ var test = new Test("Spec", {
         testIE10,
         testWindowsPhone75,
         testFirefox11,
+        testFirefox20,
         // ---
         testBrowser,
         testAlternateDevice,
@@ -722,6 +723,24 @@ function testFirefox11(test, pass, miss) {
     if (spec.isOS("Windows") &&
         parseFloat(spec.getOSVersion()) === 6.1 &&
         spec.getOSVersion() === "6.1.0") {
+
+        test.done(pass());
+    } else {
+        test.done(miss());
+    }
+}
+
+function testFirefox20(test, pass, miss) {
+    var env = {
+            USER_AGENT: "Mozilla/5.0 (Mobile; LGL25; rv:32.0) Gecko/32.0 Firefox/32.0"
+        };
+    var spec = new Spec(env);
+
+    if (spec.isOS("Firefox") &&
+        spec.getDeviceID() === "LGL25" &&
+        parseFloat(spec.getOSVersion()) === 2.0 &&
+        spec.getOSVersion() === "2.0.0" &&
+        spec.getCPUClock() === 1.2) {
 
         test.done(pass());
     } else {
