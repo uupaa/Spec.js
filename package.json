@@ -1,28 +1,22 @@
 {
   "name": "uupaa.spec.js",
-  "version": "0.18.7",
+  "version": "0.18.8",
   "description": "Spec detection.",
   "url": "https://github.com/uupaa/Spec.js",
-  "keywords": [
-    "spec",
-    "util",
-    "uupaa",
-    "WebModule",
-    "Unstable"
-  ],
+  "keywords": ["spec", "util", "uupaa", "WebModule", "Unstable"],
   "repository": {
     "type": "git",
     "url": "https://github.com/uupaa/Spec.js.git"
   },
   "scripts": {
     "sync": "node ../WebModule/run/sync.js; npm update; node ../WebModule/run/page.js",
-    "watch": "node ../WebModule/run/watch.js --verbose --action minify",
-    "minify": "node ../WebModule/run/minify.js --verbose --strict --keep --pretty",
-    "build": "node ../WebModule/run/minify.js --verbose --strict --module",
+    "min": "node ../WebModule/run/minify.js --verbose --strict --keep --pretty",
+    "build": "node ../WebModule/run/minify.js --verbose --strict --keep --module",
+    "watch": "node ../WebModule/run/watch.js --verbose --run hint",
     "page": "node ../WebModule/run/page.js --verbose",
-    "test": "npm run minify; npm run node; npm run browser",
-    "node": "NODE_ENV=production NODE_PATH=lib node --harmony test/index.node.js",
-    "noded": "NODE_ENV=production NODE_PATH=lib node --debug-brk --harmony test/index.node.js",
+    "test": "npm run min; npm run node; npm run browser",
+    "node": "NODE_ENV=production NODE_PATH=lib node --harmony test/node.js",
+    "noded": "NODE_ENV=production NODE_PATH=lib node --debug-brk --harmony test/node.js",
     "browser": "open http://localhost:8000/Spec.js/test/index.html",
     "sim": "node ../WebModule/run/sim.js http://localhost:8000/Spec.js/test/index.html",
     "simx": "node ../WebModule/run/sim.js stop",
@@ -34,22 +28,24 @@
     "stop": "killall -- Python -m SimpleHTTPServer 8000; exit 0"
   },
   "webmodule": {
-    "source": [
-      "lib/Spec.js",
-      "lib/Browser.js",
-      "lib/Media.js",
-      "lib/Storage.js"
-    ],
-    "output": "release/Spec.min.js",
-    "target": [
-      "all"
-    ],
-    "label": [
-      "@dev",
-      "@spec_media",
-      "@spec_browser",
-      "@spec_storage"
-    ]
+    "develop": false,
+    "label": ["@dev", "@spec_media", "@spec_browser", "@spec_storage"],
+    "browser": {
+      "source": ["lib/Spec.js", "lib/Browser.js", "lib/Media.js", "lib/Storage.js"],
+      "output": "release/Spec.b.min.js"
+    },
+    "worker": {
+      "source": ["lib/Spec.js", "lib/Browser.js", "lib/Media.js", "lib/Storage.js"],
+      "output": "release/Spec.w.min.js"
+    },
+    "node": {
+      "source": ["lib/Spec.js", "lib/Browser.js", "lib/Media.js", "lib/Storage.js"],
+      "output": "release/Spec.n.min.js"
+    },
+    "nw": {
+      "source": ["lib/Spec.js", "lib/Browser.js", "lib/Media.js", "lib/Storage.js"],
+      "output": "release/Spec.nw.min.js"
+    }
   },
   "dependencies": {},
   "devDependencies": {},
