@@ -1,5 +1,4 @@
-// Create at: Tue Jan 06 2015 21:03:28 GMT+0900 (JST)
-// Source codes: Reflection.js, Console.js, Valid.js, Help.js, Task.js, Test.js
+// ['Reflection.js', 'Console.js', 'Valid.js', 'Help.js', 'Task.js', 'Test.js'].join()
 
 // Reflection.js
 (function(global) {
