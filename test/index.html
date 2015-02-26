@@ -2,13 +2,28 @@
 <meta name="viewport" content="width=device-width, user-scalable=no">
 <meta charset="utf-8"></head><body>
 
-<script src=".././test/wmtools.js"></script>
-<script src="../lib/Spec.js"></script>
-<script src="../lib/Browser.js"></script>
-<script src="../lib/Media.js"></script>
-<script src="../lib/Storage.js"></script>
-<script src="../release/Spec.b.min.js"></script>
-<script src="./testcase.js"></script>
+<script>
 
+function getWebGLInformation() {
+    var canvas = document.createElement("canvas");
+    document.body.appendChild(canvas);
+    var gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl")
+
+      if (!gl) {
+        alert("webgl -> x");
+      }
+
+    return {
+        render: gl.getParameter(gl.RENDERER),
+        MAX_TEXTURE_SIZE: gl.getParameter(gl.MAX_TEXTURE_SIZE),
+    };
+}
+
+
+window.onload = function() {
+  alert(JSON.stringify(getWebGLInformation()));
+};
+
+</script>
 </body></html>
 

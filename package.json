@@ -29,21 +29,21 @@
   },
   "webmodule": {
     "develop": false,
-    "label": ["@dev", "@spec_media", "@spec_browser", "@spec_storage"],
+    "label": ["@dev", "@devicejp", "@devicefx", "@kindle", "@windowsphone"],
     "browser": {
-      "source": ["lib/Spec.js", "lib/Browser.js", "lib/Media.js", "lib/Storage.js"],
+      "source": ["lib/Spec.js", "lib/SpecCatalog.js"],
       "output": "release/Spec.b.min.js"
     },
     "worker": {
-      "source": ["lib/Spec.js", "lib/Browser.js", "lib/Media.js", "lib/Storage.js"],
+      "source": ["lib/Spec.js", "lib/SpecCatalog.js"],
       "output": "release/Spec.w.min.js"
     },
     "node": {
-      "source": ["lib/Spec.js", "lib/Browser.js", "lib/Media.js", "lib/Storage.js"],
+      "source": ["lib/Spec.js", "lib/SpecCatalog.js"],
       "output": "release/Spec.n.min.js"
     },
     "nw": {
-      "source": ["lib/Spec.js", "lib/Browser.js", "lib/Media.js", "lib/Storage.js"],
+      "source": ["lib/Spec.js", "lib/SpecCatalog.js"],
       "output": "release/Spec.nw.min.js"
     }
   },

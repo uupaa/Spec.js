@@ -5,7 +5,7 @@
     "bitwise":  false, // true is prohibits the use of bitwise operators.
     "undef":    true,
     "unused":   true,
-    "maxlen":   200,
+    "maxlen":   300,
 
     // --- Relaxing options ---
     "debug":    true,
