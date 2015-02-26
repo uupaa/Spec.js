@@ -17,20 +17,28 @@ Spec detection.
 
 ```js
 <script src="lib/Spec.js"></script>
+<script src="lib/SpecCatalog.js"></script>
 <script>
-// for Browser
-console.log( JSON.stringify( new Spec().dump(), null, 2 ) );
+
+var spec = new Spec();
+console.log(spec.USER_AGENT);   // "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.115 Safari/537.36";
+console.log(spec.BROWSER_NAME); // "Chrome"
+
 </script>
 ```
 
 ```js
 // for WebWorkers
 importScripts("lib/Spec.js");
-console.log( JSON.stringify( new Spec().dump(), null, 2 ) );
+importScripts("lib/SpecCatalog.js");
+
+...
 ```
 
 ```js
 // for Node.js
-var Spec = require("lib/Spec.js");
-console.log( JSON.stringify( new Spec().dump(), null, 2 ) );
+require("lib/Spec.js");
+require("lib/SpecCatalog.js");
+
+...
 ```
