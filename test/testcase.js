@@ -7,13 +7,13 @@ var _runOnWorker     = !_isNodeOrNodeWebKit && "WorkerLocation" in global;
 var _runOnBrowser    = !_isNodeOrNodeWebKit && "document" in global;
 
 var test = new Test("Spec", {
-        disable:    false,
-        browser:    true,
-        worker:     false,
-        node:       false,
-        nw:         false,
-        button:     false,
-        both:       false,
+        disable:    false, // disable all tests.
+        browser:    true,  // enable browser test.
+        worker:     true,  // enable worker test.
+        node:       true,  // enable node test.
+        nw:         true,  // enable nw.js test.
+        button:     true,  // show button.
+        both:       true,  // test the primary and secondary modules.
         ignoreError:false, // ignore error.
     }).add([
         // ---
@@ -45,7 +45,7 @@ var test = new Test("Spec", {
         testBrowser,
     ]);
 
-if (_runOnBrowser) {
+if (_runOnBrowser || _runOnNodeWebKit) {
     test.add([
         test_getHardwareConcurrency,
       //test_isGoodByeAndroidBrowser,
