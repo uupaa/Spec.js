@@ -1,7 +1,7 @@
 var ModuleTestSpec = (function(global) {
 
 var _isNodeOrNodeWebKit = !!global.global;
-var _runOnNodeWebKit =  _isNodeOrNodeWebKit && /native/.test(setTimeout);
+var _runOnNodeWebKit =  _isNodeOrNodeWebKit &&  /native/.test(setTimeout);
 var _runOnNode       =  _isNodeOrNodeWebKit && !/native/.test(setTimeout);
 var _runOnWorker     = !_isNodeOrNodeWebKit && "WorkerLocation" in global;
 var _runOnBrowser    = !_isNodeOrNodeWebKit && "document" in global;
@@ -9,24 +9,20 @@ var _runOnBrowser    = !_isNodeOrNodeWebKit && "document" in global;
 var test = new Test("Spec", {
         disable:    false,
         browser:    true,
-        worker:     true,
-        node:       true,
-        nw:         true,
-        button:     true,
-        both:       true,
+        worker:     false,
+        node:       false,
+        nw:         false,
+        button:     false,
+        both:       false,
+        ignoreError:false, // ignore error.
     }).add([
         // ---
         testSpec,
-        testSpecDump,
         testSpecParamUserAgent,
-        testSpecParamDeviceInfo,
-        //testSpec_normalizeVersionString,
-        // ---
         testDeviceiPhone6Plus,
         testDeviceiPhone6,
-        testDeviceiPhone5,
         testDeviceNexus5,
-        testDeviceRevision_Nexus7_2013,
+        testDeviceNexus7_2nd,
         testFirefoxMobileForAndroid,
         testDeviceFirefoxOS,
         testDevice_INFOBAR_A01,
@@ -38,434 +34,65 @@ var test = new Test("Spec", {
         testIsBrowser,
         testIsBrowserEngine,
         // ---
-        testOS,
         testMacPro,
         testIE11Preview,
         testIE10,
-        testWindowsPhone75,
         testFirefox11,
         testFirefox20,
         // ---
-        testBrowser,
         testAlternateDevice,
-        testUnknownDevice,
-        // ---
-        testCanDeviceFeature,
-        // ---
-        testPrefix,
-        // --- Media.js ---
-        testMediaSpec,
-        // --- Storage.js ---
-        testStorage,
+        testDeviceFeature,
+        testBrowser,
     ]);
 
 if (_runOnBrowser) {
     test.add([
-        test_isGoodByeAndroidBrowser,
         test_getHardwareConcurrency,
-        test_getMaxConnections,
-        test_getConnectionsPerHost,
-        test_isMobileDevice,
+      //test_isGoodByeAndroidBrowser,
     ]);
 }
 
-var userAgents = {
-    IE11Preview: {
-        ua: "Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko",
-        os: "Windows",
-        osVer: 6.1,
-        browserVer: 11.0,
-        engine: "Trident",
-        browser: "IE",
-    },
-    IE10: {
-        ua: "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; Trident/6.0)",
-        os: "Windows",
-        osVer: 6.1,
-        browserVer: 10.0,
-        engine: "Trident",
-        browser: "IE",
-    },
-    IE9: {
-        ua: "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)",
-        os: "Windows",
-        osVer: 6.1,
-        browserVer: 9.0,
-        engine: "Trident",
-        browser: "IE",
-    },
-    IE8: {
-        ua: "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0)",
-        os: "Windows",
-        osVer: 6.1,
-        browserVer: 8.0,
-        engine: "Trident",
-        browser: "IE",
-    },
-    "WP7.5": {
-        ua: "Mozilla/5.0 (compatible; MSIE 9.0; Windows Phone OS 7.5; Trident/5.0; IEMobile/9.0)",
-        os: "WPhone",
-        osVer: 7.5,
-        browserVer: 9.0,
-        engine: "Trident",
-        browser: "IE",
-    },
-    WP7: {
-        ua: "Mozilla/4.0 (compatible; MSIE 7.0; Windows Phone OS 7.0; Trident/3.1; IEMobile/7.0)",
-        os: "WPhone",
-        osVer: 7.0,
-        browserVer: 7.0,
-        engine: "Trident",
-        browser: "IE",
-    },
-    OPNext: {
-        ua: "Mozilla/5.0 (Linux; Android 4.0.4; L-01D Build/IMM76D) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.123 Mobile Safari/537.22 OPR/14.0.1025.53005",
-        os: "Android",
-        osVer: 4.0,
-        browserVer: 25.0,
-        engine: "Blink",
-        browser: "Chrome",
-    },
-    Firefox16: {
-        ua: "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:16.0) Gecko/20100101 Firefox/16.0",
-        os: "Windows",
-        osVer: 6.1,
-        browserVer: 16.0,
-        engine: "Gecko",
-        browser: "Firefox",
-    },
-    FirefoxMobile: {
-        ua: "Mozilla/5.0 (Android; Mobile; rv:13.0) Gecko/13.0 Firefox/13.0",
-        os: "Android",
-        osVer: 0.0,
-        browserVer: 13.0,
-        engine: "Gecko",
-        browser: "Firefox",
-    },
-    FirefoxTablet: {
-        ua: "Mozilla/5.0 (Android; Tablet; rv:13.0) Gecko/13.0 Firefox/13.0",
-        os: "Android",
-        osVer: 0.0,
-        browserVer: 13.0,
-        engine: "Gecko",
-        browser: "Firefox",
-    },
-    Safari6: {
-        ua: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) AppleWebKit/536.30.1 (KHTML, like Gecko) Version/6.0.5 Safari/536.30.1",
-        os: "Mac",
-        osVer: 10.8,
-        browserVer: 6.0,
-        engine: "WebKit",
-        browser: "Safari",
-    },
-    "Android Browser": {
-        ua: "Mozilla/5.0 (Linux; U; Android 4.2.2; ja-jp; SonySOL23 Build/14.1.C.0.467) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30",
-        //                          ~~~~~~~~~~~~~  ~~~~~  ~~~~~~~~~ ~~~~~                                                                  ~~~~~~ 
-        os: "Android",
-        osVer: 4.2,
-        webView: false,
-        browserVer: 4.0,
-        engine: "WebKit",
-        browser: "Browser",
-    },
-    "Android Browser WebView": {
-        ua: "Mozilla/5.0 (Linux; U; Android 4.1.1; en-gb; Build/KLP) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Safari/534.30",
-        //                          ~~~~~~~~~~~~~  ~~~~~  ~~~~~                                                        |(not Mobile)
-        os: "Android",
-        osVer: 4.1,
-        webView: true,
-        browserVer: 4.0,
-        engine: "WebKit",
-        browser: "Browser",
-    },
-    "S Browser": {
-        ua: "Mozilla/5.0 (Linux; Android 4.2.2; ja-jp; SC-04E Build/JDQ39) AppleWebKit/535.19 (KHTML, like Gecko) Version/1.0 Chrome/18.0.1025.308 Mobile Safari/535.19",
-        //                       ~~~~~~~~~~~~~  ~~~~~  ~~~~~~ ~~~~~                                                           ~~~~~~~~~~~          ~~~~~~
-        os: "Android",
-        osVer: 4.2,
-        webView: false,
-        browserVer: 18.0,
-        engine: "Blink",
-        browser: "Chrome",
-    },
-    "Android KitKat Chrome WebView": {
-        ua: "Mozilla/5.0 (Linux; Android 4.4; Nexus 5 Build/BuildID) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/30.0.0.0 Mobile Safari/537.36",
-        //                       ~~~~~~~~~~~  ~~~~~~~ ~~~~~                                                             ~~~~~~~~~~~     ~~~~~~
-        os: "Android",
-        osVer: 4.4,
-        webView: true,
-        browserVer: 30.0,
-        engine: "Blink",
-        browser: "Chrome",
-    },
-    "Kindle": {
-        ua: "Mozilla/5.0 (Linux; Android 4.0.3; en-us; KFTT    Build/IML74K)  AppleWebKit/535.19 (KHTML, like Gecko) Silk/3.4 Mobile Safari/535.19 Silk-Accelerated=true",
-        //                       ~~~~~~~~~~~~~         ~~~~~~~ ~~~~~                                                 ~~~~~~~~
-        os: "Android",
-        osVer: 4.0,
-        webView: false,
-        browserVer: 3.4,
-        engine: "WebKit",
-        browser: "Browser",
-    },
-    "Nexus7 Android 4.2 Chrome 18": {
-        ua: "Mozilla/5.0 (Linux; Android 4.2; Nexus 7 Build/JOP40C) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Safari/535.19",
-        //                       ~~~~~~~~~~~  ~~~~~~  ~~~~~                                                ~~~~~~~~~~~         |(not Mobile)
-        os: "Android",
-        osVer: 4.2,
-        webView: false,
-        browserVer: 18.0,
-        engine: "Blink",
-        browser: "Chrome",
-    },
-    "Xperia X10": {
-        ua: "Mozilla/5.0 (Linux; U; Android 1.6; en-gb; SonyEricssonX10i Build/R1AA040) AppleWebKit/528.5+ (KHTML, like Gecko) Version/3.1.2 Mobile Safari/525.20.1",
-        os: "Android",
-        osVer: 1.6,
-        browserVer: 3.1,
-        engine: "WebKit",
-        browser: "Browser",
-    },
-    "iPhone 5 iOS 7 beta 6": {
-        ua: "Mozilla/5.0 (iPhone; CPU iPhone OS 7_0 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/6.0 Mobile/11A4449d Safari/9537.53.25",
-        os: "iOS",
-        osVer: 7.0,
-        browserVer: 6.0,
-        engine: "WebKit",
-        browser: "Safari",
-    },
-    "iPhone 4s iOS 7.0.3": {
-        ua: "Mozilla/5.0 (iPhone; CPU iPhone OS 7_0_3 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11B511 Safari/9537.53",
-        os: "iOS",
-        osVer: 7.0,
-        browserVer: 7.0,
-        engine: "WebKit",
-        browser: "Safari",
-    },
-    "iPad 2 iOS 6 beta": {
-        ua: "Mozilla/5.0 (iPad; CPU OS 5_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9B176 Safari/7534.48.3",
-        os: "iOS",
-        osVer: 5.1,
-        browserVer: 5.1,
-        engine: "WebKit",
-        browser: "Safari",
-    },
-    "Xbox One": {
-        ua: "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0; Xbox; Xbox One)",
-        //                                               ~~~~~~ don't look
-        os: "Game",
-        osVer: 0.0,
-        browserVer: 10.0,
-        engine: "Trident",
-        browser: "IE",
-    },
-    "Xbox 360": { // IEMobile Based Browser.
-        ua: "Mozilla/5.0 (compatible; MSIE 9.0; Windows Phone OS 7.5; Trident/5.0; IEMobile/9.0; Xbox)",
-        //                                                    ~~~~~~ don't look
-        os: "Game",
-        osVer: 0.0,
-        browserVer: 9.0,
-        engine: "Trident",
-        browser: "IE",
-    },
-    "PS 4": { // WebKit Based Browser.
-        ua: "Mozilla/5.0 (PlayStation 4 1.52) AppleWebKit/536.26 (KHTML, like Gecko)",
-        //                            ~~~~~~ don't look
-        os: "Game",
-        osVer: 0.0,
-        browserVer: 0.0,
-        engine: "WebKit",
-        browser: "WebKit",
-    },
-    "PS 3(WebKit)": { // WebKit Based Browser.
-        ua: "Mozilla/5.0 (PLAYSTATION 3 4.10) AppleWebKit/531.22.8 (KHTML, like Gecko)",
-        //                            ~~~~~~ don't look
-        os: "Game",
-        osVer: 0.0,
-        browserVer: 0.0,
-        engine: "WebKit",
-        browser: "WebKit",
-    },
-    "PS 3": { // Sony Original Browser.
-        ua: "Mozilla/5.0 (PLAYSTATION 3; 2.50) + Flash 9",
-        //                            ~~~~~~~ don't look
-        os: "Game",
-        osVer: 0.0,
-        browserVer: 0.0,
-        engine: "",
-        browser: "",
-    },
-    "PS 2": { // NetFront Based Browser.
-        ua: "Mozilla/4.0 (PS2; PlayStation BB Navigator 1.0) NetFront/3.0",
-        os: "Game",
-        osVer: 0.0,
-        browserVer: 0.0,
-        engine: "",
-        browser: "",
-    },
-    "PSP": { // NetFront Based Browser.
-        ua: "Mozilla/4.0 (PSP PlayStation Portable); 2.00)",
-        os: "Game",
-        osVer: 0.0,
-        browserVer: 0.0,
-        engine: "",
-        browser: "",
-    },
-    "PS Vita": { // WebKit Based Browser.
-        ua: "Mozilla/5.0 (PlayStation Vita 1.50) AppleWebKit/531.22.8 (KHTML, like Gecko) Silk/3.2",
-        os: "Game",
-        osVer: 0.0,
-        browserVer: 0.0,
-        engine: "WebKit",
-        browser: "WebKit",
-    },
-    "Wii": { // Opera Browser.
-        ua: "Opera/9.30 (Nintendo Wii; U; ; 3642; ja) with Flash Lite 3.1",
-        //                                  ~~~~~ don't look
-        os: "Game",
-        osVer: 0.0,
-        browserVer: 0.0,
-        engine: "",
-        browser: "",
-    },
-    "Wii U": { // NetFrontNX Browser.
-        ua: "Mozilla/5.0 (Nintendo WiiU) AppleWebKit/536.28 (KHTML, like Gecko) NX/*** NintendoBrowser/***.JP",
-        os: "Game",
-        osVer: 0.0,
-        browserVer: 0.0,
-        engine: "WebKit",
-        browser: "WebKit",
-    },
-    "3DS": { // NetFront Based Browser.
-        ua: "Mozilla/5.0 (Nintendo 3DS; U; ; ja) Version/1.7412.JP",
-        //                                               ~~~~~~~~~ don't look
-        os: "Game",
-        osVer: 0.0,
-        browserVer: 0.0,
-        engine: "",
-        browser: "",
-    }
-};
 
-return test.run().clone();
 
 function testSpec(test, pass, miss) {
     var spec = new Spec();
 
     test.done(pass());
 }
-function testSpecDump(test, pass, miss) {
-    var ua = "Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A403 Safari/8536.25";
-    var spec = new Spec({ USER_AGENT: ua });
-    var dump = spec.dump();
-
-    if (dump["OS"] === "iOS" &&
-        dump["OS_VERSION"] === "6.0.0" &&
-        dump["BROWSER_VERSION"] === "6.0.0") {
-        test.done(pass());
-    } else {
-        test.done(miss());
-    }
-}
 
 function testSpecParamUserAgent(test, pass, miss) {
     var ua = "Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A403 Safari/8536.25";
-    var spec = new Spec({ USER_AGENT: ua });
+    var spec = new Spec();
+    spec.USER_AGENT = ua;
 
-    if (spec.getUserAgent() === ua) {
+    if (spec.USER_AGENT === ua) {
         test.done(pass());
     } else {
         test.done(miss());
     }
 }
 
-function testSpecParamDeviceInfo(test, pass, miss) {
-    var ua = "Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A403 Safari/8536.25";
-    var spec = new Spec({ USER_AGENT: ua, DISPLAY_DPR: 2 });
-
-    if (spec.getDisplayDPR() === 2) {
-        test.done(pass());
-    } else {
-        test.done(miss());
-    }
-}
-
-/*
-function testSpec_normalizeVersionString(test, pass, miss) {
-    var result = [
-            "0.0.0",    Spec.normalizeVersionString("0.0.0"),
-            "1.2.3",    Spec.normalizeVersionString("1.2.3"),
-            "10.11.12", Spec.normalizeVersionString("10.11.12"),
-            "10.11.12", Spec.normalizeVersionString("10.11.12a"),
-            "0.0.0",    Spec.normalizeVersionString("0"),
-            "0.1.0",    Spec.normalizeVersionString("0.1"),
-            "0.0.1",    Spec.normalizeVersionString("0.0.1"),
-        ];
-
-    var ok = true;
-
-    for (var i = 0, iz = result.length; i < iz; i += 2) {
-        if ( result[i] !== result[i + 1] ) {
-            ok = false;
-            break;
-        }
-    }
-
-    if (ok) {
-        test.done(pass());
-    } else {
-        test.done(miss());
-    }
-}
- */
-
-// ------------------------------------------
 function testDeviceiPhone6Plus(test, pass, miss) {
-    var env = {
-            DISPLAY_DPR: 3,
-            DISPLAY_LONG: 736,
-            DISPLAY_SHORT: 414,
-            USER_AGENT: "Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A403 Safari/8536.25"
-        };
+    var spec = new Spec();
+    spec.DISPLAY_DPR = 3;
+    spec.DISPLAY_LONG = 736;
+    spec.DISPLAY_SHORT = 414;
+    spec.USER_AGENT = "Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A403 Safari/8536.25";
 
-    var spec = new Spec(env);
-
-    if (spec.getDeviceID() === "iPhone 6 Plus" &&
-        spec.isOS("iOS")) {
+    if (spec.DEVICE === "iPhone 6 Plus") {
         test.done(pass());
     } else {
         test.done(miss());
     }
 }
 function testDeviceiPhone6(test, pass, miss) {
-    var env = {
-            DISPLAY_DPR: 2,
-            DISPLAY_LONG: 667,
-            DISPLAY_SHORT: 375,
-            USER_AGENT: "Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A403 Safari/8536.25"
-        };
+    var spec = new Spec();
+    spec.DISPLAY_DPR = 2;
+    spec.DISPLAY_LONG = 667;
+    spec.DISPLAY_SHORT = 375;
+    spec.USER_AGENT = "Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A403 Safari/8536.25";
 
-    var spec = new Spec(env);
-
-    if (spec.getDeviceID() === "iPhone 6" &&
-        spec.isOS("iOS")) {
-        test.done(pass());
-    } else {
-        test.done(miss());
-    }
-}
-function testDeviceiPhone5(test, pass, miss) {
-    var env = {
-            DISPLAY_DPR: 2,
-            DISPLAY_LONG: 320,
-            DISPLAY_SHORT: 568,
-            USER_AGENT: "Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A403 Safari/8536.25"
-        };
-
-    var spec = new Spec(env);
-
-    if (spec.getDeviceID() === "iPhone 5" &&
-        spec.isOS("iOS")) {
+    if (spec.DEVICE === "iPhone 6") {
         test.done(pass());
     } else {
         test.done(miss());
@@ -473,27 +100,22 @@ function testDeviceiPhone5(test, pass, miss) {
 }
 
 function testDeviceNexus5(test, pass, miss) {
-    var userAgent = "Mozilla/5.0 (Linux; Android 4.4; Nexus 5 Build/BuildID) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/30.0.0.0 Mobile Safari/537.36";
-    var spec = new Spec({ USER_AGENT: userAgent });
+    var spec = new Spec();
+    spec.USER_AGENT = "Mozilla/5.0 (Linux; Android 4.4; Nexus 5 Build/BuildID) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/30.0.0.0 Mobile Safari/537.36";
 
-    if (spec.getDeviceID() === "Nexus 5" &&
-        spec.isOS("Android")) {
+    if (spec.DEVICE === "Nexus 5" && spec.OS === "Android") {
         test.done(pass());
     } else {
         test.done(miss());
     }
 }
 
-function testDeviceRevision_Nexus7_2013(test, pass, miss) {
-    var env = {
-            USER_AGENT: "Mozilla/5.0 (Linux; Android 4.3; Nexus 7 Build/JWR66N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.111 Safari/537.36",
-            DISPLAY_DPR: 2
-        };
+function testDeviceNexus7_2nd(test, pass, miss) {
+    var spec = new Spec();
+    spec.DISPLAY_DPR = 2;
+    spec.USER_AGENT = "Mozilla/5.0 (Linux; Android 4.3; Nexus 7 Build/JWR66N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.111 Safari/537.36";
 
-    var spec = new Spec(env);
-
-    if (spec.getDeviceID() === "Nexus 7 (2013)" &&
-        spec.isOS("Android")) {
+    if (spec.DEVICE === "Nexus 7 2nd") {
         test.done(pass());
     } else {
         test.done(miss());
@@ -501,13 +123,10 @@ function testDeviceRevision_Nexus7_2013(test, pass, miss) {
 }
 
 function testFirefoxMobileForAndroid(test, pass, miss) {
-    var env = {
-            USER_AGENT: "Mozilla/5.0 (Android; Mobile; rv:13.0) Gecko/13.0 Firefox/13.0"
-        };
+    var spec = new Spec();
+    spec.USER_AGENT = "Mozilla/5.0 (Android; Mobile; rv:13.0) Gecko/13.0 Firefox/13.0";
 
-    var spec = new Spec(env);
-
-    if (spec.isOS("Android")) {
+    if (spec.OS === "Android" && spec.BROWSER === "Firefox") {
         test.done(pass());
     } else {
         test.done(miss());
@@ -515,14 +134,10 @@ function testFirefoxMobileForAndroid(test, pass, miss) {
 }
 
 function testDeviceFirefoxOS(test, pass, miss) {
-    var env = {
-            USER_AGENT: "Mozilla/5.0 (Mobile; rv:18.0) Gecko/18.0 Firefox/18.0"
-        };
+    var spec = new Spec();
+    spec.USER_AGENT =  "Mozilla/5.0 (Mobile; rv:18.0) Gecko/18.0 Firefox/18.0";
 
-    var spec = new Spec(env);
-
-    if (spec.getDeviceID() === "" &&
-        spec.isOS("Firefox")) {
+    if (spec.DEVICE === "" && spec.OS === "Firefox") {
         test.done(pass());
     } else {
         test.done(miss());
@@ -531,14 +146,10 @@ function testDeviceFirefoxOS(test, pass, miss) {
 
 
 function testDevice_INFOBAR_A01(test, pass, miss) {
-    var env = {
-            USER_AGENT: "Mozilla/5.0 (Linux; U; Android 2.3.3; ja-jp; INFOBAR A01 Build/S6160) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1"
-        };
+    var spec = new Spec();
+    spec.USER_AGENT = "Mozilla/5.0 (Linux; U; Android 2.3.3; ja-jp; INFOBAR A01 Build/S6160) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1";
 
-    var spec = new Spec(env);
-
-    if (spec.getDeviceID() === "INFOBAR A01" &&
-        spec.isOS("Android")) {
+    if (spec.DEVICE === "INFOBAR A01" && spec.OS === "Android") {
         test.done(pass());
     } else {
         test.done(miss());
@@ -546,14 +157,10 @@ function testDevice_INFOBAR_A01(test, pass, miss) {
 }
 
 function testDeviceWindowsPhone8S(test, pass, miss) {
-    var env = {
-            USER_AGENT: "Mozilla/5.0 (compatible; MSIE 10.0; Windows Phone 8.0; Trident/6.0; IEMobile/10.0; ARM; Touch; HTC; Windows Phone 8S by HTC)"
-        };
+    var spec = new Spec();
+    spec.USER_AGENT = "Mozilla/5.0 (compatible; MSIE 10.0; Windows Phone 8.0; Trident/6.0; IEMobile/10.0; ARM; Touch; HTC; Windows Phone 8S by HTC)";
 
-    var spec = new Spec(env);
-
-    if (spec.getDeviceID() === "Lumia 520" &&
-        spec.isOS("WPhone")) {
+    if (spec.DEVICE === "Lumia 520" && spec.OS === "Windows") {
         test.done(pass());
     } else {
         test.done(miss());
@@ -561,14 +168,10 @@ function testDeviceWindowsPhone8S(test, pass, miss) {
 }
 
 function testDeviceWindowsPhoneLumia920(test, pass, miss) {
-    var env = {
-            USER_AGENT: "Mozilla/5.0 (compatible; MSIE 10.0; Windows Phone 8.0; Trident/6.0; IEMobile/10.0; ARM; Touch; NOKIA; Lumia 920)"
-        };
+    var spec = new Spec();
+    spec.USER_AGENT = "Mozilla/5.0 (compatible; MSIE 10.0; Windows Phone 8.0; Trident/6.0; IEMobile/10.0; ARM; Touch; NOKIA; Lumia 920)";
 
-    var spec = new Spec(env);
-
-    if (spec.getDeviceID() === "Lumia 920" &&
-        spec.isOS("WPhone")) {
+    if (spec.DEVICE === "Lumia 920" && spec.OS === "Windows") {
         test.done(pass());
     } else {
         test.done(miss());
@@ -576,14 +179,10 @@ function testDeviceWindowsPhoneLumia920(test, pass, miss) {
 }
 
 function testDeviceKindle(test, pass, miss) {
-    var env = {
-            USER_AGENT: "Mozilla/5.0 (Linux; U; Android 4.0.3; en-us; KFTT Build/IML74K) AppleWebKit/535.19 (KHTML, like Gecko) Silk/3.4 Mobile Safari/535.19 Silk-Accelerated=true"
-        };
+    var spec = new Spec();
+    spec.USER_AGENT = "Mozilla/5.0 (Linux; U; Android 4.0.3; en-us; KFTT Build/IML74K) AppleWebKit/535.19 (KHTML, like Gecko) Silk/3.4 Mobile Safari/535.19 Silk-Accelerated=true";
 
-    var spec = new Spec(env);
-
-    if (spec.getDeviceID() === "KFTT" &&
-        spec.isOS("Android")) {
+    if (spec.DEVICE === "KFTT" && spec.OS === "Android") {
         test.done(pass());
     } else {
         test.done(miss());
@@ -591,14 +190,10 @@ function testDeviceKindle(test, pass, miss) {
 }
 
 function testDeviceGooglePlayEdition(test, pass, miss) {
-    var env = {
-            USER_AGENT: "Mozilla/5.0 (Linux; U; Android 4.2.2; en-us; HTC6500LVW 4G Build/JDQ39) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
-        };
+    var spec = new Spec();
+    spec.USER_AGENT = "Mozilla/5.0 (Linux; U; Android 4.2.2; en-us; HTC6500LVW 4G Build/JDQ39) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30";
 
-    var spec = new Spec(env);
-
-    if (spec.getDeviceID() === "HTC6500LVW" &&
-        spec.isOS("Android")) {
+    if (spec.DEVICE === "HTC6500LVW" && spec.OS === "Android") {
         test.done(pass());
     } else {
         test.done(miss());
@@ -606,13 +201,10 @@ function testDeviceGooglePlayEdition(test, pass, miss) {
 }
 
 function testIsOS(test, pass, miss) {
-    var env = {
-            USER_AGENT: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36"
-        };
-    var spec = new Spec(env);
+    var spec = new Spec();
+    spec.USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36";
 
-    if (spec.isOS("Mac") &&
-        spec.isOS("mac")) {
+    if (spec.OS === "Mac") {
         test.done(pass());
     } else {
         test.done(miss());
@@ -620,13 +212,10 @@ function testIsOS(test, pass, miss) {
 }
 
 function testIsBrowser(test, pass, miss) {
-    var env = {
-            USER_AGENT: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36"
-        };
-    var spec = new Spec(env);
+    var spec = new Spec();
+    spec.USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36";
 
-    if (spec.isBrowser("Chrome") &&
-        spec.isBrowser("chrome")) {
+    if (spec.BROWSER === "Chrome") {
         test.done(pass());
     } else {
         test.done(miss());
@@ -634,34 +223,22 @@ function testIsBrowser(test, pass, miss) {
 }
 
 function testIsBrowserEngine(test, pass, miss) {
-    var env = {
-            USER_AGENT: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36"
-        };
-    var spec = new Spec(env);
+    var spec = new Spec();
+    spec.USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36";
 
-    if (spec.isBrowserEngine("Blink") &&
-        spec.isBrowserEngine("blink")) {
+    if (spec.BROWSER_ENGINE === "Blink") {
         test.done(pass());
     } else {
         test.done(miss());
     }
 }
 
-function testOS(test, pass, miss) {
-    var spec = new Spec();
-
-    test.done(pass());
-}
-
 function testMacPro(test, pass, miss) {
-    var env = {
-            USER_AGENT: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36"
-        };
-    var spec = new Spec(env);
+    var spec = new Spec();
+    spec.USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36";
 
-    if (spec.isOS("Mac") &&
-        parseFloat(spec.getOSVersion()) === 10.8 &&
-        spec.getOSVersion() === "10.8.5") {
+    if (spec.OS === "Mac" && parseFloat(spec.OS_VERSION) === 10.8 &&
+        spec.OS_VERSION === "10.8.5") {
 
         test.done(pass());
     } else {
@@ -670,14 +247,12 @@ function testMacPro(test, pass, miss) {
 }
 
 function testIE11Preview(test, pass, miss) {
-    var env = {
-            USER_AGENT: "Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko"
-        };
-    var spec = new Spec(env);
+    var spec = new Spec();
+    spec.USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko";
 
-    if (spec.isOS("Windows") &&
-        parseFloat(spec.getOSVersion()) === 6.1 &&
-        spec.getOSVersion() === "6.1.0") {
+    if (spec.OS === "Windows" &&
+        parseFloat(spec.OS_VERSION) === 6.1 &&
+        spec.OS_VERSION === "6.1.0") {
 
         test.done(pass());
     } else {
@@ -686,30 +261,12 @@ function testIE11Preview(test, pass, miss) {
 }
 
 function testIE10(test, pass, miss) {
-    var env = {
-            USER_AGENT: "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; Trident/6.0)"
-        };
-    var spec = new Spec(env);
+    var spec = new Spec();
+    spec.USER_AGENT = "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; Trident/6.0)";
 
-    if (spec.isOS("Windows") &&
-        parseFloat(spec.getOSVersion()) === 6.1 &&
-        spec.getOSVersion() === "6.1.0") {
-
-        test.done(pass());
-    } else {
-        test.done(miss());
-    }
-}
-
-function testWindowsPhone75(test, pass, miss) {
-    var env = {
-            USER_AGENT: "Mozilla/5.0 (compatible; MSIE 9.0; Windows Phone OS 7.5; Trident/5.0; IEMobile/9.0)"
-        };
-    var spec = new Spec(env);
-
-    if (spec.isOS("WPhone") &&
-        parseFloat(spec.getOSVersion()) === 7.5 &&
-        spec.getOSVersion() === "7.5.0") {
+    if (spec.OS === "Windows" &&
+        parseFloat(spec.OS_VERSION) === 6.1 &&
+        spec.OS_VERSION === "6.1.0") {
 
         test.done(pass());
     } else {
@@ -718,14 +275,12 @@ function testWindowsPhone75(test, pass, miss) {
 }
 
 function testFirefox11(test, pass, miss) {
-    var env = {
-            USER_AGENT: "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:11.0) Gecko/20100101 Firefox/11.0"
-        };
-    var spec = new Spec(env);
+    var spec = new Spec();
+    spec.USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:11.0) Gecko/20100101 Firefox/11.0";
 
-    if (spec.isOS("Windows") &&
-        parseFloat(spec.getOSVersion()) === 6.1 &&
-        spec.getOSVersion() === "6.1.0") {
+    if (spec.OS === "Windows" &&
+        parseFloat(spec.OS_VERSION) === 6.1 &&
+        spec.OS_VERSION === "6.1.0") {
 
         test.done(pass());
     } else {
@@ -734,16 +289,14 @@ function testFirefox11(test, pass, miss) {
 }
 
 function testFirefox20(test, pass, miss) {
-    var env = {
-            USER_AGENT: "Mozilla/5.0 (Mobile; LGL25; rv:32.0) Gecko/32.0 Firefox/32.0"
-        };
-    var spec = new Spec(env);
+    var spec = new Spec();
+    spec.USER_AGENT = "Mozilla/5.0 (Mobile; LGL25; rv:32.0) Gecko/32.0 Firefox/32.0";
 
-    if (spec.isOS("Firefox") &&
-        spec.getDeviceID() === "LGL25" &&
-        parseFloat(spec.getOSVersion()) === 2.0 &&
-        spec.getOSVersion() === "2.0.0" &&
-        spec.getCPUClock() === 1.2) {
+    if (spec.OS === "Firefox" &&
+        spec.DEVICE === "LGL25" &&
+        parseFloat(spec.OS_VERSION) === 2.0 &&
+        spec.OS_VERSION === "2.0.0" &&
+        spec.CPU_CLOCK === 1.2) {
 
         test.done(pass());
     } else {
@@ -751,49 +304,337 @@ function testFirefox20(test, pass, miss) {
     }
 }
 
+
+function testAlternateDevice(test, pass, miss) {
+    var spec = new Spec();
+    spec.USER_AGENT = "Mozilla/5.0 (Linux; Android 6.0.5; en-us; Nexus Ace Build/JOP40D) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19";
+
+    if ( spec.DEVICE === "Nexus Ace" &&
+         spec.OS_VERSION === "6.0.5") {
+
+        var nexus5 = new Spec();
+        nexus5.USER_AGENT = "Mozilla/5.0 (Linux; Android 4.4; Nexus 5 Build/BuildID) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/30.0.0.0 Mobile Safari/537.36";
+
+        if (nexus5.SOC === spec.SOC &&
+            nexus5.GPU === spec.GPU) {
+            test.done(pass());
+            return;
+        }
+    }
+    test.done(miss());
+}
+
+function testDeviceFeature(test, pass, miss) {
+    var spec = new Spec();
+    spec.DISPLAY_DPR = 2;
+    spec.USER_AGENT = "Mozilla/5.0 (Linux; Android 4.3; Nexus 7 Build/JWR66N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.111 Safari/537.36";
+
+    if ( spec.hasFeature("BLE") &&
+         spec.hasFeature("NFC") ) {
+        test.done(pass());
+    } else {
+        test.done(miss());
+    }
+}
+
+
+
+var userAgents = {
+    IE11Preview: {
+        USER_AGENT: "Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko",
+        OS: "Windows",
+        OS_VERSION: 6.1,
+        BROWSER: "IE",
+        BROWSER_ENGINE: "Trident",
+        BROWSER_VERSION: 11.0,
+    },
+    IE10: {
+        USER_AGENT: "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; Trident/6.0)",
+        OS: "Windows",
+        OS_VERSION: 6.1,
+        BROWSER: "IE",
+        BROWSER_ENGINE: "Trident",
+        BROWSER_VERSION: 10.0,
+    },
+    IE9: {
+        USER_AGENT: "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)",
+        OS: "Windows",
+        OS_VERSION: 6.1,
+        BROWSER: "IE",
+        BROWSER_ENGINE: "Trident",
+        BROWSER_VERSION: 9.0,
+    },
+    IE8: {
+        USER_AGENT: "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0)",
+        OS: "Windows",
+        OS_VERSION: 6.1,
+        BROWSER: "IE",
+        BROWSER_ENGINE: "Trident",
+        BROWSER_VERSION: 8.0,
+    },
+    "WP7.5": {
+        USER_AGENT: "Mozilla/5.0 (compatible; MSIE 9.0; Windows Phone OS 7.5; Trident/5.0; IEMobile/9.0)",
+        OS: "Windows",
+        OS_VERSION: 7.5,
+        BROWSER: "IE",
+        BROWSER_ENGINE: "Trident",
+        BROWSER_VERSION: 9.0,
+    },
+    WP7: {
+        USER_AGENT: "Mozilla/4.0 (compatible; MSIE 7.0; Windows Phone OS 7.0; Trident/3.1; IEMobile/7.0)",
+        OS: "Windows",
+        OS_VERSION: 7.0,
+        BROWSER: "IE",
+        BROWSER_ENGINE: "Trident",
+        BROWSER_VERSION: 7.0,
+    },
+    OPNext: {
+        USER_AGENT: "Mozilla/5.0 (Linux; Android 4.0.4; L-01D Build/IMM76D) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.123 Mobile Safari/537.22 OPR/14.0.1025.53005",
+        OS: "Android",
+        OS_VERSION: 4.0,
+        BROWSER: "Chrome",
+        BROWSER_ENGINE: "Blink",
+        BROWSER_VERSION: 25.0,
+    },
+    Firefox16: {
+        USER_AGENT: "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:16.0) Gecko/20100101 Firefox/16.0",
+        OS: "Windows",
+        OS_VERSION: 6.1,
+        BROWSER_VERSION: 16.0,
+        BROWSER_ENGINE: "Gecko",
+        BROWSER: "Firefox",
+    },
+    FirefoxMobile: {
+        USER_AGENT: "Mozilla/5.0 (Android; Mobile; rv:13.0) Gecko/13.0 Firefox/13.0",
+        OS: "Android",
+        OS_VERSION: 0.0,
+        BROWSER_VERSION: 13.0,
+        BROWSER_ENGINE: "Gecko",
+        BROWSER: "Firefox",
+    },
+    FirefoxTablet: {
+        USER_AGENT: "Mozilla/5.0 (Android; Tablet; rv:13.0) Gecko/13.0 Firefox/13.0",
+        OS: "Android",
+        OS_VERSION: 0.0,
+        BROWSER_VERSION: 13.0,
+        BROWSER_ENGINE: "Gecko",
+        BROWSER: "Firefox",
+    },
+    Safari6: {
+        USER_AGENT: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) AppleWebKit/536.30.1 (KHTML, like Gecko) Version/6.0.5 Safari/536.30.1",
+        OS: "Mac",
+        OS_VERSION: 10.8,
+        BROWSER_VERSION: 6.0,
+        BROWSER_ENGINE: "WebKit",
+        BROWSER: "Safari",
+    },
+    "Android Browser": {
+        USER_AGENT: "Mozilla/5.0 (Linux; U; Android 4.2.2; ja-jp; SonySOL23 Build/14.1.C.0.467) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30",
+        //                                  ~~~~~~~~~~~~~  ~~~~~  ~~~~~~~~~ ~~~~~                                                                  ~~~~~~ 
+        OS: "Android",
+        OS_VERSION: 4.2,
+        BROWSER_VERSION: 4.0,
+        BROWSER_ENGINE: "WebKit",
+        BROWSER: "AOSP",
+    },
+    "Android Browser WebView": {
+        USER_AGENT: "Mozilla/5.0 (Linux; U; Android 4.1.1; en-gb; Build/KLP) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Safari/534.30",
+        //                                  ~~~~~~~~~~~~~  ~~~~~  ~~~~~                                                        |(not Mobile)
+        OS: "Android",
+        OS_VERSION: 4.1,
+        BROWSER_VERSION: 4.0,
+        BROWSER_ENGINE: "WebKit",
+        BROWSER: "AOSP",
+    },
+    "S Browser": {
+        USER_AGENT: "Mozilla/5.0 (Linux; Android 4.2.2; ja-jp; SC-04E Build/JDQ39) AppleWebKit/535.19 (KHTML, like Gecko) Version/1.0 Chrome/18.0.1025.308 Mobile Safari/535.19",
+        //                               ~~~~~~~~~~~~~  ~~~~~  ~~~~~~ ~~~~~                                                           ~~~~~~~~~~~          ~~~~~~
+        OS: "Android",
+        OS_VERSION: 4.2,
+        BROWSER_VERSION: 18.0,
+        BROWSER_ENGINE: "Blink",
+        BROWSER: "Chrome",
+    },
+    "Android KitKat Chrome WebView": {
+        USER_AGENT: "Mozilla/5.0 (Linux; Android 4.4; Nexus 5 Build/BuildID) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/30.0.0.0 Mobile Safari/537.36",
+        //                               ~~~~~~~~~~~  ~~~~~~~ ~~~~~                                                             ~~~~~~~~~~~     ~~~~~~
+        OS: "Android",
+        OS_VERSION: 4.4,
+        BROWSER_VERSION: 30.0,
+        BROWSER_ENGINE: "Blink",
+        BROWSER: "Chrome",
+    },
+    "Kindle": {
+        USER_AGENT: "Mozilla/5.0 (Linux; Android 4.0.3; en-us; KFTT    Build/IML74K)  AppleWebKit/535.19 (KHTML, like Gecko) Silk/3.4 Mobile Safari/535.19 Silk-Accelerated=true",
+        //                               ~~~~~~~~~~~~~         ~~~~~~~ ~~~~~                                                 ~~~~~~~~
+        OS: "Android",
+        OS_VERSION: 4.0,
+        BROWSER_VERSION: 3.4,
+        BROWSER_ENGINE: "WebKit",
+        BROWSER: "AOSP",
+    },
+    "Nexus7 Android 4.2 Chrome 18": {
+        USER_AGENT: "Mozilla/5.0 (Linux; Android 4.2; Nexus 7 Build/JOP40C) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Safari/535.19",
+        //                               ~~~~~~~~~~~  ~~~~~~  ~~~~~                                                ~~~~~~~~~~~         |(not Mobile)
+        OS: "Android",
+        OS_VERSION: 4.2,
+        BROWSER_VERSION: 18.0,
+        BROWSER_ENGINE: "Blink",
+        BROWSER: "Chrome",
+    },
+    "Xperia X10": {
+        USER_AGENT: "Mozilla/5.0 (Linux; U; Android 1.6; en-gb; SonyEricssonX10i Build/R1AA040) AppleWebKit/528.5+ (KHTML, like Gecko) Version/3.1.2 Mobile Safari/525.20.1",
+        OS: "Android",
+        OS_VERSION: 1.6,
+        BROWSER_VERSION: 3.1,
+        BROWSER_ENGINE: "WebKit",
+        BROWSER: "AOSP"
+    },
+    "iPhone 5 iOS 7 beta 6": {
+        USER_AGENT: "Mozilla/5.0 (iPhone; CPU iPhone OS 7_0 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/6.0 Mobile/11A4449d Safari/9537.53.25",
+        OS: "iOS",
+        OS_VERSION: 7.0,
+        BROWSER_VERSION: 6.0,
+        BROWSER_ENGINE: "WebKit",
+        BROWSER: "Safari",
+    },
+    "iPhone 4s iOS 7.0.3": {
+        USER_AGENT: "Mozilla/5.0 (iPhone; CPU iPhone OS 7_0_3 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11B511 Safari/9537.53",
+        OS: "iOS",
+        OS_VERSION: 7.0,
+        BROWSER_VERSION: 7.0,
+        BROWSER_ENGINE: "WebKit",
+        BROWSER: "Safari",
+    },
+    "iPad 2 iOS 6 beta": {
+        USER_AGENT: "Mozilla/5.0 (iPad; CPU OS 5_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9B176 Safari/7534.48.3",
+        OS: "iOS",
+        OS_VERSION: 5.1,
+        BROWSER_VERSION: 5.1,
+        BROWSER_ENGINE: "WebKit",
+        BROWSER: "Safari",
+    },
+    "Xbox One": {
+        USER_AGENT: "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0; Xbox; Xbox One)",
+        //                                                       ~~~~~~ don't look
+        OS: "Windows",
+        OS_VERSION: 6.2,
+        BROWSER_VERSION: 10.0,
+        BROWSER_ENGINE: "Trident",
+        BROWSER: "IE",
+    },
+    "Xbox 360": { // IEMobile Based Browser.
+        USER_AGENT: "Mozilla/5.0 (compatible; MSIE 9.0; Windows Phone OS 7.5; Trident/5.0; IEMobile/9.0; Xbox)",
+        //                                                            ~~~~~~ don't look
+        OS: "Windows",
+        OS_VERSION: 7.5,
+        BROWSER_VERSION: 9.0,
+        BROWSER_ENGINE: "Trident",
+        BROWSER: "IE",
+    },
+    "PS 4": { // WebKit Based Browser.
+        USER_AGENT: "Mozilla/5.0 (PlayStation 4 1.52) AppleWebKit/536.26 (KHTML, like Gecko)",
+        //                                    ~~~~~~ don't look
+        OS: "",
+        OS_VERSION: 0.0,
+        BROWSER_VERSION: 0.0,
+        BROWSER_ENGINE: "",
+        BROWSER: "",
+    },
+    "PS 3(WebKit)": { // WebKit Based Browser.
+        USER_AGENT: "Mozilla/5.0 (PLAYSTATION 3 4.10) AppleWebKit/531.22.8 (KHTML, like Gecko)",
+        //                                    ~~~~~~ don't look
+        OS: "",
+        OS_VERSION: 0.0,
+        BROWSER_VERSION: 0.0,
+        BROWSER_ENGINE: "",
+        BROWSER: "",
+    },
+    "PS 3": { // Sony Original Browser.
+        USER_AGENT: "Mozilla/5.0 (PLAYSTATION 3; 2.50) + Flash 9",
+        //                                    ~~~~~~~ don't look
+        OS: "",
+        OS_VERSION: 0.0,
+        BROWSER_VERSION: 0.0,
+        BROWSER_ENGINE: "",
+        BROWSER: "",
+    },
+    "PS 2": { // NetFront Based Browser.
+        USER_AGENT: "Mozilla/4.0 (PS2; PlayStation BB Navigator 1.0) NetFront/3.0",
+        OS: "",
+        OS_VERSION: 0.0,
+        BROWSER_VERSION: 0.0,
+        BROWSER_ENGINE: "",
+        BROWSER: "",
+    },
+    "PSP": { // NetFront Based Browser.
+        USER_AGENT: "Mozilla/4.0 (PSP PlayStation Portable); 2.00)",
+        OS: "",
+        OS_VERSION: 0.0,
+        BROWSER_VERSION: 0.0,
+        BROWSER_ENGINE: "",
+        BROWSER: "",
+    },
+    "PS Vita": { // WebKit Based Browser.
+        USER_AGENT: "Mozilla/5.0 (PlayStation Vita 1.50) AppleWebKit/531.22.8 (KHTML, like Gecko) Silk/3.2",
+        OS: "",
+        OS_VERSION: 0.0,
+        BROWSER_VERSION: 0.0,
+        BROWSER_ENGINE: "",
+        BROWSER: "",
+    },
+    "Wii": { // Opera Browser.
+        USER_AGENT: "Opera/9.30 (Nintendo Wii; U; ; 3642; ja) with Flash Lite 3.1",
+        //                                          ~~~~~ don't look
+        OS: "",
+        OS_VERSION: 0.0,
+        BROWSER_VERSION: 0.0,
+        BROWSER_ENGINE: "",
+        BROWSER: "",
+    },
+    "Wii U": { // NetFrontNX Browser.
+        USER_AGENT: "Mozilla/5.0 (Nintendo WiiU) AppleWebKit/536.28 (KHTML, like Gecko) NX/*** NintendoBrowser/***.JP",
+        OS: "",
+        OS_VERSION: 0.0,
+        BROWSER_VERSION: 0.0,
+        BROWSER_ENGINE: "",
+        BROWSER: "",
+    },
+    "3DS": { // NetFront Based Browser.
+        USER_AGENT: "Mozilla/5.0 (Nintendo 3DS; U; ; ja) Version/1.7412.JP",
+        //                                                       ~~~~~~~~~ don't look
+        OS: "",
+        OS_VERSION: 0.0,
+        BROWSER_VERSION: 0.0,
+        BROWSER_ENGINE: "",
+        BROWSER: "",
+    }
+};
+
+
 function testBrowser(test, pass, miss) {
 
     var result = true;
 
-    for (var id in userAgents) {
-        var data = userAgents[id];
-        var spec = null;
-        var env = { USER_AGENT: data.ua };
+    for (var testID in userAgents) {
+        var data = userAgents[testID];
+        var spec = new Spec();
+        spec.USER_AGENT = data.USER_AGENT;
 
-        try {
-            console.log(data.ua);
-            spec = new Spec(env);
-        } catch (err) {
-            console.log( "ERROR: " + data.ua);
-            result = false;
-            break;
-        }
-        var ok = true;
-
-        if (data.os !== spec.getOS()) {
-            console.log( "OS             : " + data.os,         " -> " + spec.getOS() );
-            ok = false;
-        }
-        if (data.osVer != parseFloat(spec.getOSVersion())) {
-            console.log( "OS_VERSION     : " + data.osVer,      " -> " + spec.getOSVersion() );
-            ok = false;
-        }
-        if (data.browserVer != parseFloat(spec.getBrowserVersion())) {
-            console.log( "BROWSER_VERSION: " + data.browserVer, " -> " + spec.getBrowserVersion() );
-            ok = false;
-        }
-        if (data.engine != spec.getBrowserEngine()) {
-            console.log( "BROWSER_ENGINE : " + data.engine,     " -> " + spec.getBrowserEngine() );
-            ok = false;
-        }
-        if (data.browser != spec.getBrowserName()) {
-            console.log( "BROWSER_NAME   : " + data.browser,    " -> " + spec.getBrowserName() );
-            ok = false;
-        }
-        if (!ok) {
-            debugger;
-            result = false;
-            break;
+        for (var key in data) {
+            if (/VERSION/.test(key)) {
+                if (parseFloat(data[key]) !== parseFloat(spec[key])) {
+                    console.log( key + ": " + data[key] + " -> " + spec[key] );
+                    debugger;
+                    result = false;
+                    break;
+                }
+            } else if (data[key] !== spec[key]) {
+                console.log( key + ": " + data[key] + " -> " + spec[key] );
+                debugger;
+                result = false;
+                break;
+            }
         }
     }
     if (result) {
@@ -803,60 +644,7 @@ function testBrowser(test, pass, miss) {
     }
 }
 
-function testAlternateDevice(test, pass, miss) {
-    var override = {
-            alt: true,
-            USER_AGENT: "Mozilla/5.0 (Linux; Android 6.0.5; en-us; Nexus Ace Build/JOP40D) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19"
-        };
-
-    var spec = new Spec(override);
-
-    if ( spec.isDeviceDetected() === false &&
-         spec.getDeviceCandidate()[0] === "Nexus Ace" &&
-         spec.getOSVersion() === "6.0.5") {
-
-        test.done(pass());
-    } else {
-        test.done(miss());
-    }
-}
-function testUnknownDevice(test, pass, miss) {
-    var override = {
-            alt: false,
-            USER_AGENT: "Mozilla/5.0 (Linux; Android 6.0.5; en-us; Nexus Ace Build/JOP40D) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19"
-        };
-
-    var spec = new Spec(override);
-
-    if ( spec.isDeviceDetected() === false &&
-         spec.getDeviceCandidate().length === 0 &&
-         spec.getOSVersion() === "6.0.5") {
-
-        test.done(pass());
-    } else {
-        test.done(miss());
-    }
-}
-
-function testCanDeviceFeature(test, pass, miss) {
-    var env = {
-            USER_AGENT: "Mozilla/5.0 (Linux; Android 4.3; Nexus 7 Build/JWR66N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.111 Safari/537.36",
-            DISPLAY_DPR: 2
-        };
-
-    var spec = new Spec(env);
-
-    if ( spec.canDeviceFeature("NFC") &&
-         spec.canDeviceFeature("3G")  &&
-         spec.canDeviceFeature("LTE") &&
-         spec.canDeviceFeature("NFC") ) {
-        test.done(pass());
-    } else {
-        test.done(miss());
-    }
-}
-
-
+/*
 function test_isGoodByeAndroidBrowser(test, pass, miss) {
 
     var Chrom18             = "Mozilla/5.0 (Linux; Android 4.2;          Nexus 7   Build/JOP40C)       AppleWebKit/535.19 (KHTML, like Gecko)             Chrome/18.0.1025.166        Safari/535.19";
@@ -887,139 +675,20 @@ function test_isGoodByeAndroidBrowser(test, pass, miss) {
         test.done(miss());
     }
 }
+ */
 
 function test_getHardwareConcurrency(test, pass, miss) {
-    var env = {
-            USER_AGENT: "Mozilla/5.0 (Linux; Android 4.4; Nexus 5 Build/BuildID) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/30.0.0.0 Mobile Safari/537.36"
-        };
-    var result = new Spec(env).getHardwareConcurrency();
-
-    if (result > 0) {
-        test.done(pass());
-    } else {
-        test.done(miss());
-    }
-}
-
-function test_getMaxConnections(test, pass, miss) {
-    var env = {
-            USER_AGENT: "Mozilla/5.0 (Linux; Android 4.4; Nexus 5 Build/BuildID) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/30.0.0.0 Mobile Safari/537.36"
-        };
-    var result = new Spec(env).getMaxConnections();
-
-    if (result > 0) {
-        test.done(pass());
-    } else {
-        test.done(miss());
-    }
-}
-
-function test_getConnectionsPerHost(test, pass, miss) {
-    var env = {
-            USER_AGENT: "Mozilla/5.0 (Linux; Android 4.4; Nexus 5 Build/BuildID) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/30.0.0.0 Mobile Safari/537.36"
-        };
-    var result = new Spec(env).getConnectionsPerHost();
-
-    if (result > 0) {
-        test.done(pass());
-    } else {
-        test.done(miss());
-    }
-}
-
-function test_isMobileDevice(test, pass, miss) {
-    var env = {
-            USER_AGENT: "Mozilla/5.0 (Linux; Android 4.4; Nexus 5 Build/BuildID) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/30.0.0.0 Mobile Safari/537.36"
-        };
-    var result = new Spec(env).isMobileDevice();
-
-    if (result) {
-        test.done(pass());
-    } else {
-        test.done(miss());
-    }
-}
-
-function testPrefix(test, pass, miss) {
-    var env = {
-            USER_AGENT: "Mozilla/5.0 (Linux; Android 4.4; Nexus 5 Build/BuildID) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/30.0.0.0 Mobile Safari/537.36"
-        };
-    var parentObject = {
-            "webkitAudioContext": function() {
-            }
-        };
-
-    var result = new Spec(env).prefix(parentObject, "AudioContext");
-
-    if (result) {
-        test.done(pass());
-    } else {
-        test.done(miss());
-    }
-}
-
-// --- Media.js ---
-function testMediaSpec(test, pass, miss) {
-
     var spec = new Spec();
-    var audioReady = spec.canMedia("AUDIO");
-    var videoReady = spec.canMedia("video");
-    var webAudioReady = spec.canMedia("webaudio");
+    spec.USER_AGENT = "Mozilla/5.0 (Linux; Android 4.4; Nexus 5 Build/BuildID) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/30.0.0.0 Mobile Safari/537.36";
 
-    if ( audioReady ||
-         videoReady ||
-         webAudioReady ) {
-
-        console.log("MP3: " + spec.canMedia("mp3"));
-        console.log("MP4: " + spec.canMedia("MP4"));
-        console.log("Ogg: " + spec.canMedia("ogg"));
-        console.log("Wav: " + spec.canMedia("wav"));
-        console.log("WebM:" + spec.canMedia("webm"));
-
+    if (spec.CPU_CORES > 0) {
         test.done(pass());
     } else {
-        console.log("Media disabled");
-
-        if (_runOnNode || _runOnWorker) {
-            test.done(pass());
-        } else {
-            test.done(miss());
-        }
+        test.done(miss());
     }
 }
 
-// --- Storage.js ---
-function testStorage(test, pass, miss) {
-    var spec = new Spec();
-    var webStorage = spec.isWebStorage();
-    var webSQL     = spec.isWebSQL();
-    var indexedDB  = spec.isIndexedDB();
-    var appCache   = spec.isApplicationCache();
-    var diskQuota  = spec.isDiskQuota();
-
-    if ( webStorage ||
-         webSQL     ||
-         indexedDB  ||
-         appCache   ||
-         diskQuota ) {
-
-        console.log("WebStorage: " + webStorage);
-        console.log("WebSQL    : " + webSQL);
-        console.log("IndexedDB : " + indexedDB);
-        console.log("AppCache  : " + appCache);
-        console.log("DiskQuota : " + diskQuota);
-
-        test.done(pass());
-    } else {
-        console.log("Storage disabled");
-
-        if (_runOnNode) {
-            test.done(pass());
-        } else {
-            test.done(miss());
-        }
-    }
-}
+return test.run().clone();
 
 })((this || 0).self || global);
 

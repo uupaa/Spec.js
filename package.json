@@ -11,7 +11,7 @@
   "scripts": {
     "sync": "node ../WebModule/run/sync.js; npm update; node ../WebModule/run/page.js",
     "min": "node ../WebModule/run/minify.js --verbose --strict --keep --pretty",
-    "build": "node ../WebModule/run/minify.js --verbose --strict --keep --module",
+    "build": "node ../WebModule/run/minify.js --verbose --strict --keep --release",
     "watch": "node ../WebModule/run/watch.js --verbose --run hint",
     "page": "node ../WebModule/run/page.js --verbose",
     "test": "npm run min; npm run node; npm run browser",
@@ -31,19 +31,19 @@
     "develop": false,
     "label": ["@dev", "@devicejp", "@devicefx", "@kindle", "@windowsphone"],
     "browser": {
-      "source": ["lib/Spec.js", "lib/SpecCatalog.js"],
+      "source": ["lib/SpecCatalog.js", "lib/Spec.js"],
       "output": "release/Spec.b.min.js"
     },
     "worker": {
-      "source": ["lib/Spec.js", "lib/SpecCatalog.js"],
+      "source": ["lib/SpecCatalog.js", "lib/Spec.js"],
       "output": "release/Spec.w.min.js"
     },
     "node": {
-      "source": ["lib/Spec.js", "lib/SpecCatalog.js"],
+      "source": ["lib/SpecCatalog.js", "lib/Spec.js"],
       "output": "release/Spec.n.min.js"
     },
     "nw": {
-      "source": ["lib/Spec.js", "lib/SpecCatalog.js"],
+      "source": ["lib/SpecCatalog.js", "lib/Spec.js"],
       "output": "release/Spec.nw.min.js"
     }
   },

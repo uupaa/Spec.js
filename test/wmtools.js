@@ -7,7 +7,7 @@
 // --- dependency modules ----------------------------------
 // --- define / local variables ----------------------------
 //var _isNodeOrNodeWebKit = !!global.global;
-//var _runOnNodeWebKit =  _isNodeOrNodeWebKit && /native/.test(setTimeout);
+//var _runOnNodeWebKit =  _isNodeOrNodeWebKit &&  /native/.test(setTimeout);
 //var _runOnNode       =  _isNodeOrNodeWebKit && !/native/.test(setTimeout);
 //var _runOnWorker     = !_isNodeOrNodeWebKit && "WorkerLocation" in global;
 //var _runOnBrowser    = !_isNodeOrNodeWebKit && "document" in global;
@@ -534,7 +534,7 @@ global["Reflection"] = Reflection;
 // --- dependency modules ----------------------------------
 // --- define / local variables ----------------------------
 var _isNodeOrNodeWebKit = !!global.global;
-var _runOnNodeWebKit =  _isNodeOrNodeWebKit && /native/.test(setTimeout);
+var _runOnNodeWebKit =  _isNodeOrNodeWebKit &&  /native/.test(setTimeout);
 var _runOnNode       =  _isNodeOrNodeWebKit && !/native/.test(setTimeout);
 //var _runOnWorker     = !_isNodeOrNodeWebKit && "WorkerLocation" in global;
 var _runOnBrowser    = !_isNodeOrNodeWebKit && "document" in global;
@@ -651,7 +651,7 @@ global["Console"] = Console;
 // --- dependency modules ----------------------------------
 // --- define / local variables ----------------------------
 //var _isNodeOrNodeWebKit = !!global.global;
-//var _runOnNodeWebKit =  _isNodeOrNodeWebKit && /native/.test(setTimeout);
+//var _runOnNodeWebKit =  _isNodeOrNodeWebKit &&  /native/.test(setTimeout);
 //var _runOnNode       =  _isNodeOrNodeWebKit && !/native/.test(setTimeout);
 //var _runOnWorker     = !_isNodeOrNodeWebKit && "WorkerLocation" in global;
 //var _runOnBrowser    = !_isNodeOrNodeWebKit && "document" in global;
@@ -1026,28 +1026,33 @@ var Console    = global["Console"];
 
 // --- define / local variables ----------------------------
 //var _isNodeOrNodeWebKit = !!global.global;
-//var _runOnNodeWebKit =  _isNodeOrNodeWebKit && /native/.test(setTimeout);
+//var _runOnNodeWebKit =  _isNodeOrNodeWebKit &&  /native/.test(setTimeout);
 //var _runOnNode       =  _isNodeOrNodeWebKit && !/native/.test(setTimeout);
 //var _runOnWorker     = !_isNodeOrNodeWebKit && "WorkerLocation" in global;
 //var _runOnBrowser    = !_isNodeOrNodeWebKit && "document" in global;
 
 // --- class / interfaces ----------------------------------
 function Help(target,      // @arg Function|String - function or function-path or search keyword.
-              highlight) { // @arg String = "" - code highlight.
+              highlight,   // @arg String = "" - code highlight.
+              options) {   // @arg Object = {} - { nolink }
+                           // @options.nolink Boolean = false
                            // @desc quick online help.
 //{@dev
     _if(!/string|function/.test(typeof target),     Help, "target");
     _if(!/string|undefined/.test(typeof highlight), Help, "highlight");
 //}@dev
+    options = options || {};
 
     var resolved  = Reflection["resolve"](target);
     var search    = Reflection["getSearchLink"](resolved["path"]);
     var reference = Reflection["getReferenceLink"](resolved["path"]);
 
     _syntaxHighlight(resolved["fn"] + "", highlight);
-    Console["link"](search["url"], search["title"]);
-    if (reference) {
-        Console["link"](reference["url"], reference["title"]);
+    if (!options.noLink) {
+        Console["link"](search["url"], search["title"]);
+        if (reference) {
+            Console["link"](reference["url"], reference["title"]);
+        }
     }
 }
 
@@ -1111,7 +1116,7 @@ global["Help"] = Help;
 // --- dependency modules ----------------------------------
 // --- define / local variables ----------------------------
 //var _isNodeOrNodeWebKit = !!global.global;
-//var _runOnNodeWebKit =  _isNodeOrNodeWebKit && /native/.test(setTimeout);
+//var _runOnNodeWebKit =  _isNodeOrNodeWebKit &&  /native/.test(setTimeout);
 //var _runOnNode       =  _isNodeOrNodeWebKit && !/native/.test(setTimeout);
 //var _runOnWorker     = !_isNodeOrNodeWebKit && "WorkerLocation" in global;
 //var _runOnBrowser    = !_isNodeOrNodeWebKit && "document" in global;
@@ -1160,7 +1165,10 @@ function Task(taskCount, // @arg Integer              - user task count, value f
 Task["prototype"] = {
     "constructor":  Task,           // new Task(tackCount:Integer, callback:Function|Task = null, options:Object = {})
     // --- buffer accessor ---
+    "pop":          Task_pop,       // Task#pop():Any|undefined
     "push":         Task_push,      // Task#push(value:Any):this
+    "shift":        Task_shift,     // Task#shift():Any|undefined
+    "unshift":      Task_unshift,   // Task#unshift(value:Any):this
     "set":          Task_set,       // Task#set(key:String, value:Any):this
     // --- flow state ---
     "done":         Task_done,      // Task#done(err:Error|null):this
@@ -1195,10 +1203,29 @@ Task["loop"]      = Task_loop;      // Task.loop(source:Object|Array,
                                     //           callback:Function|Task = null,
                                     //           options:Object = {}):Task
 // --- implements ------------------------------------------
+function Task_pop() { // @ret Any|undefined
+    if (this._.buffer) {
+        return this._.buffer.pop();
+    }
+    return this;
+}
 function Task_push(value) { // @arg Any
                             // @ret this
     if (this._.buffer) {
         this._.buffer.push(value);
+    }
+    return this;
+}
+function Task_shift() { // @ret Any|undefined
+    if (this._.buffer) {
+        return this._.buffer.shift();
+    }
+    return this;
+}
+function Task_unshift(value) { // @arg Any
+                               // @ret this
+    if (this._.buffer) {
+        this._.buffer.unshift(value);
     }
     return this;
 }
@@ -1479,8 +1506,7 @@ function Task_loop(source,    // @arg Object|Array         - for loop and for-in
 if (typeof module !== "undefined") {
     module["exports"] = Task;
 }
-global["TestTask"] = Task;
-global["Task"] = Task;
+global["_TestTask_"] = Task;
 
 })((this || 0).self || global);
 
@@ -1490,11 +1516,11 @@ global["Task"] = Task;
 "use strict";
 
 // --- dependency modules ----------------------------------
-var Task = global["Task"];
+var Task = global["_TestTask_"];
 
 // --- define / local variables ----------------------------
 var _isNodeOrNodeWebKit = !!global.global;
-var _runOnNodeWebKit =  _isNodeOrNodeWebKit && /native/.test(setTimeout);
+var _runOnNodeWebKit =  _isNodeOrNodeWebKit &&  /native/.test(setTimeout);
 var _runOnNode       =  _isNodeOrNodeWebKit && !/native/.test(setTimeout);
 var _runOnWorker     = !_isNodeOrNodeWebKit && "WorkerLocation" in global;
 var _runOnBrowser    = !_isNodeOrNodeWebKit && "document" in global;
@@ -1508,7 +1534,7 @@ var CLR  = "\u001b[0m";
 
 // --- class / interfaces ----------------------------------
 function Test(moduleName, // @arg String|StringArray - target modules.
-              param) {    // @arg Object = {} - { disable, browser, worker, node, nw, button, both }
+              param) {    // @arg Object = {} - { disable, browser, worker, node, nw, button, both, ignoreError }
                           // @param.disable Boolean = false - Disable all tests.
                           // @param.browser Boolean = false - Enable the browser test.
                           // @param.worker  Boolean = false - Enable the webWorker test.
@@ -1516,6 +1542,7 @@ function Test(moduleName, // @arg String|StringArray - target modules.
                           // @param.nw      Boolean = false - Enable the node-webkit test.
                           // @param.button  Boolean = false - Show test buttons.
                           // @param.both    Boolean = false - Test the primary and secondary module.
+                          // @param.ignoreError Boolean = false - ignore error
     param = param || {};
 
     this._items   = []; // test items.
@@ -1528,6 +1555,7 @@ function Test(moduleName, // @arg String|StringArray - target modules.
     this._nw      = param["nw"]      || false;
     this._button  = param["button"]  || false;
     this._both    = param["both"]    || false;
+    this._ignoreError = param["ignoreError"] || false;
 
     if (param["disable"]) {
         this._browser = false;
@@ -1542,6 +1570,10 @@ function Test(moduleName, // @arg String|StringArray - target modules.
 Test["prototype"]["add"]   = Test_add;   // Test#add(items:TestItemFunctionArray):this
 Test["prototype"]["run"]   = Test_run;   // Test#run(callback:Function = null):this
 Test["prototype"]["clone"] = Test_clone; // Test#clone():TestItemFunctionArray
+
+Test["toHex"]      = Test_toHex;         // Test#toHex(a:TypedArray|Array, fixedDigits:Integer = 0):NumberStringArray
+Test["likeArray"]  = Test_likeArray;     // Test#likeArray(a:TypedArray|Array, b:TypedArray|Array, fixedDigits:Integer = 0):Boolean
+Test["likeObject"] = Test_likeObject;    // Test#likeObject(a:Object, b:Object):Boolean
 
 // --- implements ------------------------------------------
 function Test_add(items) { // @arg TestItemFunctionArray - test items. [fn, ...]
@@ -1728,33 +1760,45 @@ function _testRunner(that,               // @arg this
             var flow = _getFlowFunctions(that, testFunctionName + " pass", testFunctionName + " miss");
 
                 if (_runOnNode) {
-                    try {
-
-                        //  textXxx(test, pass, miss) {
-                        //      if (true) {
-                        //          test.done(pass());
-                        //      } else {
-                        //          test.done(miss());
-                        //      }
-                        //  }
-
+                    if (!that._ignoreError) {
                         fn(task, flow.pass, flow.miss);
-                    } catch (o_O) { // [!] catch uncaught exception
-                        flow.miss();
-                        console.log(ERR + fn + CLR);
-                        task.message(ERR + o_O.message + CLR + " in " + testFunctionName + " function").miss();
-//                      throw o_O;
+                    } else {
+                        try {
+
+                            //  textXxx(test, pass, miss) {
+                            //      if (true) {
+                            //          test.done(pass());
+                            //      } else {
+                            //          test.done(miss());
+                            //      }
+                            //  }
+
+                            fn(task, flow.pass, flow.miss);
+                        } catch (o_O) { // [!] catch uncaught exception
+                            flow.miss();
+                            console.log(ERR + fn + CLR);
+                            task.message(ERR + o_O.message + CLR + " in " + testFunctionName + " function").miss();
+    //                      throw o_O;
+                        }
                     }
                 } else if (_runOnBrowser || _runOnNodeWebKit) {
-                    try {
+                    if (!that._ignoreError) {
                         fn(task, flow.pass, flow.miss);
-                    } catch (o_O) {
-                        flow.miss();
-                        global["Help"](fn, testFunctionName);
-                        task.message(o_O.message + " in " + testFunctionName + " function").miss();
+                    } else {
+                        try {
+                            fn(task, flow.pass, flow.miss);
+                        } catch (o_O) {
+                            flow.miss();
+                            global["Help"](fn, testFunctionName);
+                            task.message(o_O.message + " in " + testFunctionName + " function").miss();
+                        }
                     }
                 } else {
-                    fn(task, flow.pass, flow.miss);
+                    if (!that._ignoreError) {
+                        fn(task, flow.pass, flow.miss);
+                    } else {
+                        fn(task, flow.pass, flow.miss);
+                    }
                 }
         }
     }
@@ -1868,15 +1912,15 @@ function _getFlowFunctions(that,
     case "node":    pass = console.log.bind(console, INFO + "Node(" + order + "): " + CLR + passMessage); break;
     case "worker":  pass = console.log.bind(console,      "Worker(" + order + "): " + passMessage); break;
     case "color":   pass = console.log.bind(console,   "%cBrowser(" + order + "): " + passMessage + "%c ", "color:#0c0", ""); break;
-    case "browser": pass = console.log.bind(console,     "Browser(" + order + "): " + passMessage);
+    case "browser": pass = console.log.bind(console,     "Browser(" + order + "): " + passMessage); break;
     case "nw":      pass = console.log.bind(console, "node-webkit(" + order + "): " + passMessage);
     }
     switch (style) {
     case "node":    miss = function() { console.error(ERR +"Node(" + order + "): " + CLR + missMessage);                     return new Error(); }; break;
     case "worker":  miss = function() { console.error(   "Worker(" + order + "): " + missMessage);                           return new Error(); }; break;
     case "color":   miss = function() { console.error("%cBrowser(" + order + "): " + missMessage + "%c ", "color:#red", ""); return new Error(); }; break;
-    case "browser": miss = function() { console.error(  "Browser(" + order + "): " + missMessage);                           return new Error(); };
-    case "nw":      miss = function() { console.error("node-webkit(" + order + "): " + missMessage);                           return new Error(); };
+    case "browser": miss = function() { console.error(  "Browser(" + order + "): " + missMessage);                           return new Error(); }; break;
+    case "nw":      miss = function() { console.error("node-webkit("+order + "): " + missMessage);                           return new Error(); };
     }
     return { pass: pass, miss: miss };
 }
@@ -1895,14 +1939,15 @@ function _addTestButtons(that, items) { // @arg TestItemFunctionArray
     // add <input type="button" onclick="test()" value="test()" /> buttons
     items.forEach(function(fn, index) {
         var itemName = fn["name"] || (fn + "").split(" ")[1].split("\x28")[0];
+        var safeName = itemName.replace(/\$/, "_"); // "concat$" -> "concat_"
 
-        if (!document.querySelector("#" + itemName)) {
+        if (!document.querySelector("#" + safeName)) {
             var inputNode = document.createElement("input");
             var next = "{pass:function(){},miss:function(){},done:function(){}}";
             var pass = "function(){console.log('"   + itemName + " pass')}";
             var miss = "function(){console.error('" + itemName + " miss')}";
 
-            inputNode.setAttribute("id", itemName);
+            inputNode.setAttribute("id", safeName);
             inputNode.setAttribute("type", "button");
             inputNode.setAttribute("value", itemName + "()");
             inputNode.setAttribute("onclick", "ModuleTest" + that._module[0] +
@@ -1911,6 +1956,56 @@ function _addTestButtons(that, items) { // @arg TestItemFunctionArray
             document.body.appendChild(inputNode);
         }
     });
+}
+
+function Test_toHex(a,             // @arg TypedArray|Array
+                    fixedDigits) { // @arg Integer = 0 - floatingNumber.toFixed(fixedDigits)
+                                   // @arg NumberStringArray - ["00", "01"]                  (Uint8Array)
+                                   //                          ["0000", "0001", ...]         (Uint16Array)
+                                   //                          ["00000000", "00000001", ...] (Uint32Array)
+                                   //                          ["12.3", "0.1", ...]          (Float64Array)
+    var fix    = fixedDigits || 0;
+    var type   = Array.isArray(a) ? "Array" : Object.prototype.toString.call(a);
+    var result = [], i = 0, iz = a.length;
+    var bytes  = /8/.test(type) ? 2 : /32/.test(type) ? 8 : 4;
+
+    if (/float/.test(type)) {
+        for (; i < iz; ++i) {
+            result.push( (0x100000000 + a[i]).toString(16).slice(-bytes) );
+        }
+    } else {
+        for (; i < iz; ++i) {
+            result.push( fix ? a[i].toFixed(fix) : a[i] );
+        }
+    }
+    return result;
+}
+
+function Test_likeArray(a,             // @arg TypedArray|Array
+                        b,             // @arg TypedArray|Array
+                        fixedDigits) { // @arg Integer = 0 - floatingNumber.toFixed(fixedDigits)
+                                       // @ret Boolean
+    fixedDigits = fixedDigits || 0;
+    if (a.length !== b.length) {
+        return false;
+    }
+    for (var i = 0, iz = a.length; i < iz; ++i) {
+        if (fixedDigits) {
+            if ( a[i].toFixed(fixedDigits) !== b[i].toFixed(fixedDigits) ) {
+                return false;
+            }
+        } else {
+            if ( a[i] !== b[i] ) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+function Test_likeObject(a,   // @arg Object
+                         b) { // @arg Object
+    return JSON.stringify(a) === JSON.stringify(b);
 }
 
 // --- exports ---------------------------------------------

@@ -12,10 +12,8 @@ onmessage = function(event) {
     }
 
     importScripts(".././test/wmtools.js");
+    importScripts("../lib/SpecCatalog.js");
     importScripts("../lib/Spec.js");
-    importScripts("../lib/Browser.js");
-    importScripts("../lib/Media.js");
-    importScripts("../lib/Storage.js");
     importScripts("../release/Spec.w.min.js");
     importScripts("./testcase.js");
 
