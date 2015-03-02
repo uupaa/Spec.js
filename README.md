@@ -22,7 +22,7 @@ Spec detection.
 
 var spec = new Spec();
 console.log(spec.USER_AGENT);   // "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.115 Safari/537.36";
-console.log(spec.BROWSER_NAME); // "Chrome"
+console.log(spec.BROWSER);      // "Chrome"
 
 </script>
 ```
