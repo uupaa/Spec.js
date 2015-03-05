@@ -57,6 +57,8 @@ if (_runOnBrowser || _runOnNodeWebKit) {
 function testSpec(test, pass, miss) {
     var spec = new Spec();
 
+    console.log( JSON.stringify(spec, null, 2) );
+
     test.done(pass());
 }
 
