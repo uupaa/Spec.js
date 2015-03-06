@@ -11,6 +11,7 @@ onmessage = function(event) {
         self.console.error = function() {};
     }
 
+    importScripts("../node_modules/uupaa.hash.js/lib/Hash.js");
     importScripts(".././test/wmtools.js");
     importScripts("../lib/SpecCatalog.js");
     importScripts("../lib/Spec.js");

@@ -1,6 +1,6 @@
 {
   "name": "uupaa.spec.js",
-  "version": "0.20.11",
+  "version": "0.20.12",
   "description": "Spec detection.",
   "url": "https://github.com/uupaa/Spec.js",
   "keywords": ["spec", "util", "uupaa", "WebModule", "Unstable"],
@@ -48,7 +48,9 @@
     }
   },
   "dependencies": {},
-  "devDependencies": {},
+  "devDependencies": {
+    "uupaa.hash.js": ""
+  },
   "lib": "./lib/",
   "main": "./index.js",
   "author": "uupaa <uupaa.js@gmail.com>",
