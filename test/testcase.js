@@ -17,7 +17,7 @@ var test = new Test("Spec", {
         ignoreError:false, // ignore error.
     }).add([
         // ---
-        testSpec,
+//        testSpec,
         testSpecParamUserAgent,
         testDeviceiPhone6Plus,
         testDeviceiPhone6,
@@ -43,6 +43,7 @@ var test = new Test("Spec", {
         testAlternateDevice,
         testDeviceFeature,
         testBrowser,
+//      testScriptHash,
     ]);
 
 if (_runOnBrowser || _runOnNodeWebKit) {
@@ -56,15 +57,33 @@ if (_runOnBrowser || _runOnNodeWebKit) {
 
 function testSpec(test, pass, miss) {
     var spec = new Spec();
-
     console.log( JSON.stringify(spec, null, 2) );
+
+    if (1) {
+        var result = {
+                DEVICE: spec.DEVICE,
+                MAX_TEXTURE_SIZE: spec.MAX_TEXTURE_SIZE,
+                USER_AGENT: spec.USER_AGENT,
+                GPU_VERSION: spec.GPU_VERSION,
+                GPU_FINGERPRINT: spec.GPU_FINGERPRINT.toString(16),
+                CANVAS_FINGERPRINT: spec.CANVAS_FINGERPRINT.toString(16),
+                DISPLAY_DPR: spec.DISPLAY_DPR,
+                DISPLAY_LONG: spec.DISPLAY_LONG,
+                DISPLAY_SHORT: spec.DISPLAY_SHORT,
+                MAX_TOUCH_POINTS: spec.MAX_TOUCH_POINTS,
+                CPU_CORES: spec.CPU_CORES,
+            };
+        alert( JSON.stringify(result, null, 2) );
+    } else {
+        alert( JSON.stringify(spec, null, 2) );
+    }
 
     test.done(pass());
 }
 
 function testSpecParamUserAgent(test, pass, miss) {
     var ua = "Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A403 Safari/8536.25";
-    var spec = new Spec();
+    var spec = new Spec(true);
     spec.USER_AGENT = ua;
 
     if (spec.USER_AGENT === ua) {
@@ -75,7 +94,7 @@ function testSpecParamUserAgent(test, pass, miss) {
 }
 
 function testDeviceiPhone6Plus(test, pass, miss) {
-    var spec = new Spec();
+    var spec = new Spec(true);
     spec.DISPLAY_DPR = 3;
     spec.DISPLAY_LONG = 736;
     spec.DISPLAY_SHORT = 414;
@@ -88,7 +107,7 @@ function testDeviceiPhone6Plus(test, pass, miss) {
     }
 }
 function testDeviceiPhone6(test, pass, miss) {
-    var spec = new Spec();
+    var spec = new Spec(true);
     spec.DISPLAY_DPR = 2;
     spec.DISPLAY_LONG = 667;
     spec.DISPLAY_SHORT = 375;
@@ -102,7 +121,7 @@ function testDeviceiPhone6(test, pass, miss) {
 }
 
 function testDeviceNexus5(test, pass, miss) {
-    var spec = new Spec();
+    var spec = new Spec(true);
     spec.USER_AGENT = "Mozilla/5.0 (Linux; Android 4.4; Nexus 5 Build/BuildID) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/30.0.0.0 Mobile Safari/537.36";
 
     if (spec.DEVICE === "Nexus 5" && spec.OS === "Android") {
@@ -113,7 +132,7 @@ function testDeviceNexus5(test, pass, miss) {
 }
 
 function testDeviceNexus7_2nd(test, pass, miss) {
-    var spec = new Spec();
+    var spec = new Spec(true);
     spec.DISPLAY_DPR = 2;
     spec.USER_AGENT = "Mozilla/5.0 (Linux; Android 4.3; Nexus 7 Build/JWR66N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.111 Safari/537.36";
 
@@ -125,7 +144,7 @@ function testDeviceNexus7_2nd(test, pass, miss) {
 }
 
 function testFirefoxMobileForAndroid(test, pass, miss) {
-    var spec = new Spec();
+    var spec = new Spec(true);
     spec.USER_AGENT = "Mozilla/5.0 (Android; Mobile; rv:13.0) Gecko/13.0 Firefox/13.0";
 
     if (spec.OS === "Android" && spec.BROWSER === "Firefox") {
@@ -136,7 +155,7 @@ function testFirefoxMobileForAndroid(test, pass, miss) {
 }
 
 function testDeviceFirefoxOS(test, pass, miss) {
-    var spec = new Spec();
+    var spec = new Spec(true);
     spec.USER_AGENT =  "Mozilla/5.0 (Mobile; rv:18.0) Gecko/18.0 Firefox/18.0";
 
     if (spec.DEVICE === "" && spec.OS === "Firefox") {
@@ -148,7 +167,7 @@ function testDeviceFirefoxOS(test, pass, miss) {
 
 
 function testDevice_INFOBAR_A01(test, pass, miss) {
-    var spec = new Spec();
+    var spec = new Spec(true);
     spec.USER_AGENT = "Mozilla/5.0 (Linux; U; Android 2.3.3; ja-jp; INFOBAR A01 Build/S6160) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1";
 
     if (spec.DEVICE === "INFOBAR A01" && spec.OS === "Android") {
@@ -159,7 +178,7 @@ function testDevice_INFOBAR_A01(test, pass, miss) {
 }
 
 function testDeviceWindowsPhone8S(test, pass, miss) {
-    var spec = new Spec();
+    var spec = new Spec(true);
     spec.USER_AGENT = "Mozilla/5.0 (compatible; MSIE 10.0; Windows Phone 8.0; Trident/6.0; IEMobile/10.0; ARM; Touch; HTC; Windows Phone 8S by HTC)";
 
     if (spec.DEVICE === "Lumia 520" && spec.OS === "Windows") {
@@ -170,7 +189,7 @@ function testDeviceWindowsPhone8S(test, pass, miss) {
 }
 
 function testDeviceWindowsPhoneLumia920(test, pass, miss) {
-    var spec = new Spec();
+    var spec = new Spec(true);
     spec.USER_AGENT = "Mozilla/5.0 (compatible; MSIE 10.0; Windows Phone 8.0; Trident/6.0; IEMobile/10.0; ARM; Touch; NOKIA; Lumia 920)";
 
     if (spec.DEVICE === "Lumia 920" && spec.OS === "Windows") {
@@ -181,7 +200,7 @@ function testDeviceWindowsPhoneLumia920(test, pass, miss) {
 }
 
 function testDeviceKindle(test, pass, miss) {
-    var spec = new Spec();
+    var spec = new Spec(true);
     spec.USER_AGENT = "Mozilla/5.0 (Linux; U; Android 4.0.3; en-us; KFTT Build/IML74K) AppleWebKit/535.19 (KHTML, like Gecko) Silk/3.4 Mobile Safari/535.19 Silk-Accelerated=true";
 
     if (spec.DEVICE === "KFTT" && spec.OS === "Android") {
@@ -192,7 +211,7 @@ function testDeviceKindle(test, pass, miss) {
 }
 
 function testDeviceGooglePlayEdition(test, pass, miss) {
-    var spec = new Spec();
+    var spec = new Spec(true);
     spec.USER_AGENT = "Mozilla/5.0 (Linux; U; Android 4.2.2; en-us; HTC6500LVW 4G Build/JDQ39) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30";
 
     if (spec.DEVICE === "HTC6500LVW" && spec.OS === "Android") {
@@ -203,7 +222,7 @@ function testDeviceGooglePlayEdition(test, pass, miss) {
 }
 
 function testIsOS(test, pass, miss) {
-    var spec = new Spec();
+    var spec = new Spec(true);
     spec.USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36";
 
     if (spec.OS === "Mac") {
@@ -214,7 +233,7 @@ function testIsOS(test, pass, miss) {
 }
 
 function testIsBrowser(test, pass, miss) {
-    var spec = new Spec();
+    var spec = new Spec(true);
     spec.USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36";
 
     if (spec.BROWSER === "Chrome") {
@@ -225,7 +244,7 @@ function testIsBrowser(test, pass, miss) {
 }
 
 function testIsBrowserEngine(test, pass, miss) {
-    var spec = new Spec();
+    var spec = new Spec(true);
     spec.USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36";
 
     if (spec.BROWSER_ENGINE === "Blink") {
@@ -236,7 +255,7 @@ function testIsBrowserEngine(test, pass, miss) {
 }
 
 function testMacPro(test, pass, miss) {
-    var spec = new Spec();
+    var spec = new Spec(true);
     spec.USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36";
 
     if (spec.OS === "Mac" && parseFloat(spec.OS_VERSION) === 10.8 &&
@@ -249,7 +268,7 @@ function testMacPro(test, pass, miss) {
 }
 
 function testIE11Preview(test, pass, miss) {
-    var spec = new Spec();
+    var spec = new Spec(true);
     spec.USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko";
 
     if (spec.OS === "Windows" &&
@@ -263,7 +282,7 @@ function testIE11Preview(test, pass, miss) {
 }
 
 function testIE10(test, pass, miss) {
-    var spec = new Spec();
+    var spec = new Spec(true);
     spec.USER_AGENT = "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; Trident/6.0)";
 
     if (spec.OS === "Windows" &&
@@ -277,7 +296,7 @@ function testIE10(test, pass, miss) {
 }
 
 function testFirefox11(test, pass, miss) {
-    var spec = new Spec();
+    var spec = new Spec(true);
     spec.USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:11.0) Gecko/20100101 Firefox/11.0";
 
     if (spec.OS === "Windows" &&
@@ -291,7 +310,7 @@ function testFirefox11(test, pass, miss) {
 }
 
 function testFirefox20(test, pass, miss) {
-    var spec = new Spec();
+    var spec = new Spec(true);
     spec.USER_AGENT = "Mozilla/5.0 (Mobile; LGL25; rv:32.0) Gecko/32.0 Firefox/32.0";
 
     if (spec.OS === "Firefox" &&
@@ -308,13 +327,13 @@ function testFirefox20(test, pass, miss) {
 
 
 function testAlternateDevice(test, pass, miss) {
-    var spec = new Spec();
+    var spec = new Spec(true);
     spec.USER_AGENT = "Mozilla/5.0 (Linux; Android 6.0.5; en-us; Nexus Ace Build/JOP40D) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19";
 
     if ( spec.DEVICE === "Nexus Ace" &&
          spec.OS_VERSION === "6.0.5") {
 
-        var nexus5 = new Spec();
+        var nexus5 = new Spec(true);
         nexus5.USER_AGENT = "Mozilla/5.0 (Linux; Android 4.4; Nexus 5 Build/BuildID) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/30.0.0.0 Mobile Safari/537.36";
 
         if (nexus5.SOC === spec.SOC &&
@@ -327,7 +346,7 @@ function testAlternateDevice(test, pass, miss) {
 }
 
 function testDeviceFeature(test, pass, miss) {
-    var spec = new Spec();
+    var spec = new Spec(true);
     spec.DISPLAY_DPR = 2;
     spec.USER_AGENT = "Mozilla/5.0 (Linux; Android 4.3; Nexus 7 Build/JWR66N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.111 Safari/537.36";
 
@@ -620,7 +639,7 @@ function testBrowser(test, pass, miss) {
 
     for (var testID in userAgents) {
         var data = userAgents[testID];
-        var spec = new Spec();
+        var spec = new Spec(true);
         spec.USER_AGENT = data.USER_AGENT;
 
         for (var key in data) {
@@ -680,7 +699,7 @@ function test_isGoodByeAndroidBrowser(test, pass, miss) {
  */
 
 function test_getHardwareConcurrency(test, pass, miss) {
-    var spec = new Spec();
+    var spec = new Spec(true);
     spec.USER_AGENT = "Mozilla/5.0 (Linux; Android 4.4; Nexus 5 Build/BuildID) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/30.0.0.0 Mobile Safari/537.36";
 
     if (spec.CPU_CORES > 0) {
@@ -688,6 +707,18 @@ function test_getHardwareConcurrency(test, pass, miss) {
     } else {
         test.done(miss());
     }
+}
+
+function testScriptHash(test, pass, miss) {
+/*
+    if ( !global["Hash"] ) {
+        test.done(miss());
+    }
+    var Hash = global["Hash"];
+
+    if (Hash["XXHash"](Hash["STR_U8A"](Spec)
+ */
+        test.done(pass());
 }
 
 return test.run().clone();
