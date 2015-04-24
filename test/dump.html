@@ -1,0 +1,29 @@
+<!DOCTYPE html><html><head><title>Spec test</title>
+<meta name="viewport" content="width=device-width, user-scalable=no">
+<meta charset="utf-8"></head><body>
+
+<script src="../lib/SpecCatalog.js"></script>
+<script src="../lib/Spec.js"></script>
+<script>
+
+    var spec = new Spec();
+    console.log( JSON.stringify(spec, null, 2) );
+
+    var result = {
+            DEVICE:             spec.DEVICE,
+            MAX_TEXTURE_SIZE:   spec.MAX_TEXTURE_SIZE,
+            USER_AGENT:         spec.USER_AGENT,
+            GPU_VERSION:        spec.GPU_VERSION,
+            DISPLAY_DPR:        spec.DISPLAY_DPR,
+            DISPLAY_LONG:       spec.DISPLAY_LONG,
+            DISPLAY_SHORT:      spec.DISPLAY_SHORT,
+            MAX_TOUCH_POINTS:   spec.MAX_TOUCH_POINTS,
+            CPU_CORES:          spec.CPU_CORES,
+        };
+    alert( JSON.stringify(result, null, 2) );
+
+</script>
+
+
+</body></html>
+

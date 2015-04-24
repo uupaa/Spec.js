@@ -17,7 +17,6 @@ var test = new Test("Spec", {
         ignoreError:false, // ignore error.
     }).add([
         // ---
-//        testSpec,
         testSpecParamUserAgent,
         testDeviceiPhone6Plus,
         testDeviceiPhone6,
@@ -51,34 +50,6 @@ if (_runOnBrowser || _runOnNodeWebKit) {
         test_getHardwareConcurrency,
       //test_isGoodByeAndroidBrowser,
     ]);
-}
-
-
-
-function testSpec(test, pass, miss) {
-    var spec = new Spec();
-    console.log( JSON.stringify(spec, null, 2) );
-
-    if (1) {
-        var result = {
-                DEVICE: spec.DEVICE,
-                MAX_TEXTURE_SIZE: spec.MAX_TEXTURE_SIZE,
-                USER_AGENT: spec.USER_AGENT,
-                GPU_VERSION: spec.GPU_VERSION,
-                GPU_FINGERPRINT: spec.GPU_FINGERPRINT.toString(16),
-                CANVAS_FINGERPRINT: spec.CANVAS_FINGERPRINT.toString(16),
-                DISPLAY_DPR: spec.DISPLAY_DPR,
-                DISPLAY_LONG: spec.DISPLAY_LONG,
-                DISPLAY_SHORT: spec.DISPLAY_SHORT,
-                MAX_TOUCH_POINTS: spec.MAX_TOUCH_POINTS,
-                CPU_CORES: spec.CPU_CORES,
-            };
-        alert( JSON.stringify(result, null, 2) );
-    } else {
-        alert( JSON.stringify(spec, null, 2) );
-    }
-
-    test.done(pass());
 }
 
 function testSpecParamUserAgent(test, pass, miss) {
@@ -393,6 +364,16 @@ var userAgents = {
         BROWSER_ENGINE: "Trident",
         BROWSER_VERSION: 8.0,
     },
+/* http://borg4.vdomains.jp/~goro/diary/2015/2912
+    Spartan: {
+        USER_AGENT: "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36 Edge/12.0",
+        OS: "Windows",
+        OS_VERSION: 10.0,
+        BROWSER: "IE",
+        BROWSER_ENGINE: "Trident",
+        BROWSER_VERSION: 0.0,
+    },
+ */
     "WP7.5": {
         USER_AGENT: "Mozilla/5.0 (compatible; MSIE 9.0; Windows Phone OS 7.5; Trident/5.0; IEMobile/9.0)",
         OS: "Windows",
