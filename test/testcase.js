@@ -16,6 +16,7 @@ var test = new Test("Spec", {
         both:       true,  // test the primary and secondary modules.
         ignoreError:false, // ignore error.
     }).add([
+        //testWKWebView,
         // ---
         testSpecParamUserAgent,
         testDeviceiPhone6Plus,
@@ -50,6 +51,26 @@ if (_runOnBrowser || _runOnNodeWebKit) {
         test_getHardwareConcurrency,
       //test_isGoodByeAndroidBrowser,
     ]);
+}
+
+function testWKWebView(test, pass, miss) {
+    var spec = new Spec();
+
+    var supportFullScreen = "fullscreenEnabled" in document || "webkitFullscreenEnabled" in document || false;
+    var supportFileSystem = "requestFileSystem" in global   || "webkitRequestFileSystem" in global   || false;
+
+    document.body.innerHTML += JSON.stringify({ "requestFileSystem": "requestFileSystem" in window });
+    document.body.innerHTML += JSON.stringify({ "webkitRequestFileSystem": "webkitRequestFileSystem" in window });
+
+    document.body.innerHTML += JSON.stringify({ "webkitIsFullScreen": "webkitIsFullScreen" in document });
+    document.body.innerHTML += JSON.stringify({ "webkitIsFullScreen": document.webkitIsFullScreen });
+    document.body.innerHTML += JSON.stringify({ "USER_AGENT": spec.USER_AGENT });
+    document.body.innerHTML += JSON.stringify({ "BROWSER": spec.BROWSER });
+    document.body.innerHTML += JSON.stringify({ "supportFullScreen": supportFullScreen });
+    document.body.innerHTML += JSON.stringify({ "supportFileSystem": supportFileSystem });
+    document.body.innerHTML += JSON.stringify({ "WEB_VIEW": this.WEB_VIEW });
+
+    test.done(pass());
 }
 
 function testSpecParamUserAgent(test, pass, miss) {
