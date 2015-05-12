@@ -44,6 +44,8 @@ var test = new Test("Spec", {
         testDeviceFeature,
         testBrowser,
 //      testScriptHash,
+        // ---
+        testSpec_WEBP,
     ]);
 
 if (_runOnBrowser || _runOnNodeWebKit) {
@@ -721,6 +723,19 @@ function testScriptHash(test, pass, miss) {
     if (Hash["XXHash"](Hash["STR_U8A"](Spec)
  */
         test.done(pass());
+}
+
+function testSpec_WEBP(test, pass, miss) {
+    var spec = new Spec();
+
+    setTimeout(function() {
+        if (spec.WEBP & 0x01) { console.log("WebP lossy ready"); }
+        if (spec.WEBP & 0x02) { console.log("WebP lossless ready"); }
+        if (spec.WEBP & 0x04) { console.log("WebP alpha ready"); }
+        if (spec.WEBP & 0x08) { console.log("WebP animation ready"); }
+        test.done(pass());
+    }, 100); // because async detection.
+
 }
 
 return test.run().clone();
