@@ -1,18 +1,25 @@
 // Spec test
 
 onmessage = function(event) {
-    self.TEST_DATA = event.data;
-    self.TEST_ERROR_MESSAGE = "";
+    self.unitTest = event.data; // { message, setting: { secondary, baseDir } }
 
-    if (!self.console) {
+    if (!self.console) { // polyfill WebWorkerConsole
         self.console = function() {};
+        self.console.dir = function() {};
         self.console.log = function() {};
         self.console.warn = function() {};
         self.console.error = function() {};
+        self.console.table = function() {};
     }
 
-    __SCRIPT__
+    importScripts("../lib/WebModuleGlobal.js");
 
-    self.postMessage({ TEST_ERROR_MESSAGE: self.TEST_ERROR_MESSAGE || "" });
+    __MODULES__
+    __WMTOOLS__
+    __SOURCES__
+    __OUTPUT__
+    __TEST_CASE__
+
+    self.postMessage(self.unitTest);
 };
 

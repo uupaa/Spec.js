@@ -6,12 +6,6 @@
 
 // --- dependency modules ----------------------------------
 // --- define / local variables ----------------------------
-//var _isNodeOrNodeWebKit = !!global.global;
-//var _runOnNodeWebKit =  _isNodeOrNodeWebKit &&  /native/.test(setTimeout);
-//var _runOnNode       =  _isNodeOrNodeWebKit && !/native/.test(setTimeout);
-//var _runOnWorker     = !_isNodeOrNodeWebKit && "WorkerLocation" in global;
-//var _runOnBrowser    = !_isNodeOrNodeWebKit && "document" in global;
-
 var IGNORE_KEYWORDS = [
         "webkitStorageInfo",
         "Infinity",
@@ -524,7 +518,7 @@ if (typeof module !== "undefined") {
 }
 global["Reflection"] = Reflection;
 
-})((this || 0).self || global);
+})(GLOBAL);
 
 
 // Console.js
@@ -533,12 +527,6 @@ global["Reflection"] = Reflection;
 
 // --- dependency modules ----------------------------------
 // --- define / local variables ----------------------------
-var _isNodeOrNodeWebKit = !!global.global;
-var _runOnNodeWebKit =  _isNodeOrNodeWebKit &&  /native/.test(setTimeout);
-var _runOnNode       =  _isNodeOrNodeWebKit && !/native/.test(setTimeout);
-//var _runOnWorker     = !_isNodeOrNodeWebKit && "WorkerLocation" in global;
-var _runOnBrowser    = !_isNodeOrNodeWebKit && "document" in global;
-
 var CONSOLE_COLORS = {
         BLACK:  "\u001b[30m",
         RED:    "\u001b[31m",
@@ -552,15 +540,14 @@ var CONSOLE_COLORS = {
     };
 
 // --- class / interfaces ----------------------------------
-function Console() {
-}
-
-Console["log"]    = Console_log;    // Console.log(...:Any):void
-Console["warn"]   = Console_warn;   // Console.warn(...:Any):void
-Console["error"]  = Console_error;  // Console.error(...:Any):void
-Console["color"]  = Console_color;  // Console.color(color:ColorString, message:String):void
-Console["link"]   = Console_link;   // Console.link(url:String, title:String = "", style:Object = null):void
-Console["isEnabledStyle"] = Console_isEnabledStyle; // Console.isEnabledStyle():Boolean
+var Console = {
+    "log":              Console_log,            // Console.log(...:Any):void
+    "warn":             Console_warn,           // Console.warn(...:Any):void
+    "error":            Console_error,          // Console.error(...:Any):void
+    "color":            Console_color,          // Console.color(color:ColorString, message:String):void
+    "link":             Console_link,           // Console.link(url:String, title:String = "", style:Object = null):void
+    "isEnabledStyle":   Console_isEnabledStyle, // Console.isEnabledStyle():Boolean
+};
 
 // --- implements ------------------------------------------
 function Console_log() {
@@ -582,7 +569,7 @@ function Console_color(color,     // @arg ColorString
         if (color in CONSOLE_COLORS) {
             console.log("%c" + message, "color:" + color, "");
         }
-    } else if (_runOnNode) {
+    } else if (IN_NODE) {
         color = color.toUpperCase();
         if (color in CONSOLE_COLORS) {
             console.log(CONSOLE_COLORS[color] + message + CONSOLE_COLORS.CLEAR);
@@ -627,12 +614,16 @@ function _stylishLink(url, title, linkStyle, mark) {
 function Console_isEnabledStyle() { // @ret Boolean
     if (global["navigator"]) {
         if ( /Chrome/.test( global["navigator"]["userAgent"] || "" ) ) {
-            if (_runOnBrowser) {
+            if (IN_BROWSER) {
                 return true;
             }
         }
     }
     return false;
+}
+
+if (console && !console.table) {
+    console.table = console.dir;
 }
 
 // --- exports ---------------------------------------------
@@ -641,7 +632,7 @@ if (typeof module !== "undefined") {
 }
 global["Console"] = Console;
 
-})((this || 0).self || global);
+})(GLOBAL);
 
 
 // Valid.js
@@ -650,12 +641,6 @@ global["Console"] = Console;
 
 // --- dependency modules ----------------------------------
 // --- define / local variables ----------------------------
-//var _isNodeOrNodeWebKit = !!global.global;
-//var _runOnNodeWebKit =  _isNodeOrNodeWebKit &&  /native/.test(setTimeout);
-//var _runOnNode       =  _isNodeOrNodeWebKit && !/native/.test(setTimeout);
-//var _runOnWorker     = !_isNodeOrNodeWebKit && "WorkerLocation" in global;
-//var _runOnBrowser    = !_isNodeOrNodeWebKit && "document" in global;
-
 var TYPED_ARRAYS = [
         "Int8Array", "Uint8Array", "Uint8ClampedArray",
         "Int16Array", "Uint16Array",
@@ -693,21 +678,17 @@ function Valid(value,       // @arg Boolean
     }
 }
 
-//{@dev
-Valid["repository"] = "https://github.com/uupaa/Valid.js";
-//}@dev
-
-Valid["args"]  = Valid_args;  // Valid.args(api:Function, args:Array|ArrayLike):void
-Valid["type"]  = Valid_type;  // Valid.type(value:Any, types:String):Boolean
-Valid["some"]  = Valid_some;  // Valid.some(value:String|null|undefined, candidate:String|Object, ignoreCase:Boolean = false):Boolean
-Valid["keys"]  = Valid_keys;  // Valid.keys(value:Object|null|undefined, keys:String):Boolean
-Valid["json"]  = Valid_json;  // Valid.json(json:Object, scheme:Object):Boolean
-Valid["stack"] = Valid_stack; // Valid.stack(message:String = "", depth:Integer = 3):String
-
+Valid["repository"]     = "https://github.com/uupaa/Valid.js";
+Valid["args"]           = Valid_args;           // Valid.args(api:Function, args:Array|ArrayLike):void
+Valid["type"]           = Valid_type;           // Valid.type(value:Any, types:String):Boolean
+Valid["some"]           = Valid_some;           // Valid.some(value:String|null|undefined, candidate:String|Object, ignoreCase:Boolean = false):Boolean
+Valid["keys"]           = Valid_keys;           // Valid.keys(value:Object|null|undefined, keys:String):Boolean
+Valid["json"]           = Valid_json;           // Valid.json(json:Object, scheme:Object):Boolean
+Valid["stack"]          = Valid_stack;          // Valid.stack(message:String = "", depth:Integer = 3):String
 // --- extension ---
-Valid["register"]     = Valid_register;     // Valid.register(type:HookTypeString, callback:Function):void
-Valid["unregister"]   = Valid_unregister;   // Valid.unregister(type:HookTypeString):void
-Valid["isRegistered"] = Valid_isRegistered; // Valid.isRegistered(type:HookTypeString):Boolean
+Valid["register"]       = Valid_register;       // Valid.register(type:HookTypeString, callback:Function):void
+Valid["unregister"]     = Valid_unregister;     // Valid.unregister(type:HookTypeString):void
+Valid["isRegistered"]   = Valid_isRegistered;   // Valid.isRegistered(type:HookTypeString):Boolean
 
 // --- implements ------------------------------------------
 function Valid_args(api,    // @arg Function
@@ -999,21 +980,13 @@ function Valid_isRegistered(type) { // @arg HookTypeString
 }
 
 // --- validate / assertions -------------------------------
-//{@dev
-//function $valid(val, fn, hint) { if (global["Valid"]) { global["Valid"](val, fn, hint); } }
-//function $type(obj, type) { return global["Valid"] ? global["Valid"].type(obj, type) : true; }
-//function $keys(obj, str) { return global["Valid"] ? global["Valid"].keys(obj, str) : true; }
-//function $some(val, str, ignore) { return global["Valid"] ? global["Valid"].some(val, str, ignore) : true; }
-//function $args(fn, args) { if (global["Valid"]) { global["Valid"].args(fn, args); } }
-//}@dev
-
 // --- exports ---------------------------------------------
 if (typeof module !== "undefined") {
     module["exports"] = Valid;
 }
 global["Valid"] = Valid;
 
-})((this || 0).self || global);
+})(GLOBAL);
 
 
 // Help.js
@@ -1025,22 +998,14 @@ var Reflection = global["Reflection"];
 var Console    = global["Console"];
 
 // --- define / local variables ----------------------------
-//var _isNodeOrNodeWebKit = !!global.global;
-//var _runOnNodeWebKit =  _isNodeOrNodeWebKit &&  /native/.test(setTimeout);
-//var _runOnNode       =  _isNodeOrNodeWebKit && !/native/.test(setTimeout);
-//var _runOnWorker     = !_isNodeOrNodeWebKit && "WorkerLocation" in global;
-//var _runOnBrowser    = !_isNodeOrNodeWebKit && "document" in global;
-
 // --- class / interfaces ----------------------------------
 function Help(target,      // @arg Function|String - function or function-path or search keyword.
               highlight,   // @arg String = "" - code highlight.
               options) {   // @arg Object = {} - { nolink }
                            // @options.nolink Boolean = false
                            // @desc quick online help.
-//{@dev
     _if(!/string|function/.test(typeof target),     Help, "target");
     _if(!/string|undefined/.test(typeof highlight), Help, "highlight");
-//}@dev
     options = options || {};
 
     var resolved  = Reflection["resolve"](target);
@@ -1056,9 +1021,7 @@ function Help(target,      // @arg Function|String - function or function-path o
     }
 }
 
-//{@dev
 Help["repository"] = "https://github.com/uupaa/Help.js";
-//}@dev
 
 _defineGetter();
 
@@ -1105,7 +1068,7 @@ if (typeof module !== "undefined") {
 }
 global["Help"] = Help;
 
-})((this || 0).self || global);
+})(GLOBAL);
 
 
 
@@ -1115,12 +1078,6 @@ global["Help"] = Help;
 
 // --- dependency modules ----------------------------------
 // --- define / local variables ----------------------------
-//var _isNodeOrNodeWebKit = !!global.global;
-//var _runOnNodeWebKit =  _isNodeOrNodeWebKit &&  /native/.test(setTimeout);
-//var _runOnNode       =  _isNodeOrNodeWebKit && !/native/.test(setTimeout);
-//var _runOnWorker     = !_isNodeOrNodeWebKit && "WorkerLocation" in global;
-//var _runOnBrowser    = !_isNodeOrNodeWebKit && "document" in global;
-
 var _taskInstances = {}; // instances. { "taskName@counter": TaskInstance, ... }
 var _taskNumber = 0;
 
@@ -1508,7 +1465,7 @@ if (typeof module !== "undefined") {
 }
 global["_TestTask_"] = Task;
 
-})((this || 0).self || global);
+})(GLOBAL);
 
 
 // Test.js
@@ -1519,14 +1476,9 @@ global["_TestTask_"] = Task;
 var Task = global["_TestTask_"];
 
 // --- define / local variables ----------------------------
-var _isNodeOrNodeWebKit = !!global.global;
-var _runOnNodeWebKit =  _isNodeOrNodeWebKit &&  /native/.test(setTimeout);
-var _runOnNode       =  _isNodeOrNodeWebKit && !/native/.test(setTimeout);
-var _runOnWorker     = !_isNodeOrNodeWebKit && "WorkerLocation" in global;
-var _runOnBrowser    = !_isNodeOrNodeWebKit && "document" in global;
+var STYLISH = global["navigator"] && /Chrome/.test(global["navigator"]["userAgent"] || "");
 
-var _stylish = _isConsoleStyleReady();
-
+// console colors
 var ERR  = "\u001b[31m";
 var WARN = "\u001b[33m";
 var INFO = "\u001b[32m";
@@ -1534,30 +1486,33 @@ var CLR  = "\u001b[0m";
 
 // --- class / interfaces ----------------------------------
 function Test(moduleName, // @arg String|StringArray - target modules.
-              param) {    // @arg Object = {} - { disable, browser, worker, node, nw, button, both, ignoreError }
-                          // @param.disable Boolean = false - Disable all tests.
-                          // @param.browser Boolean = false - Enable the browser test.
-                          // @param.worker  Boolean = false - Enable the webWorker test.
-                          // @param.node    Boolean = false - Enable the node.js test.
-                          // @param.nw      Boolean = false - Enable the node-webkit test.
-                          // @param.button  Boolean = false - Show test buttons.
-                          // @param.both    Boolean = false - Test the primary and secondary module.
-                          // @param.ignoreError Boolean = false - ignore error
-    param = param || {};
+              options) {  // @arg Object = {} - { disable, browser, worker, node, nw, button, both, ignoreError }
+                          // @options.disable     Boolean = false - Disable all tests.
+                          // @options.browser     Boolean = false - Enable the browser test.
+                          // @options.worker      Boolean = false - Enable the webWorker test.
+                          // @options.node        Boolean = false - Enable the node.js test.
+                          // @options.nw          Boolean = false - Enable the node-webkit test.
+                          // @options.button      Boolean = false - Show test buttons.
+                          // @options.both        Boolean = false - Test the primary and secondary module.
+                          // @options.ignoreError Boolean = false - ignore error
+                          // @options.callback    Function = null - callback():void
+                          // @options.errorback   Function = null - errorback(err:Error):void
+    options = options || {};
 
-    this._items   = []; // test items.
-    this._swaped  = false;
-    this._module  = Array.isArray(moduleName) ? moduleName : [moduleName];
+    this._testCases   = [];
+    this._secondary   = false; // using secondary module
+    this._module      = Array.isArray(moduleName) ? moduleName : [moduleName];
+    this._browser     = options["browser"]     || false;
+    this._worker      = options["worker"]      || false;
+    this._node        = options["node"]        || false;
+    this._nw          = options["nw"]          || false;
+    this._button      = options["button"]      || false;
+    this._both        = options["both"]        || false;
+    this._ignoreError = options["ignoreError"] || false;
+    this._callback    = options["callback"]    || function() {};
+    this._errorback   = options["errorback"]   || function() {};
 
-    this._browser = param["browser"] || false;
-    this._worker  = param["worker"]  || false;
-    this._node    = param["node"]    || false;
-    this._nw      = param["nw"]      || false;
-    this._button  = param["button"]  || false;
-    this._both    = param["both"]    || false;
-    this._ignoreError = param["ignoreError"] || false;
-
-    if (param["disable"]) {
+    if (options["disable"]) {
         this._browser = false;
         this._worker  = false;
         this._node    = false;
@@ -1567,139 +1522,183 @@ function Test(moduleName, // @arg String|StringArray - target modules.
     }
 }
 
-Test["prototype"]["add"]   = Test_add;   // Test#add(items:TestItemFunctionArray):this
-Test["prototype"]["run"]   = Test_run;   // Test#run(callback:Function = null):this
-Test["prototype"]["clone"] = Test_clone; // Test#clone():TestItemFunctionArray
-
-Test["toHex"]      = Test_toHex;         // Test#toHex(a:TypedArray|Array, fixedDigits:Integer = 0):NumberStringArray
-Test["likeArray"]  = Test_likeArray;     // Test#likeArray(a:TypedArray|Array, b:TypedArray|Array, fixedDigits:Integer = 0):Boolean
-Test["likeObject"] = Test_likeObject;    // Test#likeObject(a:Object, b:Object):Boolean
+Test["prototype"]["add"] = Test_add; // Test#add(cases:TestFunction|TestFunctionArray = null):this
+Test["prototype"]["run"] = Test_run; // Test#run():TestFunctionArray
 
 // --- implements ------------------------------------------
-function Test_add(items) { // @arg TestItemFunctionArray - test items. [fn, ...]
-                           // @desc add test item(s).
-    this._items = this._items.concat(items);
+function Test_add(testCases) { // @arg TestFunction|TestFunctionArray = null - [fn, ...]
+                               // @ret this
+                               // @desc add test cases.
+    if (testCases) {
+        this._testCases = this._testCases.concat(testCases);
+    }
     return this;
 }
 
-function Test_run(callback) { // @arg Function = null - callback(err:Error)
-                              // @ret this
+function Test_run(deprecated) { // @ret TestFunctionArray
+    if (deprecated) { throw new Error("argument error"); }
+
     var that = this;
-    var plan = "node_1st > browser_1st > worker_1st > nw_1st";
+    var plan = "node_primary > browser_primary > worker_primary > nw_primary";
 
     if (that._both) {
-        if (_runOnWorker) {
-            plan += " > 1000 > swap > node_2nd > browser_2nd"; // remove worker_2nd
+        if (IN_WORKER) {
+            plan += " > 1000 > swap > node_secondary > browser_secondary";
         } else {
-            plan += " > 1000 > swap > node_2nd > browser_2nd > worker_2nd";
+            plan += " > 1000 > swap > node_secondary > browser_secondary > worker_secondary";
         }
     }
-
     Task.run(plan, {
-        node_1st: function(task) {      // Node(primary)
-            _nodeTestRunner(that, task);
-        },
-        browser_1st: function(task) {   // Browser(primary)
-            _browserTestRunner(that, task);
-        },
-        worker_1st: function(task) {    // Worker(primary)
-            _workerTestRunner(that, task);
-        },
-        nw_1st: function(task) {        // node-webkit(primary)
-            _nwTestRunner(that, task);
-        },
+        node_primary: function(task)        { _nodeTestRunner(that, task); },
+        browser_primary: function(task)     { _browserTestRunner(that, task); },
+        worker_primary: function(task)      { _workerTestRunner(that, task); },
+        nw_primary: function(task)          { _nwTestRunner(that, task); },
         swap: function(task) {
             _swap(that);
             task.pass();
         },
-        node_2nd: function(task) {      // Node(secondary)
-            _nodeTestRunner(that, task);
-        },
-        browser_2nd: function(task) {   // Browser(secondary)
-            _browserTestRunner(that, task);
-        },
-        worker_2nd: function(task) {    // Worker(secondary)
-            _workerTestRunner(that, task);
-        },
-//      nw_2st: function(task) {        // node-webkit(secondary)
-//          _nwTestRunner(that, task);
-//      },
-    }, function(err) {
+        node_secondary: function(task)      { _nodeTestRunner(that, task); },
+        browser_secondary: function(task)   { _browserTestRunner(that, task); },
+        worker_secondary: function(task)    { _workerTestRunner(that, task); },
+//      nw_secondary: function(task)        { _nwTestRunner(that, task); },
+    }, function taskFinished(err) {
         _undo(that);
-        if (callback) {
-            callback(err);
-        } else if (err) {
-            throw err;
-        }
+        err ? that._errorback(err) : that._callback();
     });
-    return this;
+    return this._testCases.slice();
 }
 
-function Test_clone() { // @ret TestItemFunctionArray
-    return this._items.slice();
+function _testRunner(that,               // @arg this
+                     finishedCallback) { // @arg Function
+    var testCases = that._testCases.slice(); // clone
+    var task = new Task(testCases.length, finishedCallback, { "tick": _next });
+
+    _next();
+
+    function _next() {
+        var testCase = testCases.shift();
+        if (!testCase) { return; }
+
+        var testCaseName = testCase.name || (testCase + "").split(" ")[1].split("\x28")[0];
+        if (testCase.length === 0) {
+            throw new Error("Function " + testCaseName + " has not argument.");
+        }
+        var pass = _getPassFunction(that, testCaseName + " pass");
+        var miss = _getMissFunction(that, testCaseName + " miss");
+
+        //  textCaseName(test, pass, miss) {
+        //      test.done(pass());
+        //      test.done(miss());
+        //  }
+
+        if (!that._ignoreError) {
+            testCase(task, pass, miss); // execute testCase
+        } else {
+            try {
+                testCase(task, pass, miss);
+            } catch (o_O) { // [!] catch uncaught exception
+                miss();
+                if (IN_NODE) {
+                    console.log(ERR + testCase + CLR);
+                } else if (IN_BROWSER || IN_NW) {
+                    global["Help"](testCase, testCaseName);
+                }
+                task.message(o_O.message + " in " + testCaseName + " function").miss();
+            }
+        }
+    }
 }
 
 function _browserTestRunner(that, task) {
     if (that._browser) {
-        if (_runOnBrowser) {
+        if (IN_BROWSER) {
             if (document["readyState"] === "complete") { // already document loaded
-                _onload();
+                _onload(that, task);
             } else {
-                global.addEventListener("load", _onload);
+                global.addEventListener("load", function() { _onload(that, task); });
             }
             return;
         }
     }
     task.pass();
+}
 
-    function _onload() {
-        _testRunner(that, function(err) {
-            _finishedLog(that, err);
-            document.body["style"]["backgroundColor"] = err ? "red" : "lime";
-            if (that._button) {
-                _addTestButtons(that, that._items);
+function _nwTestRunner(that, task) {
+    if (that._nw) {
+        if (IN_NW) {
+            if (document["readyState"] === "complete") { // already document loaded
+                _onload(that, task);
+            } else {
+                global.addEventListener("load", function() { _onload(that, task); });
             }
-            task.done(err);
-        });
+            return;
+        }
     }
+    task.pass();
+}
+
+function _onload(that, task) {
+    _testRunner(that, function finishedCallback(err) {
+        _finishedLog(that, err);
+        document.body["style"]["backgroundColor"] = err ? "red" : "lime";
+        if (that._button) {
+            _addTestButtons(that, that._testCases);
+        }
+        task.done(err);
+    });
 }
 
 function _workerTestRunner(that, task) {
     if (that._worker) {
-        if (_runOnWorker) {
-            var isSecondaryModule = false;
-
-            if (global["TEST_DATA"]) {
-                isSecondaryModule = global["TEST_DATA"]["SECONDARY"] || false; // from WebWorker
-                if (isSecondaryModule) {
-                    _swap(that);
-                }
+        if (IN_BROWSER) {
+            _createWorker(that, task);
+            return;
+        } else if (IN_WORKER) {
+            if (global.unitTest.setting.secondary) {
+                _swap(that);
             }
-            _testRunner(that, function(err) {
-                if ("console" in global) { // WebWorkerConsole
-                    _finishedLog(that, err);
-                }
+            _testRunner(that, function finishedCallback(err) {
+                _finishedLog(that, err);
                 if (err) {
-                    global["TEST_ERROR_MESSAGE"] = err.message; // [!] set WorkerGlobal.TEST_ERROR_MESSAGE
+                    global.unitTest.message = err.message;
                 }
-                if (isSecondaryModule) {
+                if (global.unitTest.setting.secondary) {
                     _undo(that);
                 }
                 task.done(err);
             });
             return;
-        } else if (_runOnBrowser) {
-            _createWorker(that, task);
-            return;
         }
     }
     task.pass();
+
+    function _createWorker(that, task) {
+        var worker = new Worker("worker.js");
+
+        worker.onmessage = function(event) {
+            var message = event.data.message;
+
+            if (message) {
+                document.body.style.backgroundColor = "red"; // [!] RED screen
+                console.error("worker.onmessage: " + message);
+                debugger;
+            }
+            task.done(message ? new Error(message) : null);
+        };
+        worker.postMessage({
+            message: "",
+            setting: {
+                secondary:  that._secondary,
+                baseDir:    location.href.split("/").slice(0, -1).join("/") + "/"
+            },
+        });
+    }
 }
 
 function _nodeTestRunner(that, task) {
     if (that._node) {
-        if (_runOnNode) {
-            _testRunner(that, function(err) {
+        if (IN_NODE) {
+            _testRunner(that, function finishedCallback(err) {
                 _finishedLog(that, err);
                 task.done(err);
                 if (err) {
@@ -1712,154 +1711,10 @@ function _nodeTestRunner(that, task) {
     task.pass();
 }
 
-function _nwTestRunner(that, task) {
-    if (that._nw) {
-        if (_runOnNodeWebKit) {
-            if (document["readyState"] === "complete") { // already document loaded
-                _onload();
-            } else {
-                global.addEventListener("load", _onload);
-            }
-            return;
-        }
-    }
-    task.pass();
-
-    function _onload() {
-        _testRunner(that, function(err) {
-            _finishedLog(that, err);
-            document.body["style"]["backgroundColor"] = err ? "red" : "lime";
-            if (that._button) {
-                _addTestButtons(that, that._items);
-            }
-            task.done(err);
-        });
-    }
-}
-
-function _testRunner(that,               // @arg this
-                     finishedCallback) { // @arg Function = null
-    var items = that._items.slice(); // clone
-    var task  = new Task(items.length, _callback, { "tick": _next });
-
-    _next();
-
-    function _next() {
-        var fn = items.shift();
-
-        if (fn) {
-            var testFunctionName = fn["name"] || (fn + "").split(" ")[1].split("\x28")[0];
-            var testFunctionArgumentLength = fn.length;
-
-            if (testFunctionArgumentLength === 0) {
-                if ("Help" in global) {
-                    global["Help"](fn, testFunctionName);
-                }
-                throw new Error("Function " + testFunctionName + " has no argument.");
-            }
-            var flow = _getFlowFunctions(that, testFunctionName + " pass", testFunctionName + " miss");
-
-                if (_runOnNode) {
-                    if (!that._ignoreError) {
-                        fn(task, flow.pass, flow.miss);
-                    } else {
-                        try {
-
-                            //  textXxx(test, pass, miss) {
-                            //      if (true) {
-                            //          test.done(pass());
-                            //      } else {
-                            //          test.done(miss());
-                            //      }
-                            //  }
-
-                            fn(task, flow.pass, flow.miss);
-                        } catch (o_O) { // [!] catch uncaught exception
-                            flow.miss();
-                            console.log(ERR + fn + CLR);
-                            task.message(ERR + o_O.message + CLR + " in " + testFunctionName + " function").miss();
-    //                      throw o_O;
-                        }
-                    }
-                } else if (_runOnBrowser || _runOnNodeWebKit) {
-                    if (!that._ignoreError) {
-                        fn(task, flow.pass, flow.miss);
-                    } else {
-                        try {
-                            fn(task, flow.pass, flow.miss);
-                        } catch (o_O) {
-                            flow.miss();
-                            global["Help"](fn, testFunctionName);
-                            task.message(o_O.message + " in " + testFunctionName + " function").miss();
-                        }
-                    }
-                } else {
-                    if (!that._ignoreError) {
-                        fn(task, flow.pass, flow.miss);
-                    } else {
-                        fn(task, flow.pass, flow.miss);
-                    }
-                }
-        }
-    }
-    function _callback(err) {
-        if (finishedCallback) {
-            finishedCallback(err);
-        }
-    }
-}
-
-function _createWorker(that, task) {
-  //var src = _createObjectURL("#worker"); // "blob:null/...."
-    var src = "worker.js";
-
-    if (src) {
-        var worker = new Worker(src);
-
-        worker.onmessage = function(event) {
-//          if ( /^blob:/.test(src) ) { // src is objectURL?
-//              (global["URL"] || global["webkitURL"]).revokeObjectURL(src); // [!] GC
-//          }
-            var testErrorMessage = event.data.TEST_ERROR_MESSAGE;
-
-            if (testErrorMessage) {
-                document.body.style.backgroundColor = "red"; // [!] RED screen
-                console.error("worker.onmessage: " + testErrorMessage);
-                debugger;
-            }
-            task.done(testErrorMessage ? new Error(testErrorMessage) : null);
-        };
-
-        var baseDir = location.href.split("/").slice(0, -1).join("/") + "/";
-
-        // self.TEST_DATA = event.data;
-        worker.postMessage({
-            "SECONDARY":    that._swaped,
-            "BASE_DIR":     baseDir
-        });
-    } else {
-        task.pass();
-    }
-}
-
-/*
-function _createObjectURL(nodeSelector) {
-    var node = document.querySelector(nodeSelector);
-
-    if (node && "Blob" in global) {
-        // create Worker from inline <script id="worker" type="javascript/worker"> content
-        var blob = new Blob([ node.textContent ], { type: "application/javascript" });
-
-        return (global["URL"] || global["webkitURL"]).createObjectURL(blob);
-    }
-    return "";
-}
- */
-
 function _swap(that) {
     if (that._both) {
-        if (!that._swaped) {
-            that._swaped = true;
+        if (!that._secondary) {
+            that._secondary = true;
             that._module.forEach(function(moduleName) {
                 global["$$$" + moduleName + "$$$"] = global[moduleName];
                 global[moduleName] = global[moduleName + "_"]; // swap primary <-> secondary module
@@ -1870,8 +1725,8 @@ function _swap(that) {
 
 function _undo(that) {
     if (that._both) {
-        if (that._swaped) {
-            that._swaped = false;
+        if (that._secondary) {
+            that._secondary = false;
             that._module.forEach(function(moduleName) {
                 global[moduleName] = global["$$$" + moduleName + "$$$"];
                 delete global["$$$" + moduleName + "$$$"];
@@ -1880,64 +1735,53 @@ function _undo(that) {
     }
 }
 
-function _isConsoleStyleReady() {
-    if (global["navigator"]) {
-        if ( /Chrome/.test( global["navigator"]["userAgent"] || "" ) ) {
-            return true;
-        }
+function _getConsoleStyle() {
+    if (global["console"]) {
+        return IN_NODE   ? "node"
+             : IN_WORKER ? "worker"
+             : IN_NW     ? "nw"
+             : STYLISH   ? "color" : "browser";
     }
-    return false;
+    return "";
 }
 
-function _getFlowFunctions(that,
-                           passMessage,   // @arg String
-                           missMessage) { // @arg String
-    var order = that._swaped ? "secondary"
-                             : "primary";
-    var style = "";
+function _getPassFunction(that, passMessage) { // @ret PassFunction
+    var order = that._secondary ? "secondary" : "primary";
 
-    if (global["console"]) {
-        style = _runOnNode   ? "node"
-              : _runOnWorker ? "worker"
-              : _runOnNodeWebKit ? "nw"
-              : _stylish     ? "color"
-                             : "browser";
+    switch ( _getConsoleStyle() ) {
+    case "node":    return console.log.bind(console, INFO + "Node(" + order + "): " + CLR + passMessage);
+    case "worker":  return console.log.bind(console,      "Worker(" + order + "): " + passMessage);
+    case "color":   return console.log.bind(console,   "%cBrowser(" + order + "): " + passMessage + "%c ", "color:#0c0", "");
+    case "browser": return console.log.bind(console,     "Browser(" + order + "): " + passMessage);
+    case "nw":      return console.log.bind(console, "node-webkit(" + order + "): " + passMessage);
     }
+    return null;
+}
 
-    // function testXxx(test, pass, miss) { ... }
-    var pass = null;
-    var miss = null;
+function _getMissFunction(that, missMessage) { // @ret MissFunction
+    var order = that._secondary ? "secondary" : "primary";
 
-    switch (style) {
-    case "node":    pass = console.log.bind(console, INFO + "Node(" + order + "): " + CLR + passMessage); break;
-    case "worker":  pass = console.log.bind(console,      "Worker(" + order + "): " + passMessage); break;
-    case "color":   pass = console.log.bind(console,   "%cBrowser(" + order + "): " + passMessage + "%c ", "color:#0c0", ""); break;
-    case "browser": pass = console.log.bind(console,     "Browser(" + order + "): " + passMessage); break;
-    case "nw":      pass = console.log.bind(console, "node-webkit(" + order + "): " + passMessage);
+    switch ( _getConsoleStyle() ) {
+    case "node":    return function() { console.error(ERR +"Node(" + order + "): " + CLR + missMessage);                     return new Error(); };
+    case "worker":  return function() { console.error(   "Worker(" + order + "): " + missMessage);                           return new Error(); };
+    case "color":   return function() { console.error("%cBrowser(" + order + "): " + missMessage + "%c ", "color:#red", ""); return new Error(); };
+    case "browser": return function() { console.error(  "Browser(" + order + "): " + missMessage);                           return new Error(); };
+    case "nw":      return function() { console.error("node-webkit("+order + "): " + missMessage);                           return new Error(); };
     }
-    switch (style) {
-    case "node":    miss = function() { console.error(ERR +"Node(" + order + "): " + CLR + missMessage);                     return new Error(); }; break;
-    case "worker":  miss = function() { console.error(   "Worker(" + order + "): " + missMessage);                           return new Error(); }; break;
-    case "color":   miss = function() { console.error("%cBrowser(" + order + "): " + missMessage + "%c ", "color:#red", ""); return new Error(); }; break;
-    case "browser": miss = function() { console.error(  "Browser(" + order + "): " + missMessage);                           return new Error(); }; break;
-    case "nw":      miss = function() { console.error("node-webkit("+order + "): " + missMessage);                           return new Error(); };
-    }
-    return { pass: pass, miss: miss };
+    return null;
 }
 
 function _finishedLog(that, err) {
-    var flow = _getFlowFunctions(that, "ALL PASSED.", "SOME MISSED.");
-
     if (err) {
-        flow.miss();
+        _getMissFunction(that, "SOME MISSED.")();
     } else {
-        flow.pass();
+        _getPassFunction(that, "ALL PASSED.")();
     }
 }
 
-function _addTestButtons(that, items) { // @arg TestItemFunctionArray
+function _addTestButtons(that, cases) { // @arg TestCaseFunctionArray
     // add <input type="button" onclick="test()" value="test()" /> buttons
-    items.forEach(function(fn, index) {
+    cases.forEach(function(fn, index) {
         var itemName = fn["name"] || (fn + "").split(" ")[1].split("\x28")[0];
         var safeName = itemName.replace(/\$/, "_"); // "concat$" -> "concat_"
 
@@ -1958,61 +1802,11 @@ function _addTestButtons(that, items) { // @arg TestItemFunctionArray
     });
 }
 
-function Test_toHex(a,             // @arg TypedArray|Array
-                    fixedDigits) { // @arg Integer = 0 - floatingNumber.toFixed(fixedDigits)
-                                   // @arg NumberStringArray - ["00", "01"]                  (Uint8Array)
-                                   //                          ["0000", "0001", ...]         (Uint16Array)
-                                   //                          ["00000000", "00000001", ...] (Uint32Array)
-                                   //                          ["12.3", "0.1", ...]          (Float64Array)
-    var fix    = fixedDigits || 0;
-    var type   = Array.isArray(a) ? "Array" : Object.prototype.toString.call(a);
-    var result = [], i = 0, iz = a.length;
-    var bytes  = /8/.test(type) ? 2 : /32/.test(type) ? 8 : 4;
-
-    if (/float/.test(type)) {
-        for (; i < iz; ++i) {
-            result.push( (0x100000000 + a[i]).toString(16).slice(-bytes) );
-        }
-    } else {
-        for (; i < iz; ++i) {
-            result.push( fix ? a[i].toFixed(fix) : a[i] );
-        }
-    }
-    return result;
-}
-
-function Test_likeArray(a,             // @arg TypedArray|Array
-                        b,             // @arg TypedArray|Array
-                        fixedDigits) { // @arg Integer = 0 - floatingNumber.toFixed(fixedDigits)
-                                       // @ret Boolean
-    fixedDigits = fixedDigits || 0;
-    if (a.length !== b.length) {
-        return false;
-    }
-    for (var i = 0, iz = a.length; i < iz; ++i) {
-        if (fixedDigits) {
-            if ( a[i].toFixed(fixedDigits) !== b[i].toFixed(fixedDigits) ) {
-                return false;
-            }
-        } else {
-            if ( a[i] !== b[i] ) {
-                return false;
-            }
-        }
-    }
-    return true;
-}
-
-function Test_likeObject(a,   // @arg Object
-                         b) { // @arg Object
-    return JSON.stringify(a) === JSON.stringify(b);
-}
-
 // --- exports ---------------------------------------------
 if (typeof module !== "undefined") {
     module["exports"] = Test;
 }
 global["Test"] = Test;
 
-})((this || 0).self || global);
+})(GLOBAL);
 

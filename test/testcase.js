@@ -1,10 +1,6 @@
 var ModuleTestSpec = (function(global) {
 
-var _isNodeOrNodeWebKit = !!global.global;
-var _runOnNodeWebKit =  _isNodeOrNodeWebKit &&  /native/.test(setTimeout);
-var _runOnNode       =  _isNodeOrNodeWebKit && !/native/.test(setTimeout);
-var _runOnWorker     = !_isNodeOrNodeWebKit && "WorkerLocation" in global;
-var _runOnBrowser    = !_isNodeOrNodeWebKit && "document" in global;
+global["BENCHMARK"] = false;
 
 var test = new Test("Spec", {
         disable:    false, // disable all tests.
@@ -15,6 +11,10 @@ var test = new Test("Spec", {
         button:     true,  // show button.
         both:       true,  // test the primary and secondary modules.
         ignoreError:false, // ignore error.
+        callback:   function() {
+        },
+        errorback:  function(error) {
+        }
     }).add([
         //testWKWebView,
         // ---
@@ -48,13 +48,21 @@ var test = new Test("Spec", {
         testSpec_WEBP,
     ]);
 
-if (_runOnBrowser || _runOnNodeWebKit) {
+if (IN_BROWSER || IN_NW) {
     test.add([
         test_getHardwareConcurrency,
-      //test_isGoodByeAndroidBrowser,
+    ]);
+} else if (IN_WORKER) {
+    test.add([
+        // worker test
+    ]);
+} else if (IN_NODE) {
+    test.add([
+        // node.js and io.js test
     ]);
 }
 
+// --- test cases ------------------------------------------
 function testWKWebView(test, pass, miss) {
     var spec = new Spec();
 
@@ -738,7 +746,7 @@ function testSpec_WEBP(test, pass, miss) {
 
 }
 
-return test.run().clone();
+return test.run();
 
-})((this || 0).self || global);
+})(GLOBAL);
 

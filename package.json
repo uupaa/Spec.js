@@ -1,9 +1,9 @@
 {
   "name": "uupaa.spec.js",
-  "version": "0.21.5",
+  "version": "0.21.6",
   "description": "Spec detection.",
   "url": "https://github.com/uupaa/Spec.js",
-  "keywords": ["spec", "uupaa", "WebModule"],
+  "keywords": ["mobile", "spec", "uupaa", "WebModule"],
   "repository": {
     "type": "git",
     "url": "https://github.com/uupaa/Spec.js.git"
@@ -20,7 +20,7 @@
     "browser": "open http://localhost:8000/Spec.js/test/index.html",
     "sim": "node ../WebModule/run/sim.js http://localhost:8000/Spec.js/test/index.html",
     "simx": "node ../WebModule/run/sim.js stop",
-    "hint": "jshint lib/*.js",
+    "hint": "eslint lib/*.js",
     "score": "node ../WebModule/run/score.js; open lint/plato/index.html",
     "patch": "node ../WebModule/run/patch.js",
     "setup": "node ../WebModule/run/setup.js",
@@ -47,11 +47,13 @@
       "output": "release/Spec.nw.min.js"
     }
   },
-  "dependencies": {},
+  "dependencies": {
+    "uupaa.hash.js": ""
+  },
   "devDependencies": {},
   "lib": "./lib/",
   "main": "./index.js",
-  "author": "uupaa <uupaa.js@gmail.com>",
+  "author": "uupaa",
   "license": "MIT",
   "contributors": []
 }

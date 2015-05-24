@@ -4,16 +4,16 @@
 
 Spec detection.
 
-# Document
+## Document
 
 - [Spec.js wiki](https://github.com/uupaa/Spec.js/wiki/Spec)
-- [Development](https://github.com/uupaa/WebModule/wiki/Development)
 - [WebModule](https://github.com/uupaa/WebModule)
     - [Slide](http://uupaa.github.io/Slide/slide/WebModule/index.html)
     - [Development](https://github.com/uupaa/WebModule/wiki/Development)
 
+## Run on
 
-# How to use
+### Browser and node-webkit
 
 ```js
 <script src="lib/Spec.js"></script>
@@ -27,18 +27,17 @@ console.log(spec.BROWSER);      // "Chrome"
 </script>
 ```
 
+### WebWorkers
+
 ```js
-// for WebWorkers
 importScripts("lib/Spec.js");
-importScripts("lib/SpecCatalog.js");
 
-...
 ```
+
+### Node.js
 
 ```js
-// for Node.js
 require("lib/Spec.js");
-require("lib/SpecCatalog.js");
 
-...
 ```
+

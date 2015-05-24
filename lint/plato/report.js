@@ -3,110 +3,170 @@ __report = {
     {
       "info": {
         "file": "lib/SpecCatalog.js",
-        "fileShort": "Catalog.js",
-        "fileSafe": "Catalog_js",
-        "link": "files/Catalog_js/index.html"
+        "fileShort": "SpecCatalog.js",
+        "fileSafe": "SpecCatalog_js",
+        "link": "files/SpecCatalog_js/index.html"
       },
       "jshint": {
         "messages": 0
       },
       "complexity": {
         "aggregate": {
-          "line": 68,
-          "complexity": {
-            "sloc": {
-              "physical": 616,
-              "logical": 531
+          "sloc": {
+            "logical": 550,
+            "physical": 639
+          },
+          "cyclomatic": 1,
+          "halstead": {
+            "operators": {
+              "distinct": 10,
+              "total": 1249,
+              "identifiers": [
+                "__stripped__"
+              ]
             },
-            "cyclomatic": 3,
+            "operands": {
+              "distinct": 750,
+              "total": 5604,
+              "identifiers": [
+                "__stripped__"
+              ]
+            },
+            "length": 6853,
+            "vocabulary": 760,
+            "difficulty": 37.36,
+            "volume": 65582.22048389199,
+            "effort": 2450151.7572782044,
+            "bugs": 21.86074016129733,
+            "time": 136119.54207101135
+          },
+          "params": 1,
+          "line": 68,
+          "cyclomaticDensity": 0.18181818181818182,
+          "complexity": {
+            "cyclomatic": 1,
+            "sloc": {
+              "logical": 550,
+              "physical": 639
+            },
             "halstead": {
               "operators": {
-                "distinct": 11,
-                "total": 1206,
+                "distinct": 10,
+                "total": 1249,
                 "identifiers": [
                   "__stripped__"
                 ]
               },
               "operands": {
-                "distinct": 730,
-                "total": 5391,
+                "distinct": 750,
+                "total": 5604,
                 "identifiers": [
                   "__stripped__"
                 ]
               },
-              "length": 6597,
-              "vocabulary": 741,
-              "difficulty": 40.617123287671234,
-              "volume": 62891.37624402159,
-              "effort": 2554466.7826347426,
-              "bugs": 20.96379208134053,
-              "time": 141914.8212574857
-            },
-            "params": 1
+              "length": 6853,
+              "vocabulary": 760,
+              "difficulty": 37.36,
+              "volume": 65582.22048389199,
+              "effort": 2450151.7572782044,
+              "bugs": 21.86074016129733,
+              "time": 136119.54207101135
+            }
           }
         },
-        "module": "Catalog.js",
-        "maintainability": 11.7222882910945
+        "module": "SpecCatalog.js",
+        "maintainability": 11.279711489643482
       }
     },
     {
       "info": {
         "file": "lib/Spec.js",
-        "fileShort": ".js",
-        "fileSafe": "_js",
-        "link": "files/_js/index.html"
+        "fileShort": "Spec.js",
+        "fileSafe": "Spec_js",
+        "link": "files/Spec_js/index.html"
       },
       "jshint": {
-        "messages": 0
+        "messages": 4
       },
       "complexity": {
         "aggregate": {
-          "line": 3,
-          "complexity": {
-            "sloc": {
-              "physical": 456,
-              "logical": 438
+          "sloc": {
+            "logical": 435,
+            "physical": 482
+          },
+          "cyclomatic": 106,
+          "halstead": {
+            "operators": {
+              "distinct": 36,
+              "total": 1075,
+              "identifiers": [
+                "__stripped__"
+              ]
             },
-            "cyclomatic": 103,
+            "operands": {
+              "distinct": 338,
+              "total": 1258,
+              "identifiers": [
+                "__stripped__"
+              ]
+            },
+            "length": 2333,
+            "vocabulary": 374,
+            "difficulty": 66.99408284023669,
+            "volume": 19939.904774917857,
+            "effort": 1335855.632317278,
+            "bugs": 6.646634924972619,
+            "time": 74214.20179540434
+          },
+          "params": 40,
+          "line": 1,
+          "cyclomaticDensity": 24.367816091954023,
+          "complexity": {
+            "cyclomatic": 106,
+            "sloc": {
+              "logical": 435,
+              "physical": 482
+            },
             "halstead": {
               "operators": {
-                "distinct": 33,
-                "total": 1094,
+                "distinct": 36,
+                "total": 1075,
                 "identifiers": [
                   "__stripped__"
                 ]
               },
               "operands": {
-                "distinct": 353,
-                "total": 1274,
+                "distinct": 338,
+                "total": 1258,
                 "identifiers": [
                   "__stripped__"
                 ]
               },
-              "length": 2368,
-              "vocabulary": 386,
-              "difficulty": 59.54957507082153,
-              "volume": 20346.938264250817,
-              "effort": 1211651.5276283752,
-              "bugs": 6.782312754750272,
-              "time": 67313.97375713196
-            },
-            "params": 31
+              "length": 2333,
+              "vocabulary": 374,
+              "difficulty": 66.99408284023669,
+              "volume": 19939.904774917857,
+              "effort": 1335855.632317278,
+              "bugs": 6.646634924972619,
+              "time": 74214.20179540434
+            }
           }
         },
-        "module": ".js",
-        "maintainability": 64.75972474603823
+        "module": "Spec.js",
+        "maintainability": 66.31378846381712
       }
     }
   ],
   "summary": {
     "total": {
-      "sloc": 1072,
-      "maintainability": 76.48201303713273
+      "jshint": 4,
+      "sloc": 1121,
+      "maintainability": 77.5934999534606
     },
     "average": {
-      "sloc": 536,
-      "maintainability": "38.24"
+      "sloc": 560,
+      "maintainability": "38.80",
+      "jshint": "2.00"
     }
   }
 }
