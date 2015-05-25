@@ -15,11 +15,14 @@
         "$keys":            false,
         "$some":            false,
         "$args":            false,
-        "$valid":           false
+        "$valid":           false,
+        "unescape":         false,
+        "escape":           false
     },
     "rules": {
         "strict":           [0],
         "new-cap":          [0],
+        "no-shadow":        [0],
         "camelcase":        [0],
         "key-spacing":      [0],
         "dot-notation":     [0],
