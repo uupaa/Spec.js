@@ -64,7 +64,7 @@ if (IN_BROWSER || IN_NW) {
 
 // --- test cases ------------------------------------------
 function testWKWebView(test, pass, miss) {
-    var spec = new Spec();
+    var spec = new WebModule.Spec();
 
     var supportFullScreen = "fullscreenEnabled" in document || "webkitFullscreenEnabled" in document || false;
     var supportFileSystem = "requestFileSystem" in global   || "webkitRequestFileSystem" in global   || false;
@@ -85,7 +85,7 @@ function testWKWebView(test, pass, miss) {
 
 function testSpecParamUserAgent(test, pass, miss) {
     var ua = "Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A403 Safari/8536.25";
-    var spec = new Spec(true);
+    var spec = new WebModule.Spec(true);
     spec.USER_AGENT = ua;
 
     if (spec.USER_AGENT === ua) {
@@ -96,7 +96,7 @@ function testSpecParamUserAgent(test, pass, miss) {
 }
 
 function testDeviceiPhone6Plus(test, pass, miss) {
-    var spec = new Spec(true);
+    var spec = new WebModule.Spec(true);
     spec.DISPLAY_DPR = 3;
     spec.DISPLAY_LONG = 736;
     spec.DISPLAY_SHORT = 414;
@@ -109,7 +109,7 @@ function testDeviceiPhone6Plus(test, pass, miss) {
     }
 }
 function testDeviceiPhone6(test, pass, miss) {
-    var spec = new Spec(true);
+    var spec = new WebModule.Spec(true);
     spec.DISPLAY_DPR = 2;
     spec.DISPLAY_LONG = 667;
     spec.DISPLAY_SHORT = 375;
@@ -123,7 +123,7 @@ function testDeviceiPhone6(test, pass, miss) {
 }
 
 function testDeviceNexus5(test, pass, miss) {
-    var spec = new Spec(true);
+    var spec = new WebModule.Spec(true);
     spec.USER_AGENT = "Mozilla/5.0 (Linux; Android 4.4; Nexus 5 Build/BuildID) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/30.0.0.0 Mobile Safari/537.36";
 
     if (spec.DEVICE === "Nexus 5" && spec.OS === "Android") {
@@ -134,7 +134,7 @@ function testDeviceNexus5(test, pass, miss) {
 }
 
 function testDeviceNexus7_2nd(test, pass, miss) {
-    var spec = new Spec(true);
+    var spec = new WebModule.Spec(true);
     spec.DISPLAY_DPR = 2;
     spec.USER_AGENT = "Mozilla/5.0 (Linux; Android 4.3; Nexus 7 Build/JWR66N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.111 Safari/537.36";
 
@@ -146,7 +146,7 @@ function testDeviceNexus7_2nd(test, pass, miss) {
 }
 
 function testFirefoxMobileForAndroid(test, pass, miss) {
-    var spec = new Spec(true);
+    var spec = new WebModule.Spec(true);
     spec.USER_AGENT = "Mozilla/5.0 (Android; Mobile; rv:13.0) Gecko/13.0 Firefox/13.0";
 
     if (spec.OS === "Android" && spec.BROWSER === "Firefox") {
@@ -157,7 +157,7 @@ function testFirefoxMobileForAndroid(test, pass, miss) {
 }
 
 function testDeviceFirefoxOS(test, pass, miss) {
-    var spec = new Spec(true);
+    var spec = new WebModule.Spec(true);
     spec.USER_AGENT =  "Mozilla/5.0 (Mobile; rv:18.0) Gecko/18.0 Firefox/18.0";
 
     if (spec.DEVICE === "" && spec.OS === "Firefox") {
@@ -169,7 +169,7 @@ function testDeviceFirefoxOS(test, pass, miss) {
 
 
 function testDevice_INFOBAR_A01(test, pass, miss) {
-    var spec = new Spec(true);
+    var spec = new WebModule.Spec(true);
     spec.USER_AGENT = "Mozilla/5.0 (Linux; U; Android 2.3.3; ja-jp; INFOBAR A01 Build/S6160) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1";
 
     if (spec.DEVICE === "INFOBAR A01" && spec.OS === "Android") {
@@ -180,7 +180,7 @@ function testDevice_INFOBAR_A01(test, pass, miss) {
 }
 
 function testDeviceWindowsPhone8S(test, pass, miss) {
-    var spec = new Spec(true);
+    var spec = new WebModule.Spec(true);
     spec.USER_AGENT = "Mozilla/5.0 (compatible; MSIE 10.0; Windows Phone 8.0; Trident/6.0; IEMobile/10.0; ARM; Touch; HTC; Windows Phone 8S by HTC)";
 
     if (spec.DEVICE === "Lumia 520" && spec.OS === "Windows") {
@@ -191,7 +191,7 @@ function testDeviceWindowsPhone8S(test, pass, miss) {
 }
 
 function testDeviceWindowsPhoneLumia920(test, pass, miss) {
-    var spec = new Spec(true);
+    var spec = new WebModule.Spec(true);
     spec.USER_AGENT = "Mozilla/5.0 (compatible; MSIE 10.0; Windows Phone 8.0; Trident/6.0; IEMobile/10.0; ARM; Touch; NOKIA; Lumia 920)";
 
     if (spec.DEVICE === "Lumia 920" && spec.OS === "Windows") {
@@ -202,7 +202,7 @@ function testDeviceWindowsPhoneLumia920(test, pass, miss) {
 }
 
 function testDeviceKindle(test, pass, miss) {
-    var spec = new Spec(true);
+    var spec = new WebModule.Spec(true);
     spec.USER_AGENT = "Mozilla/5.0 (Linux; U; Android 4.0.3; en-us; KFTT Build/IML74K) AppleWebKit/535.19 (KHTML, like Gecko) Silk/3.4 Mobile Safari/535.19 Silk-Accelerated=true";
 
     if (spec.DEVICE === "KFTT" && spec.OS === "Android") {
@@ -213,7 +213,7 @@ function testDeviceKindle(test, pass, miss) {
 }
 
 function testDeviceGooglePlayEdition(test, pass, miss) {
-    var spec = new Spec(true);
+    var spec = new WebModule.Spec(true);
     spec.USER_AGENT = "Mozilla/5.0 (Linux; U; Android 4.2.2; en-us; HTC6500LVW 4G Build/JDQ39) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30";
 
     if (spec.DEVICE === "HTC6500LVW" && spec.OS === "Android") {
@@ -224,7 +224,7 @@ function testDeviceGooglePlayEdition(test, pass, miss) {
 }
 
 function testIsOS(test, pass, miss) {
-    var spec = new Spec(true);
+    var spec = new WebModule.Spec(true);
     spec.USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36";
 
     if (spec.OS === "Mac") {
@@ -235,7 +235,7 @@ function testIsOS(test, pass, miss) {
 }
 
 function testIsBrowser(test, pass, miss) {
-    var spec = new Spec(true);
+    var spec = new WebModule.Spec(true);
     spec.USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36";
 
     if (spec.BROWSER === "Chrome") {
@@ -246,7 +246,7 @@ function testIsBrowser(test, pass, miss) {
 }
 
 function testIsBrowserEngine(test, pass, miss) {
-    var spec = new Spec(true);
+    var spec = new WebModule.Spec(true);
     spec.USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36";
 
     if (spec.BROWSER_ENGINE === "Blink") {
@@ -257,7 +257,7 @@ function testIsBrowserEngine(test, pass, miss) {
 }
 
 function testMacPro(test, pass, miss) {
-    var spec = new Spec(true);
+    var spec = new WebModule.Spec(true);
     spec.USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36";
 
     if (spec.OS === "Mac" && parseFloat(spec.OS_VERSION) === 10.8 &&
@@ -270,7 +270,7 @@ function testMacPro(test, pass, miss) {
 }
 
 function testIE11Preview(test, pass, miss) {
-    var spec = new Spec(true);
+    var spec = new WebModule.Spec(true);
     spec.USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko";
 
     if (spec.OS === "Windows" &&
@@ -284,7 +284,7 @@ function testIE11Preview(test, pass, miss) {
 }
 
 function testIE10(test, pass, miss) {
-    var spec = new Spec(true);
+    var spec = new WebModule.Spec(true);
     spec.USER_AGENT = "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; Trident/6.0)";
 
     if (spec.OS === "Windows" &&
@@ -298,7 +298,7 @@ function testIE10(test, pass, miss) {
 }
 
 function testFirefox11(test, pass, miss) {
-    var spec = new Spec(true);
+    var spec = new WebModule.Spec(true);
     spec.USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:11.0) Gecko/20100101 Firefox/11.0";
 
     if (spec.OS === "Windows" &&
@@ -312,7 +312,7 @@ function testFirefox11(test, pass, miss) {
 }
 
 function testFirefox20(test, pass, miss) {
-    var spec = new Spec(true);
+    var spec = new WebModule.Spec(true);
     spec.USER_AGENT = "Mozilla/5.0 (Mobile; LGL25; rv:32.0) Gecko/32.0 Firefox/32.0";
 
     if (spec.OS === "Firefox" &&
@@ -329,13 +329,13 @@ function testFirefox20(test, pass, miss) {
 
 
 function testAlternateDevice(test, pass, miss) {
-    var spec = new Spec(true);
+    var spec = new WebModule.Spec(true);
     spec.USER_AGENT = "Mozilla/5.0 (Linux; Android 6.0.5; en-us; Nexus Ace Build/JOP40D) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19";
 
     if ( spec.DEVICE === "Nexus Ace" &&
          spec.OS_VERSION === "6.0.5") {
 
-        var nexus5 = new Spec(true);
+        var nexus5 = new WebModule.Spec(true);
         nexus5.USER_AGENT = "Mozilla/5.0 (Linux; Android 4.4; Nexus 5 Build/BuildID) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/30.0.0.0 Mobile Safari/537.36";
 
         if (nexus5.SOC === spec.SOC &&
@@ -348,7 +348,7 @@ function testAlternateDevice(test, pass, miss) {
 }
 
 function testDeviceFeature(test, pass, miss) {
-    var spec = new Spec(true);
+    var spec = new WebModule.Spec(true);
     spec.DISPLAY_DPR = 2;
     spec.USER_AGENT = "Mozilla/5.0 (Linux; Android 4.3; Nexus 7 Build/JWR66N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.111 Safari/537.36";
 
@@ -651,7 +651,7 @@ function testBrowser(test, pass, miss) {
 
     for (var testID in userAgents) {
         var data = userAgents[testID];
-        var spec = new Spec(true);
+        var spec = new WebModule.Spec(true);
         spec.USER_AGENT = data.USER_AGENT;
 
         for (var key in data) {
@@ -687,11 +687,11 @@ function test_isGoodByeAndroidBrowser(test, pass, miss) {
     var KitKatChromeWebView = "Mozilla/5.0 (Linux; Android 4.4;          Nexus 5   Build/BuildID)      AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/30.0.0.0      Mobile Safari/537.36";
 
     var result = {
-            0: new Spec({ USER_AGENT: Chrom18 }).isGoodByeAndroidBrowser() === false,
-            1: new Spec({ USER_AGENT: SBrowser }).isGoodByeAndroidBrowser() === true,
-            2: new Spec({ USER_AGENT: Browser422 }).isGoodByeAndroidBrowser() === true,
-            3: new Spec({ USER_AGENT: Browser411WebView }).isGoodByeAndroidBrowser() === true,
-            4: new Spec({ USER_AGENT: KitKatChromeWebView }).isGoodByeAndroidBrowser() === false,
+            0: new WebModule.Spec({ USER_AGENT: Chrom18 }).isGoodByeAndroidBrowser() === false,
+            1: new WebModule.Spec({ USER_AGENT: SBrowser }).isGoodByeAndroidBrowser() === true,
+            2: new WebModule.Spec({ USER_AGENT: Browser422 }).isGoodByeAndroidBrowser() === true,
+            3: new WebModule.Spec({ USER_AGENT: Browser411WebView }).isGoodByeAndroidBrowser() === true,
+            4: new WebModule.Spec({ USER_AGENT: KitKatChromeWebView }).isGoodByeAndroidBrowser() === false,
         };
 
     var ok = true;
@@ -711,7 +711,7 @@ function test_isGoodByeAndroidBrowser(test, pass, miss) {
  */
 
 function test_getHardwareConcurrency(test, pass, miss) {
-    var spec = new Spec(true);
+    var spec = new WebModule.Spec(true);
     spec.USER_AGENT = "Mozilla/5.0 (Linux; Android 4.4; Nexus 5 Build/BuildID) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/30.0.0.0 Mobile Safari/537.36";
 
     if (spec.CPU_CORES > 0) {
@@ -734,7 +734,7 @@ function testScriptHash(test, pass, miss) {
 }
 
 function testSpec_WEBP(test, pass, miss) {
-    var spec = new Spec();
+    var spec = new WebModule.Spec();
 
     setTimeout(function() {
         if (spec.WEBP & 0x01) { console.log("WebP lossy ready"); }
