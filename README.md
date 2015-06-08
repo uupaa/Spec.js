@@ -4,7 +4,6 @@
 
 Spec detection.
 
-## Document
 
 - Spec.js made of [WebModule](https://github.com/uupaa/WebModule).
 - [Spec](https://github.com/uupaa/Spec.js/wiki/Spec)
@@ -12,9 +11,9 @@ Spec detection.
 ## Browser and NW.js(node-webkit)
 
 ```js
-<script src="<your-install-dir>/lib/WebModule.js"></script>
-<script src="<your-install-dir>/lib/Spec.js"></script>
-<script src="<your-install-dir>/lib/SpecCatalog.js"></script>
+<script src="<module-dir>/lib/WebModule.js"></script>
+<script src="<module-dir>/lib/SpecCatalog.js"></script>
+<script src="<module-dir>/lib/Spec.js"></script>
 <script>
 
 var spec = new WebModule.Spec();
@@ -27,16 +26,18 @@ console.log(spec.BROWSER);      // "Chrome"
 ## WebWorkers
 
 ```js
-importScripts("<your-install-dir>lib/WebModule.js");
-importScripts("<your-install-dir>lib/Spec.js");
+importScripts("<module-dir>lib/WebModule.js");
+importScripts("<module-dir>lib/SpecCatalog.js");
+importScripts("<module-dir>lib/Spec.js");
 
 ```
 
 ## Node.js
 
 ```js
-require("<your-install-dir>lib/WebModule.js");
-require("<your-install-dir>lib/Spec.js");
+require("<module-dir>lib/WebModule.js");
+require("<module-dir>lib/SpecCatalog.js");
+require("<module-dir>lib/Spec.js");
 
 ```
 

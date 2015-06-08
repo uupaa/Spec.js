@@ -92,14 +92,27 @@ function Reflection_resolve(target) { // @arg Function|String target function - 
     }
 //}@dev
 
+    var path = "";
+    var fn   = null;
+
     switch (typeof target) {
     case "function":
-        return { "path": _convertFunctionToPathString(target), "fn": target };
+        path = _convertFunctionToPathString(global, target, ["Object", "Function", "Array", "String", "Number"]) || // inject
+               _convertFunctionToPathString(global.WebModule, target, []); // inject
+        fn   = target;
+        break;
     case "string":
         target = _extractSharp(target);
-        return { "path": target, "fn": _convertPathStringToFunction(target) };
+        path = target;
+        fn   = _convertPathStringToFunction(target);
+        if (!fn) {
+            fn = _convertPathStringToFunction("WebModule." + target);
+            if (fn) {
+                path = "WebModule." + target;
+            }
+        }
     }
-    return { "path": "", "fn": null };
+    return { "path": path, "fn": fn };
 }
 
 function _convertPathStringToFunction(target) { // @arg String        - function path.  "Object.freeze"
@@ -110,29 +123,31 @@ function _convertPathStringToFunction(target) { // @arg String        - function
             }, global);
 }
 
-function _convertFunctionToPathString(target) { // @arg Function - function object. Object.freeze
-                                                // @ret String   - function path.  "Object.freeze"
+function _convertFunctionToPathString(root,         // @arg Object - find root object. global or global.WebModule
+                                      target,       // @arg Function - function object. Object.freeze
+                                      injectKeys) { // @arg StringArray - ["Object", "Function", ...]
+                                                    // @ret String   - function path.  "Object.freeze"
     var path = "";
-    var globalIdentities = _enumKeys(global).sort();
+    var rootKeys = _enumKeys(root).sort();
 
-    globalIdentities.unshift("Object", "Function", "Array", "String", "Number"); // inject
+    Array.prototype.unshift.apply(rootKeys, injectKeys);
 
-    for (var i = 0, iz = globalIdentities.length; i < iz && !path; ++i) {
-        var className = globalIdentities[i];
+    for (var i = 0, iz = rootKeys.length; i < iz && !path; ++i) {
+        var className = rootKeys[i];
 
         if ( IGNORE_KEYWORDS.indexOf(className) < 0 &&
-             global[className] !== null &&
-             /object|function/.test(typeof global[className]) ) {
+             root[className] != null &&
+             /object|function/.test(typeof root[className]) ) {
 
-            var klass = global[className];
+            var klass = root[className];
 
             if (klass === target) {
                 path = className;
             } else {
-                path = _findClassMember(target, className, _enumKeys(klass));
+                path = _findClassMember(target, root, className, _enumKeys(klass));
 
                 if ( !path && ("prototype" in klass) ) {
-                    path = _findPropertyMember(target, className,
+                    path = _findPropertyMember(target, root, className,
                                                _enumKeys(klass["prototype"]));
                 }
             }
@@ -145,38 +160,38 @@ function _enumKeys(object) {
     return (Object["getOwnPropertyNames"] || Object["keys"])(object);
 }
 
-function _findClassMember(target, className, keys) {
+function _findClassMember(target, root, className, keys) {
     for (var i = 0, iz = keys.length; i < iz; ++i) {
         var key = keys[i];
         var path = className + "." + key;
 
-        try {
-            if (IGNORE_KEYWORDS.indexOf(path) < 0 &&
-                IGNORE_KEYWORDS.indexOf(key)  < 0) {
+        if (IGNORE_KEYWORDS.indexOf(path) < 0 &&
+            IGNORE_KEYWORDS.indexOf(key)  < 0) {
 
-                if (global[className][key] === target) {
+            try {
+                if (root[className][key] === target) {
                     return path; // resolved
                 }
-            }
-        } catch (o_o) {}
+            } catch (o_o) {}
+        }
     }
     return "";
 }
 
-function _findPropertyMember(target, className, keys) {
+function _findPropertyMember(target, root, className, keys) {
     for (var i = 0, iz = keys.length; i < iz; ++i) {
         var key = keys[i];
         var path = className + ".prototype." + key;
 
-        try {
-            if (IGNORE_KEYWORDS.indexOf(path) < 0 &&
-                IGNORE_KEYWORDS.indexOf(key)  < 0) {
+        if (IGNORE_KEYWORDS.indexOf(path) < 0 &&
+            IGNORE_KEYWORDS.indexOf(key)  < 0) {
 
-                if (global[className]["prototype"][key] === target) {
+            try {
+                if (root[className]["prototype"][key] === target) {
                     return path; // resolved
                 }
-            }
-        } catch (o_o) {}
+            } catch (o_o) {}
+        }
     }
     return "";
 }
@@ -333,6 +348,13 @@ function _extractSharp(path) { // @arg String - "Array#forEach"
 function Reflection_getModuleRepository(moduleName) { // @arg String - path. "Reflection"
                                                       // @ret String
                                                       // @desc get WebModule repository url.
+    if (moduleName in global["WebModule"]) {
+        var repository = global["WebModule"][moduleName]["repository"] || "";
+
+        if (repository) {
+            return repository.replace(/\/+$/, ""); // trim tail slash
+        }
+    }
     if (moduleName in global) {
         var repository = global[moduleName]["repository"] || "";
 
@@ -340,7 +362,7 @@ function Reflection_getModuleRepository(moduleName) { // @arg String - path. "Re
             return repository.replace(/\/+$/, ""); // trim tail slash
         }
     }
-    return ""; // global[moduleName] not found
+    return ""; // global["WebModule"][moduleName] or global[moduleName] not found
 }
 
 function Reflection_getSearchLink(path) { // @arg String - "Object.freeze"
@@ -366,6 +388,9 @@ function _createGoogleSearchURL(keyword) { // @arg String - search keyword.
 function Reflection_getReferenceLink(path) { // @arg String - "Object.freeze"
                                              // @ret Object - { title:String, url:URLString }
                                              // @desc get JavaScript/WebModule reference link.
+    if ( /^WebModule\./.test(path) ) {
+        path = path.replace(/^WebModule\./, "");
+    }
     var className  = path.split(".")[0] || "";       // "Array.prototype.forEach" -> ["Array", "prototype", "forEach"] -> "Array"
     var repository = Reflection_getModuleRepository(className); // "https://github.com/uupaa/Help.js"
 
@@ -514,15 +539,6 @@ function _createSyntaxHighlightData() {
     }
     return _syntaxHighlightData;
 }
-
-// --- validate / assertions -------------------------------
-//{@dev
-//function $valid(val, fn, hint) { if (global["Valid"]) { global["Valid"](val, fn, hint); } }
-//function $type(obj, type) { return global["Valid"] ? global["Valid"].type(obj, type) : true; }
-//function $keys(obj, str) { return global["Valid"] ? global["Valid"].keys(obj, str) : true; }
-//function $some(val, str, ignore) { return global["Valid"] ? global["Valid"].some(val, str, ignore) : true; }
-//function $args(fn, args) { if (global["Valid"]) { global["Valid"].args(fn, args); } }
-//}@dev
 
 // --- exports ---------------------------------------------
 if (typeof module !== "undefined") {
@@ -784,6 +800,9 @@ function Valid_type(value,   // @arg Any
         if (type in global) { // Is this global Class?
             return baseClassName === type;
         }
+//      if (type in global["WebModule"]) { // Is this WebModule Class?
+//          return baseClassName === type;
+//      }
 
         // Valid.register(type) matching
         if (type in _hook) {
@@ -806,6 +825,9 @@ function Valid_type(value,   // @arg Any
                 if (compositeTypes in global) {
                     return _some(compositeTypes);
                 }
+//              if (compositeTypes in global["WebModule"]) {
+//                  return _some(compositeTypes);
+//              }
             }
         }
         return false;
@@ -1024,7 +1046,14 @@ function Help(target,      // @arg Function|String - function or function-path o
     var search    = Reflection["getSearchLink"](resolved["path"]);
     var reference = Reflection["getReferenceLink"](resolved["path"]);
 
-    _syntaxHighlight(resolved["fn"] + "", highlight);
+    var fn = resolved["fn"];
+    var code = "";
+
+    switch (typeof fn) {
+    case "function": code = fn + ""; break;
+    case "object": code = JSON.stringify(fn, null, 2);
+    }
+    _syntaxHighlight(code, highlight);
     if (!options.noLink) {
         Console["link"](search["url"], search["title"]);
         if (reference) {
@@ -1742,8 +1771,10 @@ function _swap(that) {
         if (!that._secondary) {
             that._secondary = true;
             that._module.forEach(function(moduleName) {
-                global["$$$" + moduleName + "$$$"] = global[moduleName];
-                global[moduleName] = global[moduleName + "_"]; // swap primary <-> secondary module
+                var ns = global["WebModule"];
+
+                ns["$$$" + moduleName + "$$$"] = ns[moduleName];
+                ns[moduleName] = ns[moduleName + "_"]; // swap primary <-> secondary module
             });
         }
     }
@@ -1754,8 +1785,10 @@ function _undo(that) {
         if (that._secondary) {
             that._secondary = false;
             that._module.forEach(function(moduleName) {
-                global[moduleName] = global["$$$" + moduleName + "$$$"];
-                delete global["$$$" + moduleName + "$$$"];
+                var ns = global["WebModule"];
+
+                ns[moduleName] = ns["$$$" + moduleName + "$$$"];
+                delete ns["$$$" + moduleName + "$$$"];
             });
         }
     }
