@@ -1531,6 +1531,8 @@ var ERR  = "\u001b[31m";
 var WARN = "\u001b[33m";
 var INFO = "\u001b[32m";
 var CLR  = "\u001b[0m";
+var GHOST = "\uD83D\uDC7B";
+var BEER  = "\uD83C\uDF7B";
 
 // --- class / interfaces ----------------------------------
 function Test(moduleName, // @arg String|StringArray - target modules.
@@ -1626,6 +1628,7 @@ function Test_run(deprecated) { // @ret TestFunctionArray
 function _testRunner(that,               // @arg this
                      finishedCallback) { // @arg Function
     var testCases = that._testCases.slice(); // clone
+    var progress = { cur: 0, max: testCases.length };
     var task = new Task(testCases.length, finishedCallback, { "tick": _next });
 
     _next();
@@ -1634,10 +1637,27 @@ function _testRunner(that,               // @arg this
         var testCase = testCases.shift();
         if (!testCase) { return; }
 
-        var testCaseName = testCase.name || (testCase + "").split(" ")[1].split("\x28")[0];
+        var testCaseName = _getFunctionName(testCase);
         if (testCase.length === 0) {
             throw new Error("Function " + testCaseName + " has not argument.");
         }
+        var test = {
+            done: function(error) {
+                if (IN_BROWSER || IN_NW) {
+                    _addTestButton(that, testCase, error ? "red" : "green");
+
+                    var green = ((++progress.cur / progress.max) * 255) | 0;
+                    var bgcolor = "rgb(0, " + green + ", 0)";
+
+                    document.body["style"]["backgroundColor"] = bgcolor;
+                }
+                if (error) {
+                    task.miss();
+                } else {
+                    task.pass();
+                }
+            }
+        };
         var pass = _getPassFunction(that, testCaseName + " pass");
         var miss = _getMissFunction(that, testCaseName + " miss");
 
@@ -1647,10 +1667,10 @@ function _testRunner(that,               // @arg this
         //  }
 
         if (!that._ignoreError) {
-            testCase(task, pass, miss); // execute testCase
+            testCase(test, pass, miss); // execute testCase
         } else {
             try {
-                testCase(task, pass, miss);
+                testCase(test, pass, miss);
             } catch (o_O) { // [!] catch uncaught exception
                 miss();
                 if (IN_NODE) {
@@ -1695,10 +1715,12 @@ function _nwTestRunner(that, task) {
 function _onload(that, task) {
     _testRunner(that, function finishedCallback(err) {
         _finishedLog(that, err);
-        document.body["style"]["backgroundColor"] = err ? "red" : "lime";
-        if (that._button) {
-            _addTestButtons(that, that._testCases);
-        }
+
+        var n = that._secondary ? 2 : 1;
+
+        document.title = (err ? GHOST : BEER).repeat(n) + document.title;
+
+      //document.body["style"]["backgroundColor"] = err ? "red" : "lime";
         task.done(err);
     });
 }
@@ -1831,34 +1853,50 @@ function _getMissFunction(that, missMessage) { // @ret MissFunction
 }
 
 function _finishedLog(that, err) {
+    var n = that._secondary ? 2 : 1;
+
     if (err) {
-        _getMissFunction(that, "SOME MISSED.")();
+        _getMissFunction(that, GHOST.repeat(n) + "  SOME MISSED.")();
     } else {
-        _getPassFunction(that, "ALL PASSED.")();
+        _getPassFunction(that, BEER.repeat(n)  + "  ALL PASSED.")();
     }
 }
 
-function _addTestButtons(that, cases) { // @arg TestCaseFunctionArray
+function _addTestButton(that,
+                        testCase,      // @arg TestCaseFunction
+                        buttonColor) { // @arg String - button color
     // add <input type="button" onclick="test()" value="test()" /> buttons
-    cases.forEach(function(fn, index) {
-        var itemName = fn["name"] || (fn + "").split(" ")[1].split("\x28")[0];
-        var safeName = itemName.replace(/\$/, "_"); // "concat$" -> "concat_"
+    var itemName = _getFunctionName(testCase);
+    var safeName = itemName.replace(/\$/, "_"); // "concat$" -> "concat_"
 
-        if (!document.querySelector("#" + safeName)) {
-            var inputNode = document.createElement("input");
-            var next = "{pass:function(){},miss:function(){},done:function(){}}";
-            var pass = "function(){console.log('"   + itemName + " pass')}";
-            var miss = "function(){console.error('" + itemName + " miss')}";
+    if (!document.querySelector("#" + safeName)) {
+        var inputNode = document.createElement("input");
+        var next = "{pass:function(){},miss:function(){},done:function(){}}";
+        var pass = "function(){console.log('"   + itemName + " pass')}";
+        var miss = "function(){console.error('" + itemName + " miss')}";
+        var index = that._testCases.indexOf(testCase);
 
-            inputNode.setAttribute("id", safeName);
-            inputNode.setAttribute("type", "button");
-            inputNode.setAttribute("value", itemName + "()");
-            inputNode.setAttribute("onclick", "ModuleTest" + that._module[0] +
-                    "[" + index + "](" + next + ", " + pass + ", " + miss + ")");
+        inputNode.setAttribute("id", safeName);
+        inputNode.setAttribute("type", "button");
+        inputNode.setAttribute("style", "color:" + buttonColor);
+        inputNode.setAttribute("value", itemName + "()");
+        inputNode.setAttribute("onclick", "ModuleTest" + that._module[0] +
+                "[" + index + "](" + next + ", " + pass + ", " + miss + ")");
 
-            document.body.appendChild(inputNode);
-        }
-    });
+        document.body.appendChild(inputNode);
+    }
+}
+
+function _getFunctionName(fn) {
+    return fn["name"] ||
+          (fn + "").split(" ")[1].split("\x28")[0]; // IE
+}
+
+if (!String.prototype.repeat) {
+    String.prototype.repeat = function(n) {
+        n = n | 0;
+        return (this.length && n > 0) ? new Array(n + 1).join(this) : "";
+    };
 }
 
 // --- exports ---------------------------------------------
