@@ -1,0 +1,6 @@
+require("./lib/WebModule.js");
+
+var json = JSON.stringify( require("./lib/SpecCatalog.js") );
+
+require("fs").writeFileSync("./lib/SpecCatalog.json", json, "UTF-8");
+

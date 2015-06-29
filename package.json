@@ -1,6 +1,6 @@
 {
   "name": "uupaa.spec.js",
-  "version": "0.21.11",
+  "version": "0.22.0",
   "description": "Spec detection.",
   "url": "https://github.com/uupaa/Spec.js",
   "keywords": ["mobile", "spec", "uupaa", "WebModule"],
@@ -26,11 +26,12 @@
     "setup": "node ../WebModule/run/setup.js",
     "start": "cd ../; Python -m SimpleHTTPServer 8000 &",
     "stop": "killall -- Python -m SimpleHTTPServer 8000; exit 0",
-    "wiki": "node ../WebModule/run/wiki.js"
+    "wiki": "node ../WebModule/run/wiki.js",
+    "pretest": "node tojson"
   },
   "webmodule": {
     "develop": false,
-    "label": ["@dev", "@devicejp", "@devicefx", "@kindle", "@windowsphone"],
+    "label": ["@dev", "@devicejp", "@kindle", "@windows"],
     "browser": {
       "source": ["lib/SpecCatalog.js", "lib/Spec.js"],
       "output": "release/Spec.b.min.js"
