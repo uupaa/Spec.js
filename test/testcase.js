@@ -63,6 +63,8 @@ var test = new Test("Spec", {
       //testSpec_WEBGL_VERSION,
       //testSpec_WEBP_FEATURES,
       //testSpec_CHROME_TRIGGER,
+        // --- WebView ---
+        testSpec_SpecialUserAgent,
     ]);
 
 /*
@@ -807,6 +809,10 @@ function testSpec_SLOW_GPU(test, pass, miss) {
 }
 
 function testSpec_OLD_DEVICE(test, pass, miss) {
+    var keep = Spec["SETTING"]["OLD_DEVICE_THRESHOLD"]; // 現在の設定を保存
+
+    Spec["SETTING"]["OLD_DEVICE_THRESHOLD"] = 24; // 24ヶ月にセット
+
     var spec1 = new Spec();
     var spec2 = new Spec();
     var spec3 = new Spec();
@@ -832,6 +838,8 @@ function testSpec_OLD_DEVICE(test, pass, miss) {
     // VA-10J 2015-03 -> OLD DEVICE (expire 2017-03)
     spec4.CURRENT_TIME = (new Date(2017, 3, 30)).getTime(); // 2017-04
     spec4.USER_AGENT = "Mozilla/5.0 (Linux; Android 4.4; VA-10J Build/BuildID) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/30.0.0.0 Mobile Safari/537.36";
+
+    Spec["SETTING"]["OLD_DEVICE_THRESHOLD"] = keep; // 設定を元に戻す
 
     if (spec1.OLD_DEVICE && spec2.OLD_DEVICE && !spec3.OLD_DEVICE && spec4.OLD_DEVICE) {
         test.done(pass());
@@ -957,7 +965,36 @@ function testSpec_WEBP(test, pass, miss) {
         if (spec.WEBP & 0x08) { console.log("WebP animation ready"); }
         test.done(pass());
     }, 100); // because async detection.
+}
 
+function testSpec_SpecialUserAgent(test, pass, miss) {
+
+    var source = [
+        // http://www.au.kddi.com/developer/android/kishu/ua/
+        "Mozilla/5.0 (Linux; Android 5.0.2; SOT31 Build/xxxx; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/42.0.2311.138 Safari/537.36",
+        "Mozilla/5.0 (Linux; Android 5.1; KYT31 Build/xxxx; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/42.0.2311.137 Safari/537.36",
+        "Mozilla/5.0 (Linux; Android 5.0.2; SHV32 Build/S5231; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/42.0.2311.129 Mobile Safari/537.36",
+    ];
+    var result = [
+        "SOT31",
+        "KYT31",
+        "SHV32"
+    ];
+
+    var ok = source.every(function(ua, index) {
+        var spec = new Spec();
+
+        spec.USER_AGENT = ua;
+
+        //alert(spec.DEVICE + ":" + spec.WEB_VIEW);
+        return spec.DEVICE === result[index];
+    });
+
+    if (ok) {
+        test.done(pass());
+    } else {
+        test.done(miss());
+    }
 }
 
 
