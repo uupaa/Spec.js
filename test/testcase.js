@@ -58,10 +58,9 @@ var test = new Test("Spec", {
         testSpec_CPU_MAX_THREADS,
         testSpec_GPU_MAX_TEXTURE_SIZE,
         testSpec_MAX_TOUCH_POINTS,
+        testSpec_WEBGL_CONTEXT,
+        testSpec_WEBGL_VERSION,
         testSpec_WEBP,
-      //testSpec_WEBGL_CONTEXT,
-      //testSpec_WEBGL_VERSION,
-      //testSpec_WEBP_FEATURES,
       //testSpec_CHROME_TRIGGER,
         // --- WebView ---
         testSpec_SpecialUserAgent,
@@ -912,6 +911,28 @@ function testSpec_SIMD(test, pass, miss) {
     }
 }
 
+function testSpec_WEBP(test, pass, miss) {
+    var spec = new Spec();
+
+    setTimeout(function() {
+        if (spec.WEBP & 0x01) { console.log("WebP lossy ready"); }
+        if (spec.WEBP & 0x02) { console.log("WebP lossless ready"); }
+        if (spec.WEBP & 0x04) { console.log("WebP alpha ready"); }
+        if (spec.WEBP & 0x08) { console.log("WebP animation ready"); }
+        test.done(pass());
+    }, 100); // because async detection.
+}
+
+function testSpec_CPU_MAX_THREADS(test, pass, miss) {
+    var spec = new Spec();
+
+    if (spec.CPU_MAX_THREADS >= 2) {
+        test.done(pass());
+    } else {
+        test.done(miss());
+    }
+}
+
 function testSpec_GPU_MAX_TEXTURE_SIZE(test, pass, miss) {
     var spec1 = new Spec();
     var spec2 = new Spec();
@@ -922,16 +943,6 @@ function testSpec_GPU_MAX_TEXTURE_SIZE(test, pass, miss) {
     spec2.USER_AGENT = "Mozilla/5.0 (Linux; Android 4.0; Galaxy S6 Build/BuildID) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/30.0.0.0 Mobile Safari/537.36";
 
     if (spec1.GPU_MAX_TEXTURE_SIZE === 16 * 1024 && spec2.GPU_MAX_TEXTURE_SIZE === 4 * 1024) {
-        test.done(pass());
-    } else {
-        test.done(miss());
-    }
-}
-
-function testSpec_CPU_MAX_THREADS(test, pass, miss) {
-    var spec = new Spec();
-
-    if (spec.CPU_MAX_THREADS >= 2) {
         test.done(pass());
     } else {
         test.done(miss());
@@ -954,17 +965,40 @@ function testSpec_MAX_TOUCH_POINTS(test, pass, miss) {
     }
 }
 
-
-function testSpec_WEBP(test, pass, miss) {
+function testSpec_WEBGL_CONTEXT(test, pass, miss) {
     var spec = new Spec();
 
-    setTimeout(function() {
-        if (spec.WEBP & 0x01) { console.log("WebP lossy ready"); }
-        if (spec.WEBP & 0x02) { console.log("WebP lossless ready"); }
-        if (spec.WEBP & 0x04) { console.log("WebP alpha ready"); }
-        if (spec.WEBP & 0x08) { console.log("WebP animation ready"); }
+    switch ( spec.WEBGL_CONTEXT ) {
+    case "webgl2":
+    case "experimental-webgl2":
+    case "webgl":
+    case "experimental-webgl":
         test.done(pass());
-    }, 100); // because async detection.
+        break;
+    case "":
+        test.done(pass());
+        break;
+    default:
+        test.done(miss());
+    }
+}
+
+function testSpec_WEBGL_VERSION(test, pass, miss) {
+    var spec = new Spec();
+
+    var version = spec.WEBGL_VERSION; // WebGL 1.0 (OpenGL ES 2.0 IMGSGX543-113.3)
+
+    if (IN_BROWSER || IN_NW) {
+        if (/WebGL/.test(version)) {
+            test.done(pass());
+            return;
+        }
+    }
+    if (!version) {
+        test.done(pass());
+        return;
+    }
+    test.done(miss());
 }
 
 function testSpec_SpecialUserAgent(test, pass, miss) {
