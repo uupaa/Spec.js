@@ -1,6 +1,13 @@
 require("./lib/WebModule.js");
 
-var json = JSON.stringify( require("./lib/SpecCatalog.js") );
+var argv = process.argv.slice(2);
+
+// --- pickup indent setting ---
+var indent = argv[0] ? parseInt(argv[0])
+                     : 0;
+console.log(indent);
+
+var json = JSON.stringify( require("./lib/SpecCatalog.js"), null, indent );
 
 require("fs").writeFileSync("./lib/SpecCatalog.json", json, "UTF-8");
 
