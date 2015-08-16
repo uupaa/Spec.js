@@ -14,10 +14,11 @@ onmessage = function(event) {
 
     importScripts("../lib/WebModule.js");
 
-    //publish to global. eg: window.WebModule.Class -> window.Class
+    // publish to global
     WebModule.publish = true;
 
-    
+    importScripts("../node_modules/uupaa.webgldetector.js/lib/WebGLDetector.js");
+    importScripts("../node_modules/uupaa.useragent.js/lib/UserAgent.js");
     importScripts("wmtools.js");
     importScripts("../lib/SpecCatalog.js");
     importScripts("../lib/Spec.js");
