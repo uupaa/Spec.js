@@ -17,7 +17,7 @@ onmessage = function(event) {
     // publish to global
     WebModule.publish = true;
 
-    importScripts("../node_modules/uupaa.webgldetector.js/lib/WebGLDetector.js");
+    importScripts("../node_modules/uupaa.useragent.js/node_modules/uupaa.webgldetector.js/lib/WebGLDetector.js");
     importScripts("../node_modules/uupaa.useragent.js/lib/UserAgent.js");
     importScripts("wmtools.js");
     importScripts("../lib/SpecCatalog.js");
