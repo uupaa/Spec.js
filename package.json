@@ -1,9 +1,9 @@
 {
   "name": "uupaa.spec.js",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Spec detection.",
   "url": "https://github.com/uupaa/Spec.js",
-  "keywords": ["mobile", "spec", "uupaa", "WebModule"],
+  "keywords": ["Mobile", "SoC", "CPU", "GPU", "RAM", "BLE", "NFC", "spec", "uupaa", "WebModule"],
   "repository": {
     "type": "git",
     "url": "https://github.com/uupaa/Spec.js.git"
@@ -27,7 +27,8 @@
     "start": "cd ../; Python -m SimpleHTTPServer 8000 &",
     "stop": "killall -- Python -m SimpleHTTPServer 8000; exit 0",
     "wiki": "node ../WebModule/run/wiki.js",
-    "pretest": "node tojson"
+    "pretest": "node tojson",
+    "add-src": "node ../WebModule/run/add-src.js"
   },
   "webmodule": {
     "develop": false,
@@ -49,7 +50,9 @@
       "output": "release/Spec.nw.min.js"
     }
   },
-  "dependencies": {},
+  "dependencies": {
+    "uupaa.useragent.js": ""
+  },
   "devDependencies": {},
   "lib": "./lib/",
   "main": "./index.js",

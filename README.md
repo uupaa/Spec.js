@@ -12,13 +12,28 @@ Spec detection.
 
 ```js
 <script src="<module-dir>/lib/WebModule.js"></script>
+<script src="<module-dir>/lib/WebGLDetector.js"></script>
+<script src="<module-dir>/lib/UserAgent.js"></script>
 <script src="<module-dir>/lib/SpecCatalog.js"></script>
 <script src="<module-dir>/lib/Spec.js"></script>
 <script>
 
-var spec = new WebModule.Spec();
-console.log(spec.USER_AGENT);   // "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.115 Safari/537.36";
-console.log(spec.BROWSER);      // "Chrome"
+var ua = new UserAgent(); // iPhone 6
+var spec = new Spec(ua);
+
+spec.UNKNOWN            // -> false
+spec.SOC                // -> "A8"
+spec.GPU                // -> "POWERVR GX6450",
+spec.RAM                // -> 1024
+spec.BLE                // -> true
+spec.NFC                // -> false
+spec.ATOM               // -> false
+spec.SIMD               // -> true
+spec.MAX_THREADS        // -> 2
+spec.MAX_TOUCH_POINTS   // -> 5
+spec.MAX_TEXTURE_SIZE   // -> 16384
+spec.LOW_END            // -> false
+spec.OUTMODED           // -> false
 
 </script>
 ```

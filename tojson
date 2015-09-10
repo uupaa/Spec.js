@@ -1,6 +1,44 @@
 require("./lib/WebModule.js");
 
-var json = JSON.stringify( require("./lib/SpecCatalog.js") );
+var argv = process.argv.slice(2);
 
-require("fs").writeFileSync("./lib/SpecCatalog.json", json, "UTF-8");
+//var json = JSON.stringify( require("./lib/SpecCatalog.js") );
+//require("fs").writeFileSync("./lib/SpecCatalog.json", json, "UTF-8");
+
+var json = require("./lib/SpecCatalog.js");
+var buffer = ["{", "\n"];
+
+for (var key in json) {
+    switch (key) {
+    case "Tags":
+        buffer.push( '"' + key + '":' + JSON.stringify(json[key]) );
+        break;
+    case "iOS":
+    case "Android":
+    case "Windows":
+    case "SOC":
+    case "GPU":
+        buffer.push( '"' + key + '":{', "\n" );
+        for (var i in json[key]) {
+            buffer.push( '"' + i + '":' + JSON.stringify(json[key][i]) );
+            buffer.push( ",\n" );
+        }
+        buffer.pop();
+        buffer.push("\n", "}");
+        break;
+    }
+    buffer.push( ",\n" );
+}
+buffer.pop();
+buffer.push("\n", "}");
+
+
+try {
+    JSON.parse(buffer.join("")); // test
+
+    require("fs").writeFileSync("./lib/SpecCatalog.json", buffer.join(""), "UTF-8");
+} catch(err) {
+    console.log("encode json error");
+}
+
 
