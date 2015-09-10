@@ -51,7 +51,6 @@
     }
   },
   "dependencies": {
-    "uupaa.webgldetector.js": "",
     "uupaa.useragent.js": ""
   },
   "devDependencies": {},
