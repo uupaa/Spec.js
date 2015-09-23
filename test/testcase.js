@@ -353,20 +353,16 @@ function testSpec_dump_bothhands(test, pass, miss) {
 }
 
 function testSpec_H265(test, pass, miss) {
-    // Species
-    var ua1 = "Mozilla/5.0 (Linux; Android 6.0.0; en-us; Nexus 5 Build/xxxxxx) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19";
-    var ua2 = "Mozilla/5.0 (Linux; Android 6.0.0; en-us; Nexus 5X Build/xxxxxx) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19";
-    var ua3 = "Mozilla/5.0 (Linux; Android 5.0.0; en-us; SOV31 Build/xxxxxx) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19";
-    var spec1 = new Spec(ua1);
-    var spec2 = new Spec(ua2);
-    var spec3 = new Spec(ua3);
+    var spec1 = new Spec({ OS: "Android", OS_VERSION: "6.0.0", DEVICE: "Nexus 5"  });
+    var spec2 = new Spec({ OS: "Android", OS_VERSION: "6.0.0", DEVICE: "Nexus 5X" });
+    var spec3 = new Spec({ OS: "Android", OS_VERSION: "6.0.0", DEVICE: "SOV31"    });
 
     if ( spec1.H265 === 0x00 && // Nexus 5 has not H.265 function
          spec2.H265 === 0x02 && // Nexus 5X has H.265 decoder
          spec3.H265 === 0x03) { // Xperia Z4 has H.265 encoder and decoder
-        test.done(miss());
-    } else {
         test.done(pass());
+    } else {
+        test.done(miss());
     }
 }
 
