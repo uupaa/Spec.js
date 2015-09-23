@@ -32,6 +32,7 @@ var test = new Test("Spec", {
         testSpec_MAX_TEXTURE_SIZE,
         testSpec_LOW_END,
         testSpec_OUTMODED,
+        testSpec_H265,
         // --- static methods ---
         testSpec_has,
         testSpec_dump_modern,
@@ -351,6 +352,19 @@ function testSpec_dump_bothhands(test, pass, miss) {
     }
 }
 
+function testSpec_H265(test, pass, miss) {
+    var spec1 = new Spec({ OS: "Android", OS_VERSION: "6.0.0", DEVICE: "Nexus 5"  });
+    var spec2 = new Spec({ OS: "Android", OS_VERSION: "6.0.0", DEVICE: "Nexus 5X" });
+    var spec3 = new Spec({ OS: "Android", OS_VERSION: "6.0.0", DEVICE: "SOV31"    });
+
+    if ( spec1.H265 === 0x00 && // Nexus 5 has not H.265 function
+         spec2.H265 === 0x02 && // Nexus 5X has H.265 decoder
+         spec3.H265 === 0x03) { // Xperia Z4 has H.265 encoder and decoder
+        test.done(pass());
+    } else {
+        test.done(miss());
+    }
+}
 
 function _save(keyValue) {
     var stack = JSON.parse(JSON.stringify(Spec["THRESHOLD"]));
