@@ -33,6 +33,7 @@ var test = new Test("Spec", {
         testSpec_LOW_END,
         testSpec_OUTMODED,
         testSpec_H265,
+        testSpec_ForceTouch,
         // --- static methods ---
         testSpec_has,
         testSpec_dump_modern,
@@ -360,6 +361,20 @@ function testSpec_H265(test, pass, miss) {
     if ( spec1.H265 === 0x00 && // Nexus 5 has not H.265 function
          spec2.H265 === 0x02 && // Nexus 5X has H.265 decoder
          spec3.H265 === 0x03) { // Xperia Z4 has H.265 encoder and decoder
+        test.done(pass());
+    } else {
+        test.done(miss());
+    }
+}
+
+function testSpec_ForceTouch(test, pass, miss) {
+    var spec1 = new Spec({ OS: "iOS", DEVICE: "iPhone 6s"      });
+    var spec2 = new Spec({ OS: "iOS", DEVICE: "iPhone 6s Plus" });
+    var spec3 = new Spec({ OS: "iOS", DEVICE: "iPhone 6" });
+
+    if ( spec1.FORCE_TOUCH &&
+         spec2.FORCE_TOUCH &&
+        !spec3.FORCE_TOUCH) {
         test.done(pass());
     } else {
         test.done(miss());
