@@ -34,6 +34,7 @@ var test = new Test("Spec", {
         testSpec_OUTMODED,
         testSpec_H265,
         testSpec_ForceTouch,
+        testSpec_ForceClick,
         // --- static methods ---
         testSpec_has,
         testSpec_dump_modern,
@@ -375,6 +376,20 @@ function testSpec_ForceTouch(test, pass, miss) {
     if ( spec1.FORCE_TOUCH &&
          spec2.FORCE_TOUCH &&
         !spec3.FORCE_TOUCH) {
+        test.done(pass());
+    } else {
+        test.done(miss());
+    }
+}
+
+function testSpec_ForceClick(test, pass, miss) {
+    var spec1 = new Spec({ OS: "iOS", DEVICE: "iPhone 6s"      });
+    var spec2 = new Spec({ OS: "iOS", DEVICE: "iPhone 6s Plus" });
+    var spec3 = new Spec({ OS: "iOS", DEVICE: "iPhone 6" });
+
+    if ( spec1.FORCE_CLICK &&
+         spec2.FORCE_CLICK &&
+        !spec3.FORCE_CLICK) {
         test.done(pass());
     } else {
         test.done(miss());

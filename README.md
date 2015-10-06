@@ -29,6 +29,8 @@ spec.BLE                // -> true
 spec.NFC                // -> false
 spec.ATOM               // -> false
 spec.SIMD               // -> true
+spec.FORCE_TOUCH        // -> false
+spec.FORCE_CLICK        // -> false
 spec.MAX_THREADS        // -> 2
 spec.MAX_TOUCH_POINTS   // -> 5
 spec.MAX_TEXTURE_SIZE   // -> 16384
