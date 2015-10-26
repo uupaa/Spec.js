@@ -10,6 +10,7 @@ var test = new Test("Spec", {
         worker:     true,  // enable worker test.
         node:       true,  // enable node test.
         nw:         true,  // enable nw.js test.
+        el:         true,  // enable Electron test.
         button:     true,  // show button.
         both:       true,  // test the primary and secondary modules.
         ignoreError:false, // ignore error.

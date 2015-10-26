@@ -5,10 +5,13 @@
 Spec detection.
 
 
-- Spec.js made of [WebModule](https://github.com/uupaa/WebModule).
-- [Spec](https://github.com/uupaa/Spec.js/wiki/Spec)
+This module made of [WebModule](https://github.com/uupaa/WebModule).
 
-## Browser and NW.js(node-webkit)
+## Documentation
+- [Spec](https://github.com/uupaa/Spec.js/wiki/)
+- [API Spec](https://github.com/uupaa/Spec.js/wiki/Spec)
+
+## Browser, NW.js and Electron
 
 ```js
 <script src="<module-dir>/lib/WebModule.js"></script>

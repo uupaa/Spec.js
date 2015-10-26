@@ -1,6 +1,6 @@
 {
   "name": "uupaa.spec.js",
-  "version": "2.0.10",
+  "version": "2.0.11",
   "description": "Spec detection.",
   "url": "https://github.com/uupaa/Spec.js",
   "keywords": ["Mobile", "SoC", "CPU", "GPU", "RAM", "BLE", "NFC", "spec", "uupaa", "WebModule"],
@@ -15,10 +15,10 @@
     "watch": "node ../WebModule/run/watch.js --verbose --run lint",
     "page": "node ../WebModule/run/page.js --verbose",
     "test": "npm run min; npm run node; npm run browser",
-    "node": "NODE_ENV=production NODE_PATH=lib node --harmony test/node.js",
-    "noded": "NODE_ENV=production NODE_PATH=lib node --debug-brk --harmony test/node.js",
-    "browser": "open http://localhost:8000/Spec.js/test/index.html",
-    "sim": "node ../WebModule/run/sim.js http://localhost:8000/Spec.js/test/index.html",
+    "node": "NODE_ENV=production NODE_PATH=lib node test/node/index.js",
+    "noded": "NODE_ENV=production NODE_PATH=lib node --debug-brk test/node/index.js",
+    "browser": "open http://localhost:8000/Spec.js/test/browser/index.html",
+    "sim": "node ../WebModule/run/sim.js http://localhost:8000/Spec.js/test/browser/index.html",
     "simx": "node ../WebModule/run/sim.js stop",
     "lint": "eslint lib/*.js",
     "score": "node ../WebModule/run/score.js; open lint/plato/index.html",
@@ -28,7 +28,9 @@
     "stop": "killall -- Python -m SimpleHTTPServer 8000; exit 0",
     "wiki": "node ../WebModule/run/wiki.js",
     "pretest": "node tojson",
-    "add-src": "node ../WebModule/run/add-src.js"
+    "add-src": "node ../WebModule/run/add-src.js",
+    "el": "electron test/el",
+    "nw": "nw test/nw"
   },
   "webmodule": {
     "develop": false,
@@ -48,6 +50,10 @@
     "nw": {
       "source": ["lib/SpecCatalog.js", "lib/Spec.js"],
       "output": "release/Spec.nw.min.js"
+    },
+    "el": {
+      "source": ["lib/SpecCatalog.js", "lib/Spec.js"],
+      "output": "release/Spec.el.min.js"
     }
   },
   "dependencies": {
