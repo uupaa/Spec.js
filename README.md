@@ -2,7 +2,7 @@
 
 [![npm](https://nodei.co/npm/uupaa.spec.js.svg?downloads=true&stars=true)](https://nodei.co/npm/uupaa.spec.js/)
 
-Spec detection.
+Mobile Device Spec detection.
 
 
 This module made of [WebModule](https://github.com/uupaa/WebModule).

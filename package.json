@@ -1,7 +1,7 @@
 {
   "name": "uupaa.spec.js",
-  "version": "2.0.11",
-  "description": "Spec detection.",
+  "version": "2.0.12",
+  "description": "Mobile Device Spec detection.",
   "url": "https://github.com/uupaa/Spec.js",
   "keywords": ["Mobile", "SoC", "CPU", "GPU", "RAM", "BLE", "NFC", "spec", "uupaa", "WebModule"],
   "repository": {
@@ -10,6 +10,7 @@
   },
   "scripts": {
     "sync": "node ../WebModule/run/sync.js; npm update; node ../WebModule/run/page.js",
+    "wiki": "node ../WebModule/run/wiki.js",
     "min": "node ../WebModule/run/minify.js --verbose --strict --keep --pretty",
     "build": "node ../WebModule/run/minify.js --verbose --strict --keep --release",
     "watch": "node ../WebModule/run/watch.js --verbose --run lint",
@@ -18,6 +19,9 @@
     "node": "NODE_ENV=production NODE_PATH=lib node test/node/index.js",
     "noded": "NODE_ENV=production NODE_PATH=lib node --debug-brk test/node/index.js",
     "browser": "open http://localhost:8000/Spec.js/test/browser/index.html",
+    "el": "electron test/el",
+    "nw": "nw test/nw",
+    "add-src": "node ../WebModule/run/add-src.js",
     "sim": "node ../WebModule/run/sim.js http://localhost:8000/Spec.js/test/browser/index.html",
     "simx": "node ../WebModule/run/sim.js stop",
     "lint": "eslint lib/*.js",
@@ -25,12 +29,7 @@
     "patch": "node ../WebModule/run/patch.js",
     "setup": "node ../WebModule/run/setup.js",
     "start": "cd ../; Python -m SimpleHTTPServer 8000 &",
-    "stop": "killall -- Python -m SimpleHTTPServer 8000; exit 0",
-    "wiki": "node ../WebModule/run/wiki.js",
-    "pretest": "node tojson",
-    "add-src": "node ../WebModule/run/add-src.js",
-    "el": "electron test/el",
-    "nw": "nw test/nw"
+    "stop": "killall -- Python -m SimpleHTTPServer 8000; exit 0"
   },
   "webmodule": {
     "develop": false,
