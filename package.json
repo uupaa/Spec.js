@@ -1,6 +1,6 @@
 {
   "name": "uupaa.spec.js",
-  "version": "2.0.13",
+  "version": "2.0.14",
   "description": "Mobile Device Spec detection.",
   "url": "https://github.com/uupaa/Spec.js",
   "keywords": ["Mobile", "SoC", "CPU", "GPU", "RAM", "BLE", "NFC", "spec", "uupaa", "WebModule"],
@@ -22,6 +22,7 @@
     "el": "electron test/el",
     "nw": "nw test/nw",
     "add-src": "node ../WebModule/run/add-src.js",
+    "pretest": "node tojson",
     "sim": "node ../WebModule/run/sim.js http://localhost:8000/Spec.js/test/browser/index.html",
     "simx": "node ../WebModule/run/sim.js stop",
     "lint": "eslint lib/*.js",
