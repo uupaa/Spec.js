@@ -14,7 +14,8 @@ onmessage = function(event) {
 
     importScripts("../../lib/WebModule.js");
 
-    // publish to global
+    WebModule.verify  = true;
+    WebModule.verbose = true;
     WebModule.publish = true;
 
     importScripts("../../node_modules/uupaa.useragent.js/node_modules/uupaa.webgldetector.js/lib/WebGLDetector.js");

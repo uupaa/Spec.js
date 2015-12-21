@@ -2,8 +2,9 @@
 
 require("../../lib/WebModule.js");
 
-// publish to global
-WebModule.publish = true;
+WebModule.verify  = __WEBMODULE_VERIFY__;
+WebModule.verbose = __WEBMODULE_VERBOSE__;
+WebModule.publish = __WEBMODULE_PUBLISH__;
 
 __MODULES__
 __WMTOOLS__

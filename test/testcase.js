@@ -1,7 +1,5 @@
 var ModuleTestSpec = (function(global) {
 
-global["BENCHMARK"] = false;
-
 var Spec = WebModule["Spec"];
 
 var test = new Test("Spec", {

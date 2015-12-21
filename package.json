@@ -1,6 +1,6 @@
 {
   "name": "uupaa.spec.js",
-  "version": "2.0.21",
+  "version": "2.0.22",
   "description": "Mobile Device Spec detection.",
   "url": "https://github.com/uupaa/Spec.js",
   "keywords": ["Mobile", "SoC", "CPU", "GPU", "RAM", "BLE", "NFC", "spec", "uupaa", "WebModule"],
@@ -36,23 +36,38 @@
     "develop": false,
     "label": ["@dev", "@devicejp", "@kindle", "@windows"],
     "browser": {
-      "source": ["lib/SpecCatalog.js", "lib/Spec.js"],
+      "source": [
+        "lib/SpecCatalog.js",
+        "lib/Spec.js"
+      ],
       "output": "release/Spec.b.min.js"
     },
     "worker": {
-      "source": ["lib/SpecCatalog.js", "lib/Spec.js"],
+      "source": [
+        "lib/SpecCatalog.js",
+        "lib/Spec.js"
+      ],
       "output": "release/Spec.w.min.js"
     },
     "node": {
-      "source": ["lib/SpecCatalog.js", "lib/Spec.js"],
+      "source": [
+        "lib/SpecCatalog.js",
+        "lib/Spec.js"
+      ],
       "output": "release/Spec.n.min.js"
     },
     "nw": {
-      "source": ["lib/SpecCatalog.js", "lib/Spec.js"],
+      "source": [
+        "lib/SpecCatalog.js",
+        "lib/Spec.js"
+      ],
       "output": "release/Spec.nw.min.js"
     },
     "el": {
-      "source": ["lib/SpecCatalog.js", "lib/Spec.js"],
+      "source": [
+        "lib/SpecCatalog.js",
+        "lib/Spec.js"
+      ],
       "output": "release/Spec.el.min.js"
     }
   },
