@@ -34,6 +34,7 @@ var test = new Test("Spec", {
         testSpec_H265,
         testSpec_ForceTouch,
         testSpec_ForceClick,
+        testSpec_OTG,
         // --- static methods ---
         testSpec_has,
         testSpec_dump_modern,
@@ -389,6 +390,20 @@ function testSpec_ForceClick(test, pass, miss) {
     if ( spec1.FORCE_CLICK &&
          spec2.FORCE_CLICK &&
         !spec3.FORCE_CLICK) {
+        test.done(pass());
+    } else {
+        test.done(miss());
+    }
+}
+
+function testSpec_OTG(test, pass, miss) {
+    var spec1 = new Spec({ OS: "Android", DEVICE: "Nexus 6P" });
+    var spec2 = new Spec({ OS: "Android", DEVICE: "Nexus 5X" });
+    var spec3 = new Spec({ OS: "iOS",     DEVICE: "iPhone 6" });
+
+    if ( spec1.OTG &&
+         spec2.OTG &&
+        !spec3.OTG) {
         test.done(pass());
     } else {
         test.done(miss());
