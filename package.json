@@ -1,6 +1,6 @@
 {
   "name": "uupaa.spec.js",
-  "version": "2.0.28",
+  "version": "2.0.29",
   "description": "Mobile Device Spec detection.",
   "url": "https://github.com/uupaa/Spec.js",
   "keywords": ["Mobile", "SoC", "CPU", "GPU", "RAM", "BLE", "NFC", "spec", "uupaa", "WebModule"],
@@ -22,6 +22,7 @@
     "el": "electron test/el",
     "nw": "nw test/nw",
     "add-src": "node ../WebModule/run/add-src.js",
+    "add-subclass": "node ../WebModule/run/add-subclass.js",
     "pretest": "node tojson",
     "sim": "node ../WebModule/run/sim.js http://localhost:8000/Spec.js/test/browser/index.html",
     "simx": "node ../WebModule/run/sim.js stop",
@@ -36,39 +37,39 @@
     "develop": false,
     "label": ["@dev", "@devicejp", "@kindle", "@windows"],
     "browser": {
+      "output": "release/Spec.b.min.js",
       "source": [
         "lib/SpecCatalog.js",
         "lib/Spec.js"
-      ],
-      "output": "release/Spec.b.min.js"
+      ]
     },
     "worker": {
+      "output": "release/Spec.w.min.js",
       "source": [
         "lib/SpecCatalog.js",
         "lib/Spec.js"
-      ],
-      "output": "release/Spec.w.min.js"
+      ]
     },
     "node": {
+      "output": "release/Spec.n.min.js",
       "source": [
         "lib/SpecCatalog.js",
         "lib/Spec.js"
-      ],
-      "output": "release/Spec.n.min.js"
+      ]
     },
     "nw": {
+      "output": "release/Spec.nw.min.js",
       "source": [
         "lib/SpecCatalog.js",
         "lib/Spec.js"
-      ],
-      "output": "release/Spec.nw.min.js"
+      ]
     },
     "el": {
+      "output": "release/Spec.el.min.js",
       "source": [
         "lib/SpecCatalog.js",
         "lib/Spec.js"
-      ],
-      "output": "release/Spec.el.min.js"
+      ]
     }
   },
   "dependencies": {
