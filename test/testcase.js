@@ -421,9 +421,26 @@ function _restore(stack) {
 }
 
 function testSpec_FP(test, pass, miss) {
-    var spec1 = new Spec(new UserAgent("DoCoMo/2.0 P07A3(c500;TB;W24H15)"));
-    var spec2 = new Spec(new UserAgent("KDDI-TS3H UP.Browser/6.2_7.2.7.1.K.1.400 (GUI) MMP/2.0"));
-    var spec3 = new Spec(new UserAgent("SoftBank/1.0/301P/PJP10[/Serial] Browser/NetFront/3.4 Profile/MIDP-2.0 Configuration/CLDC-1.1"));
+    var ua1 = new UserAgent("DoCoMo/2.0 P07A3(c500;TB;W24H15)");
+/*
+    var ua2 = new UserAgent("KDDI-TS3H UP.Browser/6.2_7.2.7.1.K.1.400 (GUI) MMP/2.0");
+    var ua3 = new UserAgent("SoftBank/1.0/301P/PJP10[/Serial] Browser/NetFront/3.4 Profile/MIDP-2.0 Configuration/CLDC-1.1");
+ */
+    console.log("CARRIER", ua1.CARRIER);
+    console.log("FEATURE_PHONE", ua1.FEATURE_PHONE);
+
+    var spec1 = new Spec(ua1);
+
+    console.log("FP_UTF8", spec1.FP_UTF8);
+    console.log("FP_TLS", spec1.FP_TLS);
+    console.log("FP_COOKIE", spec1.FP_COOKIE);
+    console.log("FP_FLASH_LITE", spec1.FP_FLASH_LITE);
+    console.log("FP_DISPLAY_LONG", spec1.FP_DISPLAY_LONG);
+    console.log("FP_DISPLAY_SHORT", spec1.FP_DISPLAY_SHORT);
+/*
+    var spec2 = new Spec(ua2);
+    var spec3 = new Spec(ua3);
+ */
 
     var result = {
          1: spec1.FP_UTF8           === true,
@@ -432,7 +449,7 @@ function testSpec_FP(test, pass, miss) {
          4: spec1.FP_FLASH_LITE     === 3.1,
          5: spec1.FP_DISPLAY_LONG   === 662,
          6: spec1.FP_DISPLAY_SHORT  === 480,
-
+/*
         11: spec2.FP_UTF8           === true,
         12: spec2.FP_TLS            === true,
         13: spec2.FP_COOKIE         === true,
@@ -446,6 +463,7 @@ function testSpec_FP(test, pass, miss) {
         24: spec3.FP_FLASH_LITE     === 3.1,
         25: spec3.FP_DISPLAY_LONG   === 700,
         26: spec3.FP_DISPLAY_SHORT  === 471,
+ */
     }
 
     if (/false/.test(JSON.stringify(result))) {
