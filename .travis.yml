@@ -3,9 +3,9 @@ node_js:
     - "4.1.2"
 # http://docs.travis-ci.com/user/workers/container-based-infrastructure/
 sudo: false
-cache:
-    directories:
-        - node_modules
+#cache:
+#    directories:
+#        - node_modules
 before_script:
     - "pwd"
     - "cd .."
