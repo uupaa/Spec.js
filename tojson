@@ -5,40 +5,48 @@ var argv = process.argv.slice(2);
 //var json = JSON.stringify( require("./lib/SpecCatalog.js") );
 //require("fs").writeFileSync("./lib/SpecCatalog.json", json, "UTF-8");
 
-var json = require("./lib/SpecCatalog.js");
-var buffer = ["{", "\n"];
+_minify( require("./lib/SpecCatalog.js"),   "./lib/SpecCatalog.json"   );
+_minify( require("./lib/SpecCatalogFP.js"), "./lib/SpecCatalogFP.json" );
 
-for (var key in json) {
-    switch (key) {
-    case "Tags":
-        buffer.push( '"' + key + '":' + JSON.stringify(json[key]) );
-        break;
-    case "iOS":
-    case "Android":
-    case "Windows":
-    case "SOC":
-    case "GPU":
-        buffer.push( '"' + key + '":{', "\n" );
-        for (var i in json[key]) {
-            buffer.push( '"' + i + '":' + JSON.stringify(json[key][i]) );
-            buffer.push( ",\n" );
+
+function _minify(json, output, keywords) {
+    var buffer = ["{", "\n"];
+
+    for (var key in json) {
+        switch (key) {
+        case "Tags":
+            buffer.push( '"' + key + '":' + JSON.stringify(json[key]) );
+            break;
+        case "iOS":
+        case "Android":
+        case "Windows":
+        case "SOC":
+        case "GPU":
+        case "DOCOMO":
+        case "KDDI":
+        case "SOFTBANK":
+            buffer.push( '"' + key + '":{', "\n" );
+            for (var i in json[key]) {
+                buffer.push( '"' + i + '":' + JSON.stringify(json[key][i]) );
+                buffer.push( ",\n" );
+            }
+            buffer.pop();
+            buffer.push("\n", "}");
+            break;
         }
-        buffer.pop();
-        buffer.push("\n", "}");
-        break;
+        buffer.push( ",\n" );
     }
-    buffer.push( ",\n" );
-}
-buffer.pop();
-buffer.push("\n", "}");
+    buffer.pop();
+    buffer.push("\n", "}");
 
 
-try {
-    JSON.parse(buffer.join("")); // test
+    try {
+        JSON.parse(buffer.join("")); // test
 
-    require("fs").writeFileSync("./lib/SpecCatalog.json", buffer.join(""), "UTF-8");
-} catch(err) {
-    console.log("encode json error");
+        require("fs").writeFileSync(output, buffer.join(""), "UTF-8");
+    } catch(err) {
+        console.log("encode json error: " + output);
+    }
 }
 
 

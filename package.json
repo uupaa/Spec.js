@@ -1,6 +1,6 @@
 {
   "name": "uupaa.spec.js",
-  "version": "2.0.30",
+  "version": "3.0.0",
   "description": "Mobile Device Spec detection.",
   "url": "https://github.com/uupaa/Spec.js",
   "keywords": ["Mobile", "SoC", "CPU", "GPU", "RAM", "BLE", "NFC", "spec", "uupaa", "WebModule"],
@@ -11,8 +11,10 @@
   "scripts": {
     "sync": "node ../WebModule/run/sync.js; npm update; node ../WebModule/run/page.js",
     "wiki": "node ../WebModule/run/wiki.js",
-    "min": "node ../WebModule/run/minify.js --verbose --strict --keep --pretty",
-    "build": "node ../WebModule/run/minify.js --verbose --strict --keep --release",
+    "min_0.7.5": "node ../WebModule/run/minify.js --verbose --strict --keep --pretty",
+    "min": "node ../WebModule/run/minify.js --verbose --strict --keep --pretty @fp",
+    "build_0.7.5": "node ../WebModule/run/minify.js --verbose --strict --keep --release",
+    "build": "node ../WebModule/run/minify.js --verbose --strict --keep --release @fp",
     "watch": "node ../WebModule/run/watch.js --verbose --run lint",
     "page": "node ../WebModule/run/page.js --verbose",
     "test": "npm run min; npm run node; npm run browser",
@@ -35,11 +37,12 @@
   },
   "webmodule": {
     "develop": false,
-    "label": ["@dev", "@devicejp", "@kindle", "@windows"],
+    "label": ["@dev", "@devicejp", "@kindle", "@windows", "@fp"],
     "browser": {
       "output": "release/Spec.b.min.js",
       "source": [
         "lib/SpecCatalog.js",
+        "lib/SpecCatalogFP.js",
         "lib/Spec.js"
       ]
     },
@@ -47,6 +50,7 @@
       "output": "release/Spec.w.min.js",
       "source": [
         "lib/SpecCatalog.js",
+        "lib/SpecCatalogFP.js",
         "lib/Spec.js"
       ]
     },
@@ -54,6 +58,7 @@
       "output": "release/Spec.n.min.js",
       "source": [
         "lib/SpecCatalog.js",
+        "lib/SpecCatalogFP.js",
         "lib/Spec.js"
       ]
     },
@@ -61,6 +66,7 @@
       "output": "release/Spec.nw.min.js",
       "source": [
         "lib/SpecCatalog.js",
+        "lib/SpecCatalogFP.js",
         "lib/Spec.js"
       ]
     },
@@ -68,6 +74,7 @@
       "output": "release/Spec.el.min.js",
       "source": [
         "lib/SpecCatalog.js",
+        "lib/SpecCatalogFP.js",
         "lib/Spec.js"
       ]
     }

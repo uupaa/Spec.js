@@ -21,6 +21,7 @@ onmessage = function(event) {
     importScripts("../../node_modules/uupaa.useragent.js/lib/UserAgent.js");
     importScripts("../wmtools.js");
     importScripts("../../lib/SpecCatalog.js");
+    importScripts("../../lib/SpecCatalogFP.js");
     importScripts("../../lib/Spec.js");
     importScripts("../../release/Spec.w.min.js");
     importScripts("../testcase.js");

@@ -772,6 +772,9 @@ function Valid_type(value,   // @arg Any
         case "FunctionArray":
                             return Array.isArray(value) && _isFunctionArray(value);
         case "Percent":     return _isNumber(value) && value >= 0.0 && value <= 1.0;
+        case "Node":        return _isNode(value);
+        case "Error":       return _isError(value);
+        case "Event":       return _isEvent(value);
         // --- Integer ---
         case "Integer":     return _isInt(value);
         case "Int32":       return _isInt(value)  && value <= 0x7fffffff && value >= -0x80000000;
@@ -851,6 +854,29 @@ function Valid_type(value,   // @arg Any
     }
     function _isUint(value) {
         return _isNumber(value) && Math.ceil(value) === value && value >= 0;
+    }
+    function _isNode(value) {
+        return _isBaseClass(value, [HTMLElement, Element, Node]);
+    }
+    function _isError(value) {
+        return _isBaseClass(value, [Error]);
+    }
+    function _isEvent(value) {
+        return _isBaseClass(value, [Event]);
+    }
+    function _isBaseClass(value, classArray) {
+        if (value && "constructor" in value) {
+            if ("prototype" in value["constructor"]) {
+                var v = value["constructor"]["prototype"];
+
+                for (var i = 0, iz = classArray.length; i < iz; ++i) {
+                    if (v instanceof classArray[i]) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }
 

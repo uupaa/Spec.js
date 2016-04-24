@@ -47,6 +47,13 @@ if (IN_BROWSER || IN_NW || IN_EL || IN_WORKER || IN_NODE) {
     ]);
 }
 
+if (WebModule["SpecCatalogFP"]) {
+    test.add([
+        testSpec_FP,
+        testSpec_hasFP,
+    ]);
+}
+
 // --- test cases ------------------------------------------
 function testSpec_UNKNOWN(test, pass, miss) {
     // Android 4.4 is BLE READY
@@ -349,9 +356,9 @@ function testSpec_H265(test, pass, miss) {
     var spec2 = new Spec({ OS: "Android", OS_VERSION: "6.0.0", DEVICE: "Nexus 5X" });
     var spec3 = new Spec({ OS: "Android", OS_VERSION: "6.0.0", DEVICE: "SOV31"    });
 
-    if ( spec1.H265 === 0x00 && // Nexus 5 has not H.265 function
-         spec2.H265 === 0x02 && // Nexus 5X has H.265 decoder
-         spec3.H265 === 0x03) { // Xperia Z4 has H.265 encoder and decoder
+    if ( !spec1.H265_DECODER && !spec1.H265_ENCODER && // Nexus 5 has not H.265 codec function
+         spec2.H265_DECODER &&                         // Nexus 5X has H.265 hardware decoder
+         spec3.H265_ENCODER && spec3.H265_DECODER) {   // Xperia Z4 has H.265 hardware encoder and decoder
         test.done(pass());
     } else {
         test.done(miss());
@@ -411,6 +418,49 @@ function _save(keyValue) {
 
 function _restore(stack) {
     Spec["THRESHOLD"] = stack;
+}
+
+function testSpec_FP(test, pass, miss) {
+    var spec1 = new Spec(new UserAgent("DoCoMo/2.0 P07A3(c500;TB;W24H15)"));
+    var spec2 = new Spec(new UserAgent("KDDI-TS3H UP.Browser/6.2_7.2.7.1.K.1.400 (GUI) MMP/2.0"));
+    var spec3 = new Spec(new UserAgent("SoftBank/1.0/301P/PJP10[/Serial] Browser/NetFront/3.4 Profile/MIDP-2.0 Configuration/CLDC-1.1"));
+
+    var result = {
+         1: spec1.FP_UTF8           === true,
+         2: spec1.FP_TLS            === true,
+         3: spec1.FP_COOKIE         === true,
+         4: spec1.FP_FLASH_LITE     === 3.1,
+         5: spec1.FP_DISPLAY_LONG   === 662,
+         6: spec1.FP_DISPLAY_SHORT  === 480,
+
+        11: spec2.FP_UTF8           === true,
+        12: spec2.FP_TLS            === true,
+        13: spec2.FP_COOKIE         === true,
+        14: spec2.FP_FLASH_LITE     === 2.0,
+        15: spec2.FP_DISPLAY_LONG   === 331,
+        16: spec2.FP_DISPLAY_SHORT  === 233,
+
+        21: spec3.FP_UTF8           === true,
+        22: spec3.FP_TLS            === true,
+        23: spec3.FP_COOKIE         === true,
+        24: spec3.FP_FLASH_LITE     === 3.1,
+        25: spec3.FP_DISPLAY_LONG   === 700,
+        26: spec3.FP_DISPLAY_SHORT  === 471,
+    }
+
+    if (/false/.test(JSON.stringify(result))) {
+        test.done(miss());
+    } else {
+        test.done(pass());
+    }
+}
+
+function testSpec_hasFP(test, pass, miss) {
+    if ( Spec.has("P07A3") ) {
+        test.done(miss());
+    } else {
+        test.done(pass());
+    }
 }
 
 return test.run();
