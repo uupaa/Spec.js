@@ -449,6 +449,9 @@ function testSpec_FP(test, pass, miss) {
     }
 
     if (/false/.test(JSON.stringify(result))) {
+
+        console.log(JSON.stringify(result, null, 2));
+
         test.done(miss());
     } else {
         test.done(pass());
