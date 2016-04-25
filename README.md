@@ -71,9 +71,11 @@ require("<module-dir>/lib/Spec.js");
 var ua = new UserAgent("DoCoMo/2.0 P07A3(c500;TB;W24H15)");
 var spec = new Spec(ua);
 
-spec.FP_UTF8            // -> true
 spec.FP_TLS             // -> true
+spec.FP_UTF8            // -> true
 spec.FP_COOKIE          // -> true
+spec.FP_CERT_SHA1       // -> true
+spec.FP_MALFUNCTION     // -> true
 spec.FP_FLASH_LITE      // -> 3.1
 spec.FP_DISPLAY_LONG    // -> 662
 spec.FP_DISPLAY_SHORT   // -> 480

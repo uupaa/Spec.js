@@ -1,6 +1,6 @@
 {
   "name": "uupaa.spec.js",
-  "version": "3.0.1",
+  "version": "3.0.3",
   "description": "Mobile Device Spec detection.",
   "url": "https://github.com/uupaa/Spec.js",
   "keywords": ["Mobile", "SoC", "CPU", "GPU", "RAM", "BLE", "NFC", "spec", "uupaa", "WebModule"],
