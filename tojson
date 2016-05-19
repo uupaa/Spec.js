@@ -14,7 +14,8 @@ function _minify(json, output, keywords) {
 
     for (var key in json) {
         switch (key) {
-        case "Tags":
+        case "SOC_TAGS":
+        case "GPU_TAGS":
             buffer.push( '"' + key + '":' + JSON.stringify(json[key]) );
             break;
         case "iOS":
