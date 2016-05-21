@@ -38,8 +38,8 @@ if (IN_BROWSER || IN_NW || IN_EL || IN_WORKER || IN_NODE) {
         testSpec_ForceClick,
         testSpec_OTG,
         testSpec_OpenGLES,
-        testSpec_OpenCL,
         testSpec_Vulkan,
+        testSpec_Metal,
         // --- static methods ---
         testSpec_has,
         testSpec_dump_modern,
@@ -415,23 +415,9 @@ function testSpec_OpenGLES(test, pass, miss) {
     var spec2 = new Spec({ OS: "Android", DEVICE: "Nexus 7 2nd" });
     var spec3 = new Spec({ OS: "iOS",     DEVICE: "iPhone SE"   });
 
-    if ( spec1.OPEN_GLES === 3.1 &&
-         spec2.OPEN_GLES === 3.0 &&
-         spec3.OPEN_GLES === 3.1 ) {
-        test.done(pass());
-    } else {
-        test.done(miss());
-    }
-}
-
-function testSpec_OpenCL(test, pass, miss) {
-    var spec1 = new Spec({ OS: "Android", DEVICE: "SC-02H"      });
-    var spec2 = new Spec({ OS: "Android", DEVICE: "Nexus 7 2nd" });
-    var spec3 = new Spec({ OS: "iOS",     DEVICE: "iPhone SE"   });
-
-    if ( spec1.OTG &&
-         spec2.OTG &&
-        !spec3.OTG) {
+    if ( spec1.GLES === 3.1 &&
+         spec2.GLES === 3.0 &&
+         spec3.GLES === 3.1 ) {
         test.done(pass());
     } else {
         test.done(miss());
@@ -439,13 +425,29 @@ function testSpec_OpenCL(test, pass, miss) {
 }
 
 function testSpec_Vulkan(test, pass, miss) {
-    var spec1 = new Spec({ OS: "Android", DEVICE: "Nexus 6P" });
-    var spec2 = new Spec({ OS: "Android", DEVICE: "Nexus 5X" });
-    var spec3 = new Spec({ OS: "iOS",     DEVICE: "iPhone 6" });
+    var spec1 = new Spec({ OS: "Android", DEVICE: "SC-02H",   OS_VERSION: 6.0 });
+    var spec2 = new Spec({ OS: "Android", DEVICE: "SC-02H",   OS_VERSION: 7.0 });
+    var spec3 = new Spec({ OS: "Android", DEVICE: "Nexus 6P", OS_VERSION: 7.0 });
+    var spec4 = new Spec({ OS: "Android", DEVICE: "Nexus 5X", OS_VERSION: 7.0 });
+    var spec5 = new Spec({ OS: "iOS",     DEVICE: "iPhone 6", OS_VERSION: 9.0 });
 
-    if ( spec1.OTG &&
-         spec2.OTG &&
-        !spec3.OTG) {
+    if ( spec1.VULKAN === 0.0 &&
+         spec2.VULKAN === 1.0 &&
+         spec3.VULKAN === 1.0 &&
+         spec4.VULKAN === 1.0 &&
+         spec5.VULKAN === 0.0 ) {
+        test.done(pass());
+    } else {
+        test.done(miss());
+    }
+}
+
+function testSpec_Metal(test, pass, miss) {
+    var spec1 = new Spec({ OS: "iOS", DEVICE: "iPhone 5s", OS_VERSION: 7.0 });
+    var spec2 = new Spec({ OS: "iOS", DEVICE: "iPhone 6",  OS_VERSION: 9.0 });
+
+    if ( spec1.METAL === 0.0 &&
+         spec2.METAL === 1.0 ) {
         test.done(pass());
     } else {
         test.done(miss());

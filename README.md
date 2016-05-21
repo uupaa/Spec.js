@@ -40,6 +40,9 @@ spec.FORCE_CLICK        // -> false
 spec.MAX_THREADS        // -> 2
 spec.MAX_TOUCH_POINTS   // -> 5
 spec.MAX_TEXTURE_SIZE   // -> 16384
+spec.GLES               // -> 3.1
+spec.METAL              // -> 1.0
+spec.VULKAN             // -> 0.0
 spec.LOW_END            // -> false
 spec.OUTMODED           // -> false
 
