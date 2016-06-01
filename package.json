@@ -1,6 +1,6 @@
 {
   "name": "uupaa.spec.js",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "description": "Mobile Device Spec detection.",
   "url": "https://github.com/uupaa/Spec.js",
   "keywords": ["Mobile", "SoC", "CPU", "GPU", "RAM", "BLE", "NFC", "OpenGLES", "OpenCL", "Vulkan", "spec", "uupaa", "WebModule"],
@@ -11,9 +11,7 @@
   "scripts": {
     "sync": "node ../WebModule/run/sync.js; npm update; node ../WebModule/run/page.js",
     "wiki": "node ../WebModule/run/wiki.js",
-    "min_0.7.5": "node ../WebModule/run/minify.js --verbose --strict --keep --pretty",
     "min": "node ../WebModule/run/minify.js --verbose --strict --keep --pretty @fp",
-    "build_0.7.5": "node ../WebModule/run/minify.js --verbose --strict --keep --release",
     "build": "node ../WebModule/run/minify.js --verbose --strict --keep --release @fp",
     "watch": "node ../WebModule/run/watch.js --verbose --run lint",
     "page": "node ../WebModule/run/page.js --verbose",

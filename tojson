@@ -14,7 +14,7 @@ function _minify(json, output, keywords) {
 
     for (var key in json) {
         switch (key) {
-        case "SOC_TAGS":
+        case "DEVICE_TAGS":
         case "GPU_TAGS":
             buffer.push( '"' + key + '":' + JSON.stringify(json[key]) );
             break;
@@ -45,8 +45,10 @@ function _minify(json, output, keywords) {
         JSON.parse(buffer.join("")); // test
 
         require("fs").writeFileSync(output, buffer.join(""), "UTF-8");
-    } catch(err) {
-        console.log("encode json error: " + output);
+    } catch (error) {
+        console.log("encode json error: " + error.message + ", " + output);
+
+        require("fs").writeFileSync(output, buffer.join(""), "UTF-8");
     }
 }
 
