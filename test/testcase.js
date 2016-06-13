@@ -40,6 +40,7 @@ if (IN_BROWSER || IN_NW || IN_EL || IN_WORKER || IN_NODE) {
         testSpec_OpenGLES,
         testSpec_Vulkan,
         testSpec_Metal,
+        testSpec_iOS10,
         // --- static methods ---
         testSpec_has,
         testSpec_dump_modern,
@@ -447,6 +448,18 @@ function testSpec_Metal(test, pass, miss) {
     var spec2 = new Spec({ OS: "iOS", DEVICE: "iPhone 6",  OS_VERSION: 9.0 });
 
     if ( spec1.METAL === 0.0 &&
+         spec2.METAL === 1.0 ) {
+        test.done(pass());
+    } else {
+        test.done(miss());
+    }
+}
+
+function testSpec_iOS10(test, pass, miss) {
+    var spec1 = new Spec({ OS: "iOS", DEVICE: "iPhone 5s", OS_VERSION: 10.0 });
+    var spec2 = new Spec({ OS: "iOS", DEVICE: "iPhone 6",  OS_VERSION: 11.2 });
+
+    if ( spec1.METAL === 1.0 &&  // if (osVersion >= 8.0 && this._GLES >= 3.1) { METAL = true }
          spec2.METAL === 1.0 ) {
         test.done(pass());
     } else {

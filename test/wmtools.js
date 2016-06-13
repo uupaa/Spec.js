@@ -856,13 +856,13 @@ function Valid_type(value,   // @arg Any
         return _isNumber(value) && Math.ceil(value) === value && value >= 0;
     }
     function _isNode(value) {
-        return _isBaseClass(value, [HTMLElement, Element, Node]);
+        return value instanceof Node  || _isBaseClass(value, [HTMLElement, Element, Node]);
     }
     function _isError(value) {
-        return _isBaseClass(value, [Error]);
+        return value instanceof Error || _isBaseClass(value, [Error]);
     }
     function _isEvent(value) {
-        return _isBaseClass(value, [Event]);
+        return value instanceof Event || _isBaseClass(value, [Event]);
     }
     function _isBaseClass(value, classArray) {
         if (value && "constructor" in value) {
