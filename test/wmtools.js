@@ -1940,7 +1940,7 @@ function _swap(that) {
                 //  [2] overwrite module runtime
                 global["WebModule"][moduleName + "$p$"] = global["WebModule"][moduleName];       // [1]
                 global["WebModule"][moduleName]         = global["WebModule"][moduleName + "_"]; // [2]
-                if (global["WebModule"]["publish"]) { // published?
+                if (global["WebModule"]["PUBLISH"]) { // published?
                     global[moduleName]                  = global["WebModule"][moduleName + "_"]; // [2]
                 }
             });
@@ -1956,7 +1956,7 @@ function _undo(that) {
                 // swap secondary <-> primary module runtime
                 //  [1] return to original runtime
                 global["WebModule"][moduleName] = global["WebModule"][moduleName + "$p$"]; // [1]
-                if (global["WebModule"]["publish"]) { // published?
+                if (global["WebModule"]["PUBLISH"]) { // published?
                     global[moduleName]          = global["WebModule"][moduleName + "$p$"]; // [1]
                 }
                 delete global["WebModule"][moduleName + "$p$"];
