@@ -1,0 +1,29 @@
+<!DOCTYPE html><html><head><title>Spec test</title>
+<meta name="viewport" content="width=device-width, user-scalable=no">
+<meta charset="utf-8"></head><body>
+
+<script src="lib/WebModule.js"></script>
+<script>
+WebModule.VERIFY  = true;
+WebModule.VERBOSE = true;
+WebModule.PUBLISH = true;
+</script>
+
+<script src="modules/WebGLDetector.js"></script>
+<script src="modules/UserAgent.js"></script>
+<script src="lib/SpecCatalog.js"></script>
+<script src="lib/Spec.js"></script>
+
+<script>
+var ua = new UserAgent();
+var spec = new Spec(ua);
+
+document.body.innerHTML +=
+  "UserAgent:" + JSON.stringify(ua, null, 2).replace(/\n/g, "<br>") +
+  "<br>" +
+  "Spec:" + JSON.stringify(spec, null, 2).replace(/\n/g, "<br>");
+</script>
+
+
+</body></html>
+
